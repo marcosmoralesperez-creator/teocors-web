@@ -4,23 +4,39 @@
 
 const D = 1024;
 
+export type GarmentType = 'tee' | 'hoodie' | 'crew';
+
+/** Colors and cut of a garment; `printStyle: 'blank'` skips the chest print. */
+export interface GarmentConfig {
+  type: GarmentType;
+  base: string;
+  print: string;
+  trim?: string;
+  sheen?: string;
+  printStyle?: 'blank';
+}
+
+type Garment = GarmentConfig & { trim: string };
+type Pt = [number, number];
+type Ctx = CanvasRenderingContext2D;
+
 const FONT_SANS = '"Montserrat Variable", "Montserrat", system-ui, sans-serif';
 const FONT_SERIF = '"Cormorant", "Cormorant Garamond", Georgia, serif';
 
-function rgb(hex) {
+function rgb(hex: string): [number, number, number] {
   const n = parseInt(hex.slice(1), 16);
   return [n >> 16, (n >> 8) & 255, n & 255];
 }
 
 // f > 0 mixes toward white, f < 0 toward black.
-function shade(hex, f, a = 1) {
+function shade(hex: string, f: number, a = 1) {
   const target = f < 0 ? 0 : 255;
   const p = Math.abs(f);
   const [r, g, b] = rgb(hex).map((c) => Math.round(c + (target - c) * p));
   return `rgba(${r},${g},${b},${a})`;
 }
 
-function luminance(hex) {
+function luminance(hex: string) {
   const [r, g, b] = rgb(hex).map((c) => {
     const s = c / 255;
     return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
@@ -28,9 +44,9 @@ function luminance(hex) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
-const mirrorX = (pts) => pts.map(([x, y]) => [D - x, y]);
+const mirrorX = (pts: Pt[]) => pts.map(([x, y]): Pt => [D - x, y]);
 
-function polygon(pts) {
+function polygon(pts: Pt[]) {
   const p = new Path2D();
   pts.forEach(([x, y], i) => (i ? p.lineTo(x, y) : p.moveTo(x, y)));
   p.closePath();
@@ -71,8 +87,8 @@ function longBodyShape() {
   return p;
 }
 
-function sleevePath(side) {
-  const pts = [
+function sleevePath(side: 'left' | 'right') {
+  const pts: Pt[] = [
     [234, 152],
     [176, 176],
     [154, 250],
@@ -90,7 +106,7 @@ function sleevePath(side) {
 // Soft shadow stroke that also works where ctx.filter is unsupported (Safari):
 // the path is drawn far off-canvas and only its blurred shadow lands on it.
 // Shadow offset and blur ignore the transform, so they are scaled by hand.
-function softStroke(ctx, path, width, color, blur) {
+function softStroke(ctx: Ctx, path: Path2D, width: number, color: string, blur: number) {
   const s = ctx.getTransform().a;
   ctx.save();
   ctx.translate(-4000, 0);
@@ -104,20 +120,20 @@ function softStroke(ctx, path, width, color, blur) {
   ctx.restore();
 }
 
-function line(pts) {
+function line(pts: Pt[]) {
   const p = new Path2D();
   pts.forEach(([x, y], i) => (i ? p.lineTo(x, y) : p.moveTo(x, y)));
   return p;
 }
 
-function curve(x0, y0, cx, cy, x1, y1) {
+function curve(x0: number, y0: number, cx: number, cy: number, x1: number, y1: number) {
   const p = new Path2D();
   p.moveTo(x0, y0);
   p.quadraticCurveTo(cx, cy, x1, y1);
   return p;
 }
 
-function stitch(ctx, path, color) {
+function stitch(ctx: Ctx, path: Path2D, color: string) {
   ctx.save();
   ctx.setLineDash([7, 6]);
   ctx.lineWidth = 2;
@@ -126,7 +142,7 @@ function stitch(ctx, path, color) {
   ctx.restore();
 }
 
-function rib(ctx, clip, y0, y1, base) {
+function rib(ctx: Ctx, clip: Path2D, y0: number, y1: number, base: string) {
   ctx.save();
   ctx.clip(clip);
   ctx.fillStyle = shade(base, -0.12);
@@ -148,7 +164,7 @@ function rib(ctx, clip, y0, y1, base) {
   ctx.restore();
 }
 
-function spacedText(ctx, text, x, y, spacing) {
+function spacedText(ctx: Ctx, text: string, x: number, y: number, spacing: number) {
   const widths = [...text].map((ch) => ctx.measureText(ch).width);
   const total = widths.reduce((a, b) => a + b, 0) + spacing * (text.length - 1);
   let cx = x - total / 2;
@@ -161,7 +177,7 @@ function spacedText(ctx, text, x, y, spacing) {
 }
 
 // Print with a darker offset copy underneath so it reads as raised ink.
-function printText(ctx, g, text, x, y, font, spacing) {
+function printText(ctx: Ctx, g: Garment, text: string, x: number, y: number, font: string, spacing: number) {
   ctx.font = font;
   ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = shade(g.base, -0.55, 0.9);
@@ -170,10 +186,10 @@ function printText(ctx, g, text, x, y, font, spacing) {
   return spacedText(ctx, text, x, y, spacing);
 }
 
-function fabricGrain(ctx, base) {
+function fabricGrain(ctx: Ctx, base: string) {
   const n = document.createElement('canvas');
   n.width = n.height = 128;
-  const nc = n.getContext('2d');
+  const nc = n.getContext('2d')!;
   const img = nc.createImageData(128, 128);
   const light = luminance(base) > 0.3;
   for (let i = 0; i < img.data.length; i += 4) {
@@ -184,12 +200,12 @@ function fabricGrain(ctx, base) {
   nc.putImageData(img, 0, 0);
   ctx.save();
   ctx.globalCompositeOperation = 'source-atop';
-  ctx.fillStyle = ctx.createPattern(n, 'repeat');
+  ctx.fillStyle = ctx.createPattern(n, 'repeat') ?? 'transparent';
   ctx.fillRect(0, 0, D, D);
   ctx.restore();
 }
 
-function lightingPass(ctx, base) {
+function lightingPass(ctx: Ctx, base: string) {
   const light = luminance(base) > 0.3;
   ctx.save();
   ctx.globalCompositeOperation = 'source-atop';
@@ -220,7 +236,7 @@ function lightingPass(ctx, base) {
 
 // ------------------------------------------------------------------ garments
 
-function drawTee(ctx, g) {
+function drawTee(ctx: Ctx, g: Garment) {
   const body = teeShape();
   ctx.fillStyle = g.base;
   ctx.fill(body);
@@ -271,7 +287,7 @@ function drawTee(ctx, g) {
   return body;
 }
 
-function drawLong(ctx, g) {
+function drawLong(ctx: Ctx, g: Garment) {
   const body = longBodyShape();
   const left = sleevePath('left');
   const right = sleevePath('right');
@@ -386,16 +402,13 @@ function drawLong(ctx, g) {
   return union;
 }
 
-/**
- * @param {object} g garment config: { type: 'tee'|'hoodie'|'crew', base, print, trim, printStyle }
- * @param {number} size canvas size in px (square)
- */
-export function drawGarment(g, size = 1024) {
+/** Paints the garment onto a new square canvas of `size` px. */
+export function drawGarment(config: GarmentConfig, size = 1024) {
   const canvas = document.createElement('canvas');
   canvas.width = canvas.height = size;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d')!;
   ctx.scale(size / D, size / D);
-  g = { trim: '#e9e2d6', ...g };
+  const g: Garment = { trim: '#e9e2d6', ...config };
   if (g.type === 'tee') drawTee(ctx, g);
   else drawLong(ctx, g);
   lightingPass(ctx, g.base);

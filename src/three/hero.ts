@@ -1,5 +1,18 @@
 import * as THREE from 'three';
-import { createGarment, addStudioLights } from './garment.js';
+import { createGarment, addStudioLights } from './garment';
+import type { GarmentConfig } from './garmentTexture';
+
+export interface Hotspot {
+  el: HTMLElement;
+  /** Point on the garment, in the 1024 design space. */
+  x: number;
+  y: number;
+}
+
+export interface HeroScene {
+  setProgress(p: number): void;
+  dispose(): void;
+}
 
 // Garment bounds in world units (hook tip to hem, sleeve to sleeve).
 const GARMENT_H = 2.95;
@@ -9,7 +22,7 @@ const GARMENT_CY = 0.26;
 function dustTexture() {
   const c = document.createElement('canvas');
   c.width = c.height = 64;
-  const ctx = c.getContext('2d');
+  const ctx = c.getContext('2d')!;
   const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
   g.addColorStop(0, 'rgba(255,255,255,1)');
   g.addColorStop(0.35, 'rgba(255,255,255,0.35)');
@@ -19,7 +32,7 @@ function dustTexture() {
   return new THREE.CanvasTexture(c);
 }
 
-function createDust(count) {
+function createDust(count: number) {
   const positions = new Float32Array(count * 3);
   const speeds = new Float32Array(count);
   for (let i = 0; i < count; i++) {
@@ -48,7 +61,19 @@ function createDust(count) {
  * Hero scene: a TEOCORS tee hanging from a gold hanger, moving like cloth,
  * following the pointer and turning as the page scrolls.
  */
-export async function createHeroScene({ canvas, container, garment: garmentConfig, hotspots = [], reducedMotion }) {
+export async function createHeroScene({
+  canvas,
+  container,
+  garment: garmentConfig,
+  hotspots = [],
+  reducedMotion,
+}: {
+  canvas: HTMLCanvasElement;
+  container: HTMLElement;
+  garment: GarmentConfig;
+  hotspots?: Hotspot[];
+  reducedMotion: boolean;
+}): Promise<HeroScene> {
   await Promise.all([
     document.fonts.load('600 60px "Montserrat Variable"'),
     document.fonts.load('600 94px "Cormorant"'),
@@ -104,7 +129,7 @@ export async function createHeroScene({ canvas, container, garment: garmentConfi
     camera.updateProjectionMatrix();
   }
 
-  const onPointer = (e) => {
+  const onPointer = (e: PointerEvent) => {
     const r = container.getBoundingClientRect();
     const x = ((e.clientX - r.left) / r.width) * 2 - 1;
     const y = ((e.clientY - r.top) / r.height) * 2 - 1;
@@ -146,8 +171,8 @@ export async function createHeroScene({ canvas, container, garment: garmentConfi
     camera.lookAt(camTarget);
 
     if (dust.userData.speeds) {
-      const pos = dust.geometry.attributes.position;
-      const sp = dust.userData.speeds;
+      const pos = dust.geometry.attributes.position as THREE.BufferAttribute;
+      const sp = dust.userData.speeds as Float32Array;
       for (let i = 0; i < sp.length; i++) {
         let y = pos.getY(i) + sp[i] * dt;
         if (y > 3) y = -3;
@@ -161,7 +186,7 @@ export async function createHeroScene({ canvas, container, garment: garmentConfi
     placeHotspots();
   }
 
-  function setRunning(on) {
+  function setRunning(on: boolean) {
     if (on === state.running) return;
     state.running = on;
     last = performance.now();

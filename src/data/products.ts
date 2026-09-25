@@ -1,16 +1,34 @@
-// Catalog. Prices in Colombian pesos. `garment` drives the 3D model that is
-// rendered into public/products/<id>.webp (see scripts/render-products.mjs).
+import type { GarmentConfig } from '@/three/garmentTexture';
 
-export const categories = [
+// Catalog. Prices in Colombian pesos. `garment` drives the 3D model that is
+// rendered into src/assets/products/<id>.webp (see scripts/render-products.mjs).
+
+export type CategoryId = 'all' | 'camisetas' | 'hoodies' | 'buzos';
+export type Size = 'S' | 'M' | 'L' | 'XL';
+
+export interface Product {
+  id: string;
+  name: string;
+  category: Exclude<CategoryId, 'all'>;
+  price: number;
+  color: string;
+  badge?: string;
+  soldOut: Size[];
+  description: string;
+  details: string[];
+  garment: GarmentConfig;
+}
+
+export const categories: { id: CategoryId; label: string }[] = [
   { id: 'all', label: 'Todo' },
   { id: 'camisetas', label: 'Camisetas' },
   { id: 'hoodies', label: 'Hoodies' },
   { id: 'buzos', label: 'Buzos' },
 ];
 
-export const sizes = ['S', 'M', 'L', 'XL'];
+export const sizes: Size[] = ['S', 'M', 'L', 'XL'];
 
-export const products = [
+export const products: Product[] = [
   {
     id: 'noir',
     name: 'Camiseta Oversize Noir',
@@ -89,11 +107,15 @@ export const products = [
 ];
 
 // Close-up shots for the "Detalles" section.
-export const detailShots = [
+export const detailShots: { id: string; product: string; focus: [number, number]; height: number }[] = [
   { id: 'detail-print', product: 'noir', focus: [512, 350], height: 1.7 },
   { id: 'detail-cords', product: 'eclipse', focus: [512, 400], height: 1.6 },
   { id: 'detail-type', product: 'medianoche', focus: [512, 290], height: 1.75 },
 ];
 
-export const formatPrice = (value) =>
+export const productById = (id: string) => products.find((p) => p.id === id);
+
+export const categoryLabel = (id: CategoryId) => categories.find((c) => c.id === id)?.label ?? '';
+
+export const formatPrice = (value: number) =>
   new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value);

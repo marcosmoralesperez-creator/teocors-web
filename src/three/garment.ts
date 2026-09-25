@@ -1,13 +1,13 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import { drawGarment, DESIGN_SIZE } from './garmentTexture.js';
+import { drawGarment, DESIGN_SIZE, type GarmentConfig } from './garmentTexture';
 
 // 1024 design px span 3.2 world units.
 const UNITS = 3.2;
 const PX = UNITS / DESIGN_SIZE;
 
 /** Converts a point in the 1024 design space to garment-local world units. */
-export function designToLocal(x, y) {
+export function designToLocal(x: number, y: number) {
   return new THREE.Vector3((x - DESIGN_SIZE / 2) * PX, (DESIGN_SIZE / 2 - y) * PX, 0);
 }
 
@@ -31,7 +31,9 @@ float clothHeight(vec2 p) {
 }
 `;
 
-function clothMaterial(texture, g, uniforms) {
+type ClothUniforms = { uTime: THREE.IUniform<number>; uWind: THREE.IUniform<number> };
+
+function clothMaterial(texture: THREE.Texture, g: GarmentConfig, uniforms: ClothUniforms) {
   const mat = new THREE.MeshPhysicalMaterial({
     map: texture,
     side: THREE.DoubleSide,
@@ -66,8 +68,8 @@ function clothMaterial(texture, g, uniforms) {
   return mat;
 }
 
-let envTexture = null;
-function hookEnvironment(renderer) {
+let envTexture: THREE.Texture | null = null;
+function hookEnvironment(renderer: THREE.WebGLRenderer) {
   if (!envTexture) {
     const pmrem = new THREE.PMREMGenerator(renderer);
     envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
@@ -76,8 +78,8 @@ function hookEnvironment(renderer) {
   return envTexture;
 }
 
-function createHook(renderer) {
-  const pts = [
+function createHook(renderer: THREE.WebGLRenderer) {
+  const pts: [number, number][] = [
     [0, 1.3],
     [0, 1.42],
     [0.002, 1.52],
@@ -113,8 +115,12 @@ function createHook(renderer) {
  * Builds a hanging garment. The returned group pivots on the hanger hook,
  * so rotating it swings the garment naturally.
  */
-export function createGarment(renderer, g, { textureSize = 2048, segments = 140 } = {}) {
-  const uniforms = { uTime: { value: 0 }, uWind: { value: 1 } };
+export function createGarment(
+  renderer: THREE.WebGLRenderer,
+  g: GarmentConfig,
+  { textureSize = 2048, segments = 140 } = {},
+) {
+  const uniforms: ClothUniforms = { uTime: { value: 0 }, uWind: { value: 1 } };
   const texture = new THREE.CanvasTexture(drawGarment(g, textureSize));
   texture.colorSpace = THREE.SRGBColorSpace;
   texture.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
@@ -137,7 +143,7 @@ export function createGarment(renderer, g, { textureSize = 2048, segments = 140 
     object: pivot,
     uniforms,
     /** Local point (design px) → world position, including the cloth offset. */
-    anchor(x, y) {
+    anchor(x: number, y: number) {
       return inner.localToWorld(designToLocal(x, y));
     },
     dispose() {
@@ -149,7 +155,7 @@ export function createGarment(renderer, g, { textureSize = 2048, segments = 140 
 }
 
 /** Warm key, cool grazing rim and a low fill — a small product studio. */
-export function addStudioLights(scene) {
+export function addStudioLights(scene: THREE.Scene) {
   const hemi = new THREE.HemisphereLight('#8d8883', '#15120f', 1.15);
   const key = new THREE.DirectionalLight('#fff1dc', 3.1);
   key.position.set(3.2, 3.5, 5);
