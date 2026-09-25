@@ -1,6 +1,6 @@
 // Studio renderer for product and detail images (used by scripts/render-products.mjs).
 import '@fontsource-variable/montserrat';
-import '@fontsource/cormorant/600.css';
+import '@fontsource/cormorant/latin-600.css';
 import * as THREE from 'three';
 import { createGarment, addStudioLights } from './three/garment.js';
 import { products, detailShots } from './data/products.js';

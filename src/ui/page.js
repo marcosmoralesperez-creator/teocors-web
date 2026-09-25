@@ -32,23 +32,31 @@ export function setupHeader() {
   document.querySelector('[data-menu-open]').addEventListener('click', () => openDialog(menu));
 }
 
+// Content is visible at rest. Elements below the fold get a short entrance
+// that starts just before they scroll in, so nothing waits hidden.
 export function setupReveals({ reducedMotion }) {
   if (reducedMotion) return;
-  inView(
-    '[data-reveal]',
-    (el) => {
-      animate(el, { opacity: [0, 1], transform: ['translateY(28px)', 'translateY(0px)'] }, { duration: 1, ease });
-    },
-    { margin: '0px 0px -12% 0px' },
-  );
+  const below = (el) => el.getBoundingClientRect().top > window.innerHeight;
+  const opts = { margin: '0px 0px 15% 0px' };
+  document.querySelectorAll('[data-reveal]').forEach((el) => {
+    if (!below(el)) return;
+    inView(
+      el,
+      () => {
+        animate(el, { opacity: [0, 1], transform: ['translateY(28px)', 'translateY(0px)'] }, { duration: 0.9, ease });
+      },
+      opts,
+    );
+  });
   const grid = document.querySelector('[data-product-grid]');
+  if (!below(grid)) return;
   inView(
     grid,
     () => {
       const cards = [...grid.children].filter((c) => !c.hidden);
       animate(cards, { opacity: [0, 1], transform: ['translateY(32px)', 'translateY(0px)'] }, { delay: stagger(0.08), duration: 0.9, ease });
     },
-    { margin: '0px 0px -15% 0px' },
+    opts,
   );
 }
 
@@ -56,7 +64,6 @@ export function setupCounters({ reducedMotion }) {
   if (reducedMotion) return;
   document.querySelectorAll('[data-count]').forEach((el) => {
     const target = Number(el.dataset.count);
-    el.textContent = '0';
     inView(el, () => {
       animate(0, target, { duration: 1.6, ease, onUpdate: (v) => (el.textContent = Math.round(v)) });
     });
@@ -95,13 +102,27 @@ export function setupMarquee() {
   track.innerHTML += track.innerHTML;
 }
 
-/** Lightweight YouTube embed: the player loads only after the visitor presses play. */
+/**
+ * Lightweight YouTube embed: the player loads only after the visitor presses
+ * play. Where embedding can't work (a file opened from disk, or a host that
+ * sets data-embed="off"), the poster stays a plain link to YouTube.
+ */
 export function setupVideo() {
   const box = document.querySelector('[data-video]');
   const poster = box.querySelector('.video-poster');
+  // The YouTube thumbnail is optional: if it can't load, the poster's own
+  // background shows instead.
   const img = poster.querySelector('img');
-  img.addEventListener('error', () => (img.hidden = true), { once: true });
-  poster.addEventListener('click', () => {
+  if (img) {
+    const hideImg = () => (img.hidden = true);
+    img.addEventListener('error', hideImg, { once: true });
+    if (img.complete && img.naturalWidth === 0) hideImg();
+  }
+
+  const canEmbed = location.protocol.startsWith('http') && box.dataset.embed !== 'off';
+  if (!canEmbed) return;
+  poster.addEventListener('click', (e) => {
+    e.preventDefault();
     const iframe = document.createElement('iframe');
     iframe.src = `https://www.youtube-nocookie.com/embed/${box.dataset.videoId}?autoplay=1&rel=0&playsinline=1`;
     iframe.title = 'Música por amigos del colegio de Marko';

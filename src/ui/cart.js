@@ -1,5 +1,6 @@
 import { animate } from 'motion';
 import { products, formatPrice } from '../data/products.js';
+import { productImage } from '../data/images.js';
 import { icon } from './icons.js';
 import { openDialog } from './dialogs.js';
 
@@ -63,7 +64,7 @@ function lineHTML({ id, size, qty }) {
   const key = `${id}:${size}`;
   return `
     <li class="cart-item" data-key="${key}">
-      <img src="products/${id}.webp" alt="" width="80" height="100" loading="lazy" />
+      <img src="${productImage(id)}" alt="" width="80" height="100" loading="lazy" />
       <div class="cart-item-info">
         <p class="cart-item-name">${p.name}</p>
         <p class="cart-item-meta">${p.color} · Talla ${size}</p>

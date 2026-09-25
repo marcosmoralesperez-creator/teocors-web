@@ -1,7 +1,7 @@
 import '@fontsource-variable/montserrat';
-import '@fontsource/cormorant/500.css';
-import '@fontsource/cormorant/500-italic.css';
-import '@fontsource/cormorant/600.css';
+import '@fontsource/cormorant/latin-500.css';
+import '@fontsource/cormorant/latin-500-italic.css';
+import '@fontsource/cormorant/latin-600.css';
 import './styles.css';
 
 import { renderIcons } from './ui/icons.js';

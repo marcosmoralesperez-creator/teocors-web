@@ -1,8 +1,16 @@
 import { defineConfig } from 'vite';
+import { viteSingleFile } from 'vite-plugin-singlefile';
 
-export default defineConfig({
+// `npm run build`         → dist/: the site split into files, three.js loaded lazily.
+// `npm run build:single`  → dist-single/index.html: everything (code, images,
+//                           fonts) in one file that opens with a double-click.
+export default defineConfig(({ mode }) => ({
   // Relative paths so the build works from any folder (e.g. GitHub Pages).
   base: './',
-  // three.js ships in its own lazily loaded chunk for the hero.
-  build: { chunkSizeWarningLimit: 700 },
-});
+  plugins: mode === 'single' ? [viteSingleFile()] : [],
+  build:
+    mode === 'single'
+      ? { outDir: 'dist-single', chunkSizeWarningLimit: 4000 }
+      : // three.js ships in its own lazily loaded chunk for the hero.
+        { chunkSizeWarningLimit: 700 },
+}));

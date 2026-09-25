@@ -1,5 +1,6 @@
 import { animate, stagger } from 'motion';
 import { products, categories, sizes, formatPrice } from '../data/products.js';
+import { productImage } from '../data/images.js';
 import { icon } from './icons.js';
 import { openDialog, closeDialog } from './dialogs.js';
 
@@ -13,7 +14,7 @@ function cardHTML(p) {
       <article class="product" aria-labelledby="p-${p.id}">
         <button type="button" class="product-media" data-open="${p.id}" aria-label="Vista rápida: ${p.name}">
           ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
-          <img src="products/${p.id}.webp" alt="" width="960" height="1200" loading="lazy" decoding="async" />
+          <img src="${productImage(p.id)}" alt="" width="960" height="1200" loading="lazy" decoding="async" />
           <span class="product-quick" aria-hidden="true">Vista rápida</span>
         </button>
         <div class="product-info">
@@ -77,7 +78,7 @@ export function setupCatalog({ cart, cartUI }) {
     const p = byId(id);
     qv.dataset.product = id;
     const img = $('[data-qv-img]');
-    img.src = `products/${p.id}.webp`;
+    img.src = productImage(p.id);
     img.alt = `${p.name} colgada en un gancho dorado`;
     $('[data-qv-cat]').textContent = categoryLabel(p.category);
     $('[data-qv-title]').textContent = p.name;

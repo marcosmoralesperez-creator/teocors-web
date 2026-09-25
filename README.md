@@ -16,6 +16,14 @@ npm run build     # genera la carpeta dist/, lista para subir a cualquier hostin
 npm run preview   # revisa el build antes de subirlo
 ```
 
+¿Quieres un solo archivo que se abra con doble clic, sin instalar nada?
+
+```bash
+npm run build:single   # genera dist-single/index.html con todo adentro (código, fotos y fuentes)
+```
+
+Abierto desde el disco, el video de música se abre en YouTube; en un hosting se reproduce dentro de la página.
+
 ## Qué editar
 
 | Quiero cambiar…                          | Archivo                         |
@@ -29,7 +37,7 @@ npm run preview   # revisa el build antes de subirlo
 
 ## Fotos de producto
 
-Las imágenes de `public/products/` se generan a partir de las mismas prendas 3D. Si cambias colores o agregas un producto en `src/data/products.js`, vuelve a generarlas:
+Las imágenes de `src/assets/products/` se generan a partir de las mismas prendas 3D. Si cambias colores o agregas un producto en `src/data/products.js`, vuelve a generarlas:
 
 ```bash
 npm run render:products

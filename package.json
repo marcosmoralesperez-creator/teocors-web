@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:single": "vite build --mode single",
     "preview": "vite preview",
     "render:products": "node scripts/render-products.mjs"
   },
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "playwright-core": "1.56.1",
-    "vite": "^8.3.1"
+    "vite": "^8.3.1",
+    "vite-plugin-singlefile": "^2.3.3"
   }
 }

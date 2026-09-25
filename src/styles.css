@@ -305,7 +305,7 @@ input {
 
 .site-header {
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top, 0px);
   z-index: 40;
   height: var(--header-h);
   border-bottom: 1px solid transparent;
@@ -774,11 +774,6 @@ input {
   margin-bottom: clamp(40px, 5vw, 64px);
 }
 
-.motion-ok [data-reveal],
-.motion-ok .product-card {
-  opacity: 0;
-}
-
 /* -------------------------------------------------------------- filters -- */
 
 .filters {
@@ -1178,6 +1173,7 @@ input {
 .video-poster {
   position: absolute;
   inset: 0;
+  display: block;
   width: 100%;
   padding: 0;
   border: 0;
