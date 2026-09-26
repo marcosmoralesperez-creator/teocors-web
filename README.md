@@ -44,6 +44,21 @@ Abierto desde el disco, el video de música se abre en YouTube; en un hosting se
 | Forma y estampado de las prendas 3D      | `src/three/garmentTexture.js`   |
 | Video de la sección de música            | `data-video-id` en `index.html` |
 
+## Capítulos con scroll (estilo micrositio de producto)
+
+Después de la portada, la página se vuelve un recorrido que avanza con el scroll:
+
+- **01 — La pieza** (`src/react/FigureTour.tsx`): la figura queda fija, gira cuadro a cuadro con el scroll y una cámara se acerca a la chaqueta, el jean y la zapatilla, con fichas técnicas. Los textos de las fichas están en `STOPS` (revisa que coincidan con las prendas reales) y el encuadre de cada parada en `focus`.
+- **02 — El emblema** (`src/react/EmblemChapter.tsx` y `emblemScene.ts`): las cinco estrellas del logo en metal pulido con three.js (materiales PBR, mapa de entorno y tonemapping ACES). Se separan para mostrar los cinco criterios de la marca y se vuelven a juntar.
+- Scroll suave con Lenis; la barra nativa se oculta y la reemplaza un riel de progreso a la derecha. Con «reducir movimiento» del sistema se desactiva el scroll suave.
+
+Los cuadros de la figura (`src/assets/figure-frames/`) salen del video oficial:
+
+```bash
+pip install opencv-python-headless numpy pillow
+python3 scripts/make-figure-frames.py ruta/al/video.mp4
+```
+
 ## La figura 3D de la portada
 
 La figura sale del video oficial (`src/assets/media/teocors-figura.*`). El componente `KeyedVideo` quita el fondo negro en tiempo real para que flote sobre la portada; encima, la figura se inclina en 3D hacia el cursor, flota y se acerca al bajar. Con «reducir movimiento» activado en el sistema queda quieta.

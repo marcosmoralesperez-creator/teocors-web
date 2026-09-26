@@ -2,9 +2,11 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { TeocorsHero } from './TeocorsHero';
 import { PersonalizaSection } from './PersonalizaSection';
+import { FigureTour } from './FigureTour';
+import { EmblemChapter } from './EmblemChapter';
 import { openDialog } from '../ui/dialogs.js';
 
-/** Monta las piezas React (portada y «Personaliza») dentro del sitio. */
+/** Monta las piezas React (portada, capítulos 3D y «Personaliza») dentro del sitio. */
 export function mountReact({ openCart }: { openCart: () => void }) {
   const hero = document.querySelector<HTMLElement>('[data-react-hero]');
   if (hero) {
@@ -12,6 +14,16 @@ export function mountReact({ openCart }: { openCart: () => void }) {
     createRoot(hero).render(
       <StrictMode>
         <TeocorsHero onOpenMenu={openMenu} onOpenCart={openCart} />
+      </StrictMode>,
+    );
+  }
+
+  const chapters = document.querySelector<HTMLElement>('[data-react-chapters]');
+  if (chapters) {
+    createRoot(chapters).render(
+      <StrictMode>
+        <FigureTour />
+        <EmblemChapter />
       </StrictMode>,
     );
   }

@@ -48,6 +48,9 @@
         </section>
       </div>
 
+      <!-- Capítulos con scroll (React: src/react/FigureTour.tsx, EmblemChapter.tsx) -->
+      <div data-react-chapters data-react-root></div>
+
       <!-- Marquee --------------------------------------------------------- -->
       <div class="marquee">
         <p class="sr-only">Edición limitada · Algodón de 280 g/m² · Diseñado en Colombia · Envíos a todo el país</p>
@@ -250,7 +253,7 @@
     </footer>
 
     <!-- Menú móvil ---------------------------------------------------------- -->
-    <dialog class="sheet sheet--left mobile-nav" id="mobile-nav" aria-label="Menú">
+    <dialog data-lenis-prevent class="sheet sheet--left mobile-nav" id="mobile-nav" aria-label="Menú">
       <div class="sheet-head">
         <span class="logo">TEOCORS</span>
         <button class="icon-btn" type="button" aria-label="Cerrar menú" data-close><i data-icon="x"></i></button>
@@ -268,7 +271,7 @@
     </dialog>
 
     <!-- Vista rápida -------------------------------------------------------- -->
-    <dialog class="modal quickview" aria-labelledby="qv-title" data-quickview>
+    <dialog data-lenis-prevent class="modal quickview" aria-labelledby="qv-title" data-quickview>
       <button class="icon-btn modal-close" type="button" aria-label="Cerrar" data-close><i data-icon="x"></i></button>
       <div class="quickview-media"><img alt="" width="960" height="1200" data-qv-img /></div>
       <form class="quickview-body" novalidate data-qv-form>
@@ -288,7 +291,7 @@
     </dialog>
 
     <!-- Guía de tallas ------------------------------------------------------ -->
-    <dialog class="modal size-guide" aria-labelledby="sg-title" data-size-guide-dialog>
+    <dialog data-lenis-prevent class="modal size-guide" aria-labelledby="sg-title" data-size-guide-dialog>
       <button class="icon-btn modal-close" type="button" aria-label="Cerrar" data-close><i data-icon="x"></i></button>
       <h2 class="quickview-title" id="sg-title">Guía de tallas</h2>
       <p class="quickview-desc">Medidas de la prenda en centímetros. Nuestro corte es amplio: si prefieres un fit regular, pide una talla menos.</p>
@@ -306,7 +309,7 @@
     </dialog>
 
     <!-- Carrito ------------------------------------------------------------- -->
-    <dialog class="sheet sheet--right cart" aria-labelledby="cart-title" data-cart>
+    <dialog data-lenis-prevent class="sheet sheet--right cart" aria-labelledby="cart-title" data-cart>
       <div class="sheet-head">
         <h2 id="cart-title">Tu carrito <span class="cart-title-count" data-cart-title-count></span></h2>
         <button class="icon-btn" type="button" aria-label="Cerrar carrito" data-close><i data-icon="x"></i></button>
@@ -325,6 +328,8 @@
         <p class="cart-note" role="status" data-checkout-msg></p>
       </div>
     </dialog>
+
+    <div class="scroll-rail" aria-hidden="true"><span data-scroll-rail></span></div>
 
     <script type="module" src="/src/main.js"></script>
   </body>
