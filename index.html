@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TEOCORS — Ropa de edición limitada</title>
+    <title>TEOCORS — Ropa sin excesos. Solo estilo.</title>
     <meta
       name="description"
-      content="TEOCORS: camisetas, hoodies y buzos de edición limitada diseñados en Colombia. Algodón pesado, cortes amplios y detalles dorados."
+      content="TEOCORS: ropa sin excesos, solo estilo. Siluetas modernas, telas naturales y diseño honesto. Nueva colección 2026."
     />
-    <meta name="theme-color" content="#0b0a09" />
+    <meta name="theme-color" content="#0c0c0c" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="TEOCORS — Ropa de edición limitada" />
     <meta property="og:description" content="Camisetas, hoodies y buzos de edición limitada diseñados en Colombia." />
@@ -17,9 +17,6 @@
   <body>
     <a class="skip-link" href="#main">Saltar al contenido</a>
 
-    <div class="announce">
-      <p>Envío gratis en Colombia desde $250.000<span class="announce-extra"> · Colección 01 disponible</span></p>
-    </div>
 
     <header class="site-header" data-header>
       <div class="container header-inner">
@@ -29,10 +26,10 @@
         <a class="logo" href="#inicio" aria-label="TEOCORS, volver al inicio">TEOCORS</a>
         <nav class="main-nav" aria-label="Principal">
           <ul>
-            <li><a href="#coleccion" data-nav>Colección</a></li>
-            <li><a href="#detalles" data-nav>Detalles</a></li>
-            <li><a href="#musica" data-nav>Música</a></li>
-            <li><a href="#marca" data-nav>Marca</a></li>
+            <li><a href="#coleccion" data-nav>Tienda</a></li>
+            <li><a href="#personaliza" data-nav>Personaliza</a></li>
+            <li><a href="#marca" data-nav>Nosotros</a></li>
+            <li><a href="#contacto" data-nav>Contacto</a></li>
           </ul>
         </nav>
         <button class="cart-btn" type="button" data-cart-open aria-label="Abrir carrito, 0 productos">
@@ -44,57 +41,12 @@
     </header>
 
     <main id="main">
-      <!-- Hero ------------------------------------------------------------ -->
-      <section class="hero" id="inicio" aria-labelledby="hero-title" data-hero>
-        <div class="hero-glow" aria-hidden="true"></div>
-        <h1 class="hero-wordmark" id="hero-title" data-hero-wordmark>TEOCORS</h1>
-
-        <div class="hero-stage" data-hero-stage>
-          <img
-            class="hero-poster"
-            src="/src/assets/products/noir.webp"
-            alt="Camiseta Oversize Noir de TEOCORS colgada de un gancho dorado"
-            width="960"
-            height="1200"
-            fetchpriority="high"
-            data-hero-poster
-          />
-          <canvas class="hero-canvas" aria-hidden="true" data-hero-canvas></canvas>
-          <div class="hotspots" aria-hidden="true">
-            <div class="hotspot hotspot--right hotspot--long" data-hotspot data-x="744" data-y="332">
-              <span class="hotspot-dot"></span>
-              <span class="hotspot-label"><strong>Estampado dorado</strong>Serigrafía en relieve</span>
-            </div>
-            <div class="hotspot hotspot--left" data-hotspot data-x="150" data-y="300">
-              <span class="hotspot-dot"></span>
-              <span class="hotspot-label"><strong>280 g/m²</strong>Algodón peinado pesado</span>
-            </div>
-            <div class="hotspot hotspot--right" data-hotspot data-x="770" data-y="760">
-              <span class="hotspot-dot"></span>
-              <span class="hotspot-label"><strong>Oversize</strong>Hombro caído, caída amplia</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="container hero-content">
-          <p class="eyebrow" data-hero-in>Colección 01 · 2026</p>
-          <p class="hero-tagline" data-hero-in>Vestir con <em>intención</em>.</p>
-          <p class="hero-text" data-hero-in>
-            Algodón pesado, cortes amplios y detalles en dorado. Ediciones limitadas diseñadas en Colombia para quienes no
-            pasan desapercibidos.
-          </p>
-          <div class="hero-actions" data-hero-in>
-            <a class="btn btn-primary" href="#coleccion">Comprar colección <i data-icon="arrow-right"></i></a>
-            <a class="btn btn-ghost" href="#musica"><i data-icon="play"></i> Escuchar la música</a>
-          </div>
-        </div>
-
-        <p class="hero-hint" aria-hidden="true" data-hero-in>Mueve el cursor · la prenda es 3D</p>
-        <a class="scroll-cue" href="#coleccion" data-hero-in>
-          <span>Desliza</span>
-          <i data-icon="arrow-down"></i>
-        </a>
-      </section>
+      <!-- Portada (React: src/react/TeocorsHero.tsx) ----------------- -->
+      <div data-react-hero data-react-root>
+        <section id="inicio" style="min-height: 100svh; background: #0c0c0c" aria-label="TEOCORS">
+          <h1 class="sr-only">TEOCORS</h1>
+        </section>
+      </div>
 
       <!-- Marquee --------------------------------------------------------- -->
       <div class="marquee">
@@ -147,6 +99,11 @@
             </figure>
           </div>
         </div>
+      </section>
+
+      <!-- Personaliza (React: src/react/PersonalizaSection.tsx) ------- -->
+      <section class="section" id="personaliza" aria-labelledby="personaliza-title">
+        <div data-react-personaliza data-react-root></div>
       </section>
 
       <!-- Música ---------------------------------------------------------- -->
@@ -255,7 +212,7 @@
       </section>
     </main>
 
-    <footer class="site-footer">
+    <footer class="site-footer" id="contacto">
       <div class="container footer-grid">
         <div class="footer-brand">
           <a class="logo" href="#inicio">TEOCORS</a>
@@ -300,10 +257,12 @@
       </div>
       <nav aria-label="Menú móvil">
         <ul class="mobile-links">
-          <li><a href="#coleccion" data-close>Colección</a></li>
-          <li><a href="#detalles" data-close>Detalles</a></li>
+          <li><a href="#inicio" data-close>Inicio</a></li>
+          <li><a href="#coleccion" data-close>Tienda</a></li>
+          <li><a href="#personaliza" data-close>Personaliza</a></li>
+          <li><a href="#marca" data-close>Nosotros</a></li>
+          <li><a href="#contacto" data-close>Contacto</a></li>
           <li><a href="#musica" data-close>Música</a></li>
-          <li><a href="#marca" data-close>Marca</a></li>
         </ul>
       </nav>
     </dialog>

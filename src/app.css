@@ -1,0 +1,70 @@
+/*
+  Punto de entrada de estilos.
+  - Tailwind v4 sin preflight: el sitio ya tiene su propio reset en styles.css.
+  - styles.css va en la capa `site`, antes de `utilities`, para que las clases
+    de Tailwind de los componentes React (shadcn) siempre ganen.
+  - Tailwind solo escanea los componentes React, así no genera clases
+    (como .container o .hidden) que choquen con el HTML existente.
+*/
+@layer theme, base, site, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import './styles.css' layer(site);
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+
+@source './components';
+@source './react';
+
+/* Tokens shadcn (tema oscuro TEOCORS) */
+:root {
+  --background: #0c0c0c;
+  --foreground: #ece8e1;
+  --card: #0c0c0c;
+  --card-foreground: #ece8e1;
+  --muted: #1a1a1a;
+  --muted-foreground: #9a9894;
+  --border: rgba(236, 232, 225, 0.22);
+  --ring: #ece8e1;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-bone: #ece8e1;
+  --font-display: 'Unbounded Variable', 'Unbounded', system-ui, sans-serif;
+}
+
+@layer base {
+  [data-react-root] *,
+  [data-react-root] *::before,
+  [data-react-root] *::after {
+    border-color: var(--color-border);
+  }
+}
+
+/* Indicador de carga que usa <SplineScene> mientras baja la escena */
+.loader {
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgba(236, 232, 225, 0.18);
+  border-top-color: #ece8e1;
+  border-radius: 50%;
+  animation: loader-spin 0.9s linear infinite;
+}
+
+@keyframes loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Grano de película sobre la portada */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}

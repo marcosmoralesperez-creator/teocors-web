@@ -1,14 +1,12 @@
 import '@fontsource-variable/montserrat';
-import '@fontsource/cormorant/latin-500.css';
-import '@fontsource/cormorant/latin-500-italic.css';
-import '@fontsource/cormorant/latin-600.css';
-import './styles.css';
+import '@fontsource-variable/unbounded';
+import './app.css';
 
 import { renderIcons } from './ui/icons.js';
 import { setupDialogs } from './ui/dialogs.js';
 import { createCart, setupCartUI } from './ui/cart.js';
 import { setupCatalog } from './ui/catalog.js';
-import { setupHero } from './ui/hero.js';
+import { mountReact } from './react/mount.tsx';
 import {
   setupHeader,
   setupReveals,
@@ -25,11 +23,11 @@ if (!reducedMotion) document.documentElement.classList.add('motion-ok');
 const cart = createCart();
 const cartUI = setupCartUI(cart);
 setupCatalog({ cart, cartUI });
+mountReact({ openCart: cartUI.open });
 renderIcons();
 
 setupDialogs();
 setupHeader();
-setupHero({ reducedMotion });
 setupMarquee();
 setupReveals({ reducedMotion });
 setupCounters({ reducedMotion });

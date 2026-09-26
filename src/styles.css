@@ -1,33 +1,33 @@
 /* ==========================================================================
-   TEOCORS — dark luxury theme
+   TEOCORS — negro y hueso, tipografía extendida (identidad 2026)
    ========================================================================== */
 
 :root {
   color-scheme: dark;
 
-  --bg: #0b0a09;
-  --bg-elevated: #100e0c;
-  --surface: #151311;
-  --surface-2: #1b1815;
+  --bg: #0c0c0c;
+  --bg-elevated: #111111;
+  --surface: #161616;
+  --surface-2: #1d1d1d;
   --line: rgba(239, 234, 225, 0.1);
   --line-strong: rgba(239, 234, 225, 0.22);
-  --text: #efeae1;
-  --text-muted: #a8a197;
-  --gold: #c9a45c;
-  --gold-bright: #e0c285;
-  --on-gold: #0b0a09;
+  --text: #ece8e1;
+  --text-muted: #9a9894;
+  /* Acento: color hueso de la marca (antes dorado; se conserva el nombre). */
+  --gold: #e6e1d7;
+  --gold-bright: #ffffff;
+  --on-gold: #0c0c0c;
   --danger: #f08a80;
   --success: #93d3a0;
 
   --font-sans: 'Montserrat Variable', 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-serif: 'Cormorant', 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-serif: 'Unbounded Variable', 'Unbounded', system-ui, sans-serif;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --radius: 4px;
+  --radius: 14px;
   --container: 1320px;
   --gutter: clamp(16px, 4vw, 40px);
   --header-h: 72px;
-  --announce-h: 38px;
   --media-bg: radial-gradient(ellipse 70% 60% at 50% 42%, #27221d 0%, #161311 62%, #110f0d 100%);
 }
 
@@ -143,18 +143,17 @@ input {
 .section-title {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(40px, 5.4vw, 76px);
-  font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.01em;
+  font-size: clamp(30px, 4vw, 56px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
 .section-title em,
-.hero-tagline em,
 .manifesto-title em {
-  color: var(--gold-bright);
-  font-style: italic;
+  color: var(--text-muted);
+  font-style: normal;
 }
 
 .section-lead {
@@ -174,7 +173,7 @@ input {
   min-height: 52px;
   padding: 0 26px;
   border: 1px solid transparent;
-  border-radius: var(--radius);
+  border-radius: 999px;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -281,27 +280,7 @@ input {
   height: 18px;
 }
 
-/* ------------------------------------------------------ announce/header -- */
-
-.announce {
-  display: grid;
-  place-items: center;
-  height: var(--announce-h);
-  padding: 0 var(--gutter);
-  overflow: hidden;
-  border-bottom: 1px solid var(--line);
-  background: var(--bg-elevated);
-  color: var(--gold-bright);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.announce p {
-  margin: 0;
-}
+/* -------------------------------------------------------------- header -- */
 
 .site-header {
   position: sticky;
@@ -312,6 +291,19 @@ input {
   transition:
     background-color 0.35s var(--ease-out),
     border-color 0.35s var(--ease-out);
+}
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  transition:
+    transform 0.45s var(--ease-out),
+    background-color 0.35s var(--ease-out),
+    border-color 0.35s var(--ease-out);
+}
+
+.site-header.is-over-hero {
+  transform: translateY(-110%);
 }
 
 .site-header.is-scrolled {
@@ -425,291 +417,6 @@ input {
   font-variant-numeric: tabular-nums;
 }
 
-/* ---------------------------------------------------------------- hero -- */
-
-.hero {
-  position: relative;
-  display: grid;
-  min-height: max(640px, calc(100svh - var(--announce-h)));
-  margin-top: calc(var(--header-h) * -1);
-  overflow: clip;
-  isolation: isolate;
-}
-
-.hero-glow {
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background:
-    radial-gradient(ellipse 36% 48% at 57% 48%, rgba(201, 164, 92, 0.17), transparent 70%),
-    radial-gradient(ellipse 90% 50% at 50% 115%, rgba(140, 104, 56, 0.2), transparent 70%),
-    linear-gradient(180deg, #0b0a09 0%, #100d0b 55%, #0b0a09 100%);
-}
-
-.hero-wordmark {
-  position: absolute;
-  top: 38%;
-  right: 0;
-  left: 0;
-  z-index: -1;
-  margin: 0;
-  overflow: hidden;
-  font-size: clamp(88px, 19.5vw, 380px);
-  font-weight: 800;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  text-align: center;
-  white-space: nowrap;
-  transform: translateY(-58%);
-  pointer-events: none;
-  user-select: none;
-}
-
-.hero-wordmark,
-.hero-wordmark .char {
-  background-image: linear-gradient(180deg, rgba(239, 234, 225, 0.16) 0%, rgba(239, 234, 225, 0.02) 88%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(201, 164, 92, 0.16);
-}
-
-.hero-wordmark.is-split {
-  background-image: none;
-}
-
-.hero-wordmark .char {
-  display: inline-block;
-}
-
-.motion-ok .hero-wordmark .char,
-.motion-ok [data-hero-in] {
-  opacity: 0;
-}
-
-.hero-stage {
-  position: absolute;
-  inset: 0;
-}
-
-.hero-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1.2s var(--ease-out);
-}
-
-.hero-poster {
-  position: absolute;
-  top: 50%;
-  left: 57%;
-  width: auto;
-  height: 84%;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.9s var(--ease-out);
-}
-
-.hero.is-3d .hero-canvas {
-  opacity: 1;
-}
-
-.hero.is-3d .hero-poster {
-  opacity: 0;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  align-self: end;
-  padding-top: calc(var(--header-h) + 48px);
-  padding-bottom: clamp(40px, 9vh, 96px);
-  pointer-events: none;
-}
-
-.hero-content > * {
-  max-width: 440px;
-  pointer-events: auto;
-}
-
-.hero-tagline {
-  margin: 0 0 16px;
-  font-family: var(--font-serif);
-  font-size: clamp(42px, 4.6vw, 72px);
-  font-weight: 500;
-  line-height: 1;
-}
-
-.hero-text {
-  margin: 0 0 30px;
-  color: var(--text-muted);
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.hero-hint {
-  position: absolute;
-  bottom: 32px;
-  left: 57%;
-  margin: 0;
-  color: var(--text-muted);
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  transform: translateX(-50%);
-}
-
-.scroll-cue {
-  position: absolute;
-  right: var(--gutter);
-  bottom: clamp(40px, 9vh, 96px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  color: var(--text-muted);
-  font-size: 12px;
-  letter-spacing: 0.24em;
-  text-decoration: none;
-  text-transform: uppercase;
-  writing-mode: vertical-rl;
-}
-
-.scroll-cue svg {
-  width: 18px;
-  height: 18px;
-  writing-mode: horizontal-tb;
-  animation: cue 2.2s var(--ease-out) infinite;
-}
-
-.scroll-cue:hover {
-  color: var(--text);
-}
-
-@keyframes cue {
-  0%,
-  100% {
-    transform: translateY(-4px);
-    opacity: 0.4;
-  }
-  50% {
-    transform: translateY(6px);
-    opacity: 1;
-  }
-}
-
-/* Hotspots pinned to points on the 3D garment. */
-.hotspots {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.8s 0.8s;
-}
-
-.hero.is-3d .hotspots {
-  opacity: 1;
-}
-
-.hotspot {
-  position: absolute;
-  top: 0;
-  left: 0;
-  will-change: transform;
-}
-
-.hotspot-dot {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
-  border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 0 4px rgba(201, 164, 92, 0.22);
-}
-
-.hotspot-dot::after {
-  content: '';
-  position: absolute;
-  inset: -8px;
-  border: 1px solid rgba(201, 164, 92, 0.6);
-  border-radius: 50%;
-  animation: ping 2.4s var(--ease-out) infinite;
-}
-
-@keyframes ping {
-  from {
-    transform: scale(0.5);
-    opacity: 1;
-  }
-  to {
-    transform: scale(1.8);
-    opacity: 0;
-  }
-}
-
-.hotspot-label {
-  --len: 90px;
-  position: absolute;
-  top: 0;
-  display: grid;
-  gap: 2px;
-  padding: 10px 14px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: rgba(11, 10, 9, 0.6);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  color: var(--text-muted);
-  font-size: 12px;
-  white-space: nowrap;
-  transform: translateY(-50%);
-}
-
-.hotspot-label strong {
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.hotspot-label::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: var(--len);
-  height: 1px;
-}
-
-.hotspot--right .hotspot-label {
-  left: calc(var(--len) + 10px);
-}
-
-.hotspot--right .hotspot-label::before {
-  right: 100%;
-  background: linear-gradient(90deg, rgba(201, 164, 92, 0.9), rgba(201, 164, 92, 0.25));
-}
-
-.hotspot--left .hotspot-label {
-  right: calc(var(--len) + 10px);
-}
-
-.hotspot--left .hotspot-label::before {
-  left: 100%;
-  background: linear-gradient(270deg, rgba(201, 164, 92, 0.9), rgba(201, 164, 92, 0.25));
-}
-
-.hotspot--long .hotspot-label {
-  --len: 170px;
-}
-
 /* ------------------------------------------------------------- marquee -- */
 
 .marquee {
@@ -735,7 +442,7 @@ input {
   gap: 48px;
   padding-right: 48px;
   font-family: var(--font-serif);
-  font-size: clamp(22px, 2.4vw, 32px);
+  font-size: clamp(18px, 1.8vw, 24px);
   font-style: italic;
   white-space: nowrap;
 }
@@ -940,7 +647,7 @@ input {
 .product-name {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(21px, 1.8vw, 25px);
+  font-size: clamp(15px, 1.25vw, 18px);
   font-weight: 500;
   line-height: 1.15;
 }
@@ -1007,7 +714,7 @@ input {
 .detail-card strong {
   color: var(--text);
   font-family: var(--font-serif);
-  font-size: 26px;
+  font-size: 19px;
   font-weight: 500;
   line-height: 1.1;
 }
@@ -1249,7 +956,7 @@ input {
 .manifesto-title {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(50px, 7.2vw, 116px);
+  font-size: clamp(34px, 5vw, 76px);
   font-weight: 500;
   line-height: 0.95;
   letter-spacing: -0.015em;
@@ -1288,7 +995,7 @@ input {
   margin: 0;
   color: var(--gold-bright);
   font-family: var(--font-serif);
-  font-size: clamp(40px, 4vw, 58px);
+  font-size: clamp(30px, 3vw, 44px);
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
@@ -1558,7 +1265,7 @@ dialog::backdrop {
 .sheet-head h2 {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: 28px;
+  font-size: 21px;
   font-weight: 500;
 }
 
@@ -1578,7 +1285,7 @@ dialog::backdrop {
   padding: 16px 24px;
   border-bottom: 1px solid var(--line);
   font-family: var(--font-serif);
-  font-size: 34px;
+  font-size: 24px;
   text-decoration: none;
 }
 
@@ -1629,7 +1336,7 @@ dialog::backdrop {
 .quickview-title {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(32px, 3vw, 44px);
+  font-size: clamp(24px, 2.2vw, 32px);
   font-weight: 500;
   line-height: 1.05;
 }
@@ -1864,7 +1571,7 @@ dialog::backdrop {
 .cart-item-name {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: 20px;
+  font-size: 15px;
   line-height: 1.2;
 }
 
@@ -1938,7 +1645,7 @@ dialog::backdrop {
 .cart-empty p {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: 26px;
+  font-size: 19px;
   color: var(--text);
 }
 
@@ -1972,12 +1679,6 @@ dialog::backdrop {
 }
 
 /* ---------------------------------------------------------- responsive -- */
-
-@media (max-width: 1100px) {
-  .hotspots {
-    display: none;
-  }
-}
 
 @media (max-width: 1023px) {
   .product-grid {
@@ -2034,35 +1735,11 @@ dialog::backdrop {
     font-size: 11px;
   }
 
-  .announce-extra {
-    display: none;
-  }
 
-  .hero-wordmark {
-    top: 36%;
-  }
 
-  .hero-poster {
-    top: 36%;
-    left: 50%;
-    height: auto;
-    width: min(90vw, 480px);
-  }
 
-  .hero-glow {
-    background:
-      radial-gradient(ellipse 70% 40% at 50% 36%, rgba(201, 164, 92, 0.18), transparent 70%),
-      linear-gradient(180deg, #0b0a09 0%, #100d0b 55%, #0b0a09 100%);
-  }
 
-  .hero-content {
-    padding-bottom: 32px;
-  }
 
-  .hero-hint,
-  .scroll-cue {
-    display: none;
-  }
 
   .details-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2114,22 +1791,9 @@ dialog::backdrop {
 }
 
 @media (max-width: 599px) {
-  .hero-content > * {
-    max-width: none;
-  }
 
-  .hero-tagline {
-    font-size: 44px;
-  }
 
-  .hero-text {
-    font-size: 15px;
-    margin-bottom: 22px;
-  }
 
-  .hero-actions .btn {
-    flex: 1 1 100%;
-  }
 
   .product-grid {
     gap: 32px 12px;

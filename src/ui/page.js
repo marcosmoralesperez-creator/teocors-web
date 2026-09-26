@@ -5,7 +5,12 @@ const ease = [0.22, 1, 0.36, 1];
 
 export function setupHeader() {
   const header = document.querySelector('[data-header]');
-  const update = () => header.classList.toggle('is-scrolled', window.scrollY > 24);
+  // The hero has its own navigation, so the bar only slides in past it.
+  const hero = document.querySelector('[data-react-hero]');
+  const update = () => {
+    header.classList.toggle('is-scrolled', window.scrollY > 24);
+    header.classList.toggle('is-over-hero', !!hero && window.scrollY < hero.offsetHeight - 80);
+  };
   update();
   window.addEventListener('scroll', update, { passive: true });
 
