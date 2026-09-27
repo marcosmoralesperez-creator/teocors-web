@@ -20,7 +20,7 @@ const SORTS = {
 };
 
 // Two pieces per section for the tiles, front one first.
-const TILE_PIECES = { hombre: ['eclipse', 'noir'], mujer: ['niebla', 'crop-hueso'], ninos: ['mini-grafito', 'mini-arena'] };
+const TILE_PIECES = { hombre: ['chaqueta-denim', 'bermuda-camo'], mujer: ['niebla', 'crop-hueso'], ninos: ['mini-grafito', 'mini-arena'] };
 
 function tileHTML(d) {
   const n = inDept(d.id).length;
@@ -50,7 +50,7 @@ function cardHTML(p) {
         <button type="button" class="product-media" data-open="${p.id}" aria-label="Vista rápida: ${p.name}">
           ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
           <img src="${productImage(p.id)}" alt="" width="960" height="1200" loading="lazy" decoding="async" />
-          <img class="product-alt" src="${productImage(`${p.id}-b`)}" alt="" width="960" height="1200" loading="lazy" decoding="async" />
+          ${productImage(`${p.id}-b`) ? `<img class="product-alt" src="${productImage(`${p.id}-b`)}" alt="" width="960" height="1200" loading="lazy" decoding="async" />` : ''}
           <span class="product-quick" aria-hidden="true">Vista rápida</span>
         </button>
         <div class="product-info">
@@ -224,7 +224,7 @@ export function setupCatalog({ cart, cartUI }) {
     qv.dataset.dept = p.department;
     const img = $('[data-qv-img]');
     img.src = productImage(p.id);
-    img.alt = `${p.name} colgada en un gancho`;
+    img.alt = p.garment ? `${p.name} colgada en un gancho` : `${p.name}, foto de producto`;
     $('[data-qv-cat]').textContent = `${departmentOf(p.department).label} · ${categoryLabel(p.category)}`;
     $('[data-qv-title]').textContent = p.name;
     $('[data-qv-price]').textContent = formatPrice(p.price);

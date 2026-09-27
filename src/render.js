@@ -48,7 +48,7 @@ window.renderAll = async () => {
     document.fonts.load('700 54px "Unbounded Variable"'),
   ]);
   const out = {};
-  products.forEach((p, i) => {
+  products.filter((p) => p.garment).forEach((p, i) => {
     // Kids' pieces sit smaller in the frame, so the size reads at a glance.
     const height = p.department === 'ninos' ? 3.9 : 3.35;
     out[p.id] = shoot(p, { height, time: 1.4 + i * 0.9, turn: -0.16 });

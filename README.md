@@ -81,7 +81,16 @@ La tienda está dividida en **Hombre**, **Mujer** y **Niños**. Cada prenda tien
 
 Para agregar una prenda, copia una entrada de `products`, cambia `id`, `department`, textos, precio y colores de `garment`, y vuelve a generar las fotos con `npm run render:products`.
 
-## Fotos de producto
+## Fotos reales de producto
+
+Las prendas de Hombre usan fotos reales en lugar del modelo 3D (en `products.js` no llevan `garment`). Para agregar o cambiar una:
+
+1. Guarda la foto en `assets-src/fotos/<id>.png` (o .jpg/.webp), con el mismo `id` del producto.
+2. Ejecuta `pip install "rembg[cpu]" pillow` y luego `python3 scripts/cutout-photos.py`: quita el fondo y deja la foto en `src/assets/products/<id>.webp` con el mismo tamaño y encuadre que las demás.
+
+Funciona mejor con fotos grandes (1000 px o más de alto) sobre fondo liso.
+
+## Fotos de producto (3D)
 
 Las imágenes de `src/assets/products/` se generan a partir de las mismas prendas 3D. Si cambias colores o agregas un producto en `src/data/products.js`, vuelve a generarlas:
 

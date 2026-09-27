@@ -1,8 +1,9 @@
 // Catalog. Prices in Colombian pesos. `garment` drives the 3D model that is
-// rendered into public/products/<id>.webp (see scripts/render-products.mjs).
+// rendered into src/assets/products/<id>.webp (scripts/render-products.mjs);
+// pieces without `garment` use a real photo (scripts/cutout-photos.py).
 
 export const departments = [
-  { id: 'hombre', label: 'Hombre', sizes: ['S', 'M', 'L', 'XL'], lead: 'Cortes amplios, hombro caído y telas pesadas.' },
+  { id: 'hombre', label: 'Hombre', sizes: ['S', 'M', 'L', 'XL'], lead: 'Denim lavado, cargo y siluetas amplias.' },
   { id: 'mujer', label: 'Mujer', sizes: ['XS', 'S', 'M', 'L'], lead: 'Siluetas boxy y crop, en la misma paleta neutra.' },
   { id: 'ninos', label: 'Niños', sizes: ['4', '6', '8', '10', '12'], lead: 'Las piezas de la colección, en tallas de 4 a 12 años.' },
 ];
@@ -12,6 +13,8 @@ export const categories = [
   { id: 'camisetas', label: 'Camisetas' },
   { id: 'hoodies', label: 'Hoodies' },
   { id: 'buzos', label: 'Buzos' },
+  { id: 'chaquetas', label: 'Chaquetas' },
+  { id: 'pantalones', label: 'Pantalones' },
 ];
 
 export const departmentOf = (id) => departments.find((d) => d.id === id);
@@ -33,86 +36,70 @@ const tee = { camisetas: 'Algodón peinado 240 g/m²', hoodies: 'Felpa perchada 
 
 export const products = [
   // ------------------------------------------------------------------ Hombre
+  // Fotos reales (sin `garment`): src/assets/products/<id>.webp sale de
+  // assets-src/fotos/ con scripts/cutout-photos.py.
   {
-    id: 'noir',
+    id: 'chaqueta-denim',
     department: 'hombre',
-    name: 'Camiseta Oversize Noir',
-    category: 'camisetas',
-    price: 119000,
-    color: 'Negro',
-    swatch: C.noir,
+    name: 'Chaqueta Denim Tierra',
+    category: 'chaquetas',
+    price: 289000,
+    color: 'Denim lavado tierra',
+    swatch: '#6f7b80',
     badge: 'Nuevo',
     soldOut: [],
-    description: 'Nuestra camiseta insignia. Algodón pesado que cae con peso propio, hombro caído y el logo TEOCORS al frente.',
-    details: [tee.camisetas, 'Corte oversize, hombro caído', 'Estampado hueso en relieve'],
-    garment: { type: 'tee', base: C.noir, print: C.hueso, sheen: '#77736c', printStyle: 'wordmark' },
+    description:
+      'Chaqueta de jean clásica con lavado tierra sobre el índigo, bolsillos de pecho con solapa y botones metálicos. Se ve mejor con el uso.',
+    details: ['Denim 100 % algodón', 'Lavado tierra a mano', 'Botones metálicos, puños ajustables'],
   },
   {
-    id: 'hueso',
+    id: 'polo-franja',
     department: 'hombre',
-    name: 'Camiseta Oversize Hueso',
+    name: 'Polo Franja Diagonal',
     category: 'camisetas',
-    price: 119000,
-    color: 'Hueso',
-    swatch: C.hueso,
+    price: 149000,
+    color: 'Blanco / azul noche',
+    swatch: '#f2f2ef',
     soldOut: [],
-    description: 'La misma silueta amplia en tono hueso, con estampado negro mate. Combina con todo lo oscuro de tu clóset.',
-    details: [tee.camisetas, 'Corte oversize, hombro caído', 'Estampado negro mate'],
-    garment: { type: 'tee', base: C.hueso, print: '#1b1814', sheen: '#fff6e8', printStyle: 'wordmark' },
+    description: 'Polo de corte boxy en piqué blanco, cruzado por una franja diagonal azul noche de hombro a cadera.',
+    details: ['Piqué de algodón', 'Corte boxy, manga corta amplia', 'Cuello con dos botones'],
   },
   {
-    id: 'eclipse',
+    id: 'manga-larga-rayas',
     department: 'hombre',
-    name: 'Hoodie Eclipse',
-    category: 'hoodies',
-    price: 229000,
-    color: 'Negro carbón',
-    swatch: C.noir,
-    badge: 'Más vendido',
+    name: 'Camiseta Manga Larga Rayas',
+    category: 'camisetas',
+    price: 139000,
+    color: 'Rayas crema y arena',
+    swatch: '#f0e2bd',
     soldOut: [],
-    description: 'Hoodie de felpa perchada por dentro, capucha de doble capa y cordones con puntas metálicas. Hecho para las noches frías.',
-    details: [tee.hoodies, 'Capucha de doble capa', 'Puntas metálicas en los cordones'],
-    garment: { type: 'hoodie', base: '#28282b', trim: C.hueso, print: C.hueso, sheen: '#8a8690', printStyle: 'wordmark' },
+    description: 'Manga larga de rayas finas en crema y arena, hombro caído y largo corto. Logo bordado al frente.',
+    details: ['Algodón jersey pesado', 'Hombro caído, largo corto', 'Logo bordado'],
   },
   {
-    id: 'arena',
+    id: 'pantalon-barrel',
     department: 'hombre',
-    name: 'Hoodie Arena',
-    category: 'hoodies',
-    price: 229000,
-    color: 'Arena',
-    swatch: C.arena,
+    name: 'Pantalón Barrel Crema',
+    category: 'pantalones',
+    price: 219000,
+    color: 'Crema',
+    swatch: '#ebe2cf',
     badge: 'Campaña 2026',
     soldOut: [],
-    description: 'El tono de la chaqueta de la campaña, llevado a un hoodie pesado. Estampado TEO / CORS al frente.',
-    details: [tee.hoodies, 'Bolsillo canguro', 'Estampado negro en relieve'],
-    garment: { type: 'hoodie', base: C.arena, trim: '#2a2622', print: '#2a2622', sheen: '#efe2cf', printStyle: 'stack' },
+    description: 'Pantalón de pinzas con pierna curva tipo barrel: amplio en la rodilla y recogido en el bajo.',
+    details: ['Sarga de algodón', 'Pinzas frontales, pierna barrel', 'Bolsillos laterales'],
   },
   {
-    id: 'grafito',
+    id: 'bermuda-camo',
     department: 'hombre',
-    name: 'Buzo Crewneck Grafito',
-    category: 'buzos',
-    price: 189000,
-    color: 'Grafito',
-    swatch: C.grafito,
-    soldOut: [],
-    description: 'Crewneck de corte relajado con TEO / CORS grande al frente. Cuello, puños y bajo en rib grueso.',
-    details: [tee.buzos, 'Cuello en rib grueso', 'Estampado hueso'],
-    garment: { type: 'crew', base: C.grafito, print: C.hueso, sheen: '#9a9aa2', printStyle: 'stack' },
-  },
-  {
-    id: 'medianoche',
-    department: 'hombre',
-    name: 'Buzo Crewneck Medianoche',
-    category: 'buzos',
-    price: 189000,
-    color: 'Azul medianoche',
-    swatch: C.medianoche,
+    name: 'Bermuda Cargo Camuflado',
+    category: 'pantalones',
+    price: 169000,
+    color: 'Camuflado oliva',
+    swatch: '#5c5e44',
     soldOut: ['XL'],
-    description: 'Azul tan oscuro que parece negro hasta que le da la luz. Las cinco estrellas bordadas en el pecho.',
-    details: [tee.buzos, 'Cuello en rib grueso', 'Emblema de estrellas en el pecho'],
-    garment: { type: 'crew', base: C.medianoche, print: C.hueso, sheen: '#6d7aa8', printStyle: 'mark' },
+    description: 'Bermuda cargo larga en lona lavada con camuflado oliva y café. Bolsillos cargo con solapa a los lados.',
+    details: ['Lona de algodón lavada', 'Largo bajo la rodilla', 'Bolsillos cargo con solapa'],
   },
 
   // ------------------------------------------------------------------- Mujer
@@ -269,9 +256,9 @@ export const products = [
 
 // Close-up shots for the "Detalles" section.
 export const detailShots = [
-  { id: 'detail-print', product: 'noir', focus: [512, 350], height: 1.7 },
-  { id: 'detail-cords', product: 'eclipse', focus: [512, 400], height: 1.6 },
-  { id: 'detail-type', product: 'grafito', focus: [512, 380], height: 1.75 },
+  { id: 'detail-print', product: 'mini-noir', focus: [512, 320], height: 1.7 },
+  { id: 'detail-cords', product: 'mini-grafito', focus: [512, 400], height: 1.6 },
+  { id: 'detail-type', product: 'boxy-arena', focus: [512, 380], height: 1.75 },
 ];
 
 export const formatPrice = (value) =>
