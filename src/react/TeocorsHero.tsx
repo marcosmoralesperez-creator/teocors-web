@@ -18,12 +18,13 @@ import figuraWebm from '@/assets/media/teocors-figura.webm';
 import figuraPoster from '@/assets/media/teocors-figura-poster.webp';
 import coleccion2026 from '@/assets/media/coleccion-2026.webp';
 
-const NAV = [
+const NAV: { href: string; label: string; dept?: string }[] = [
   { href: '#inicio', label: 'inicio' },
-  { href: '#coleccion', label: 'tienda' },
+  { href: '#coleccion', label: 'hombre', dept: 'hombre' },
+  { href: '#coleccion', label: 'mujer', dept: 'mujer' },
+  { href: '#coleccion', label: 'niños', dept: 'ninos' },
   { href: '#personaliza', label: 'personaliza' },
   { href: '#marca', label: 'nosotros' },
-  { href: '#contacto', label: 'contacto' },
 ];
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -159,14 +160,15 @@ export function TeocorsHero({ onOpenMenu, onOpenCart }: HeroProps) {
           </a>
 
           <nav aria-label="Principal" className="hidden lg:block">
-            <ul className="m-0 flex list-none gap-[clamp(18px,2.2vw,34px)] p-0">
+            <ul className="m-0 flex list-none gap-[clamp(14px,1.8vw,30px)] p-0">
               {NAV.map((item, i) => (
-                <li key={item.href}>
+                <li key={item.label}>
                   <a
                     href={item.href}
+                    data-dept-link={item.dept}
                     aria-current={i === 0 ? 'page' : undefined}
                     className={
-                      'text-[clamp(16px,1.55vw,23px)] font-medium tracking-[-0.01em] no-underline transition-colors duration-300 ' +
+                      'text-[clamp(15px,1.4vw,21px)] font-medium tracking-[-0.01em] no-underline transition-colors duration-300 ' +
                       (i === 0 ? 'text-bone' : 'text-[#8b8a87] hover:text-bone')
                     }
                   >

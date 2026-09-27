@@ -5,7 +5,7 @@
 const D = 1024;
 
 const FONT_SANS = '"Montserrat Variable", "Montserrat", system-ui, sans-serif';
-const FONT_SERIF = '"Cormorant", "Cormorant Garamond", Georgia, serif';
+const FONT_DISPLAY = '"Unbounded Variable", "Unbounded", system-ui, sans-serif';
 
 function rgb(hex) {
   const n = parseInt(hex.slice(1), 16);
@@ -39,7 +39,7 @@ function polygon(pts) {
 
 // ---------------------------------------------------------------- silhouettes
 
-function teeShape() {
+function teeShape(hem = 880) {
   const p = new Path2D();
   p.moveTo(440, 70);
   p.quadraticCurveTo(512, 58, 584, 70);
@@ -47,8 +47,8 @@ function teeShape() {
   p.lineTo(932, 330);
   p.lineTo(846, 392);
   p.lineTo(800, 322);
-  p.lineTo(806, 880);
-  p.quadraticCurveTo(512, 900, 218, 880);
+  p.lineTo(806, hem);
+  p.quadraticCurveTo(512, hem + 20, 218, hem);
   p.lineTo(224, 322);
   p.lineTo(178, 392);
   p.lineTo(92, 330);
@@ -220,8 +220,58 @@ function lightingPass(ctx, base) {
 
 // ------------------------------------------------------------------ garments
 
+// The five four-point stars of the TEOCORS logo (34×34 design, see StarsMark).
+function starsMark(ctx, cx, cy, size, color) {
+  const k = size / 34;
+  ctx.save();
+  ctx.fillStyle = color;
+  [[10, 7], [24, 7], [5, 18], [29, 18], [17, 27]].forEach(([x, y]) => {
+    const px = cx + (x - 17) * k;
+    const py = cy + (y - 17) * k;
+    const r = 6 * k;
+    const w = r * 0.18;
+    ctx.beginPath();
+    ctx.moveTo(px, py - r);
+    ctx.quadraticCurveTo(px + w, py - w, px + r, py);
+    ctx.quadraticCurveTo(px + w, py + w, px, py + r);
+    ctx.quadraticCurveTo(px - w, py + w, px - r, py);
+    ctx.quadraticCurveTo(px - w, py - w, px, py - r);
+    ctx.fill();
+  });
+  ctx.restore();
+}
+
+/**
+ * Front print in the 2026 identity. `top` is where the print area starts.
+ * Styles: 'wordmark' (TEOCORS across the chest), 'stack' (TEO / CORS large),
+ * 'mark' (small stars on the left chest), 'blank'.
+ */
+function drawPrint(ctx, g, top, scale = 1) {
+  const style = g.printStyle ?? 'wordmark';
+  if (style === 'blank') return;
+  if (style === 'mark') {
+    starsMark(ctx, 648, top + 30, 62 * scale, g.print);
+    ctx.font = `600 ${13 * scale}px ${FONT_DISPLAY}`;
+    ctx.fillStyle = g.print;
+    spacedText(ctx, 'TEOCORS', 648, top + 92 * scale, 3);
+    return;
+  }
+  if (style === 'stack') {
+    printText(ctx, g, 'TEO', 512, top + 70 * scale, `800 ${88 * scale}px ${FONT_DISPLAY}`, -2);
+    printText(ctx, g, 'CORS', 512, top + 158 * scale, `800 ${88 * scale}px ${FONT_DISPLAY}`, -2);
+    starsMark(ctx, 512, top + 222 * scale, 46 * scale, g.print);
+    return;
+  }
+  const w = printText(ctx, g, 'TEOCORS', 512, top + 40 * scale, `700 ${54 * scale}px ${FONT_DISPLAY}`, 2);
+  ctx.fillStyle = g.print;
+  ctx.fillRect(512 - w / 2, top + 62 * scale, w, 2);
+  ctx.font = `500 ${14 * scale}px ${FONT_SANS}`;
+  spacedText(ctx, 'ROPA SIN EXCESOS · 2026', 512, top + 92 * scale, 5);
+}
+
 function drawTee(ctx, g) {
-  const body = teeShape();
+  const hem = g.type === 'crop' ? 640 : 880;
+  const body = teeShape(hem);
   ctx.fillStyle = g.base;
   ctx.fill(body);
 
@@ -258,16 +308,9 @@ function drawTee(ctx, g) {
   const st = shade(g.base, luminance(g.base) > 0.3 ? -0.3 : 0.18, 0.55);
   stitch(ctx, line([[103, 315], [189, 377]]), st);
   stitch(ctx, line([[921, 315], [835, 377]]), st);
-  stitch(ctx, curve(222, 858, 512, 878, 802, 858), st);
+  stitch(ctx, curve(222, hem - 22, 512, hem - 2, 802, hem - 22), st);
 
-  if (g.printStyle !== 'blank') {
-    const w = printText(ctx, g, 'TEOCORS', 512, 316, `600 60px ${FONT_SANS}`, 15);
-    ctx.fillStyle = g.print;
-    ctx.fillRect(512 - w / 2, 340, w, 2);
-    ctx.font = `500 15px ${FONT_SANS}`;
-    ctx.fillStyle = g.print;
-    spacedText(ctx, 'COLECCIÓN 01 — MMXXVI', 512, 372, 5);
-  }
+  drawPrint(ctx, g, g.type === 'crop' ? 230 : 262, g.type === 'crop' ? 0.85 : 1);
   return body;
 }
 
@@ -329,7 +372,7 @@ function drawLong(ctx, g) {
     ctx.strokeStyle = g.trim;
     cords.forEach((c) => ctx.stroke(c));
     ctx.lineWidth = 12;
-    ctx.strokeStyle = '#c9a45c';
+    ctx.strokeStyle = '#b9b5ae';
     ctx.stroke(line([[476, 436], [477, 470]]));
     ctx.stroke(line([[548, 436], [547, 470]]));
     ctx.lineWidth = 3;
@@ -355,17 +398,15 @@ function drawLong(ctx, g) {
     ctx.stroke(curve(446, 70, 512, 140, 578, 70));
   }
 
-  // Print.
+  // Print (the hoodie's sits below the cords).
   if (g.type === 'hoodie') {
-    printText(ctx, g, 'TEOCORS', 512, 540, `600 46px ${FONT_SANS}`, 12);
-    ctx.font = `500 13px ${FONT_SANS}`;
-    ctx.fillStyle = g.print;
-    spacedText(ctx, 'EST. MMXXVI', 512, 568, 5);
+    // Between the cords and the pocket; the chest mark sits higher.
+    const style = g.printStyle ?? 'wordmark';
+    if (style === 'stack') drawPrint(ctx, g, 432, 0.62);
+    else if (style === 'mark') drawPrint(ctx, g, 300, 1);
+    else drawPrint(ctx, g, 470, 0.82);
   } else {
-    printText(ctx, g, 'TEOCORS', 512, 350, `600 94px ${FONT_SERIF}`, 6);
-    ctx.font = `500 16px ${FONT_SANS}`;
-    ctx.fillStyle = g.print;
-    spacedText(ctx, '—  COLECCIÓN 01  —', 512, 394, 6);
+    drawPrint(ctx, g, 280, 1);
   }
 
   // Sleeves hang over the body.
@@ -387,7 +428,8 @@ function drawLong(ctx, g) {
 }
 
 /**
- * @param {object} g garment config: { type: 'tee'|'hoodie'|'crew', base, print, trim, printStyle }
+ * @param {object} g garment config: { type: 'tee'|'crop'|'hoodie'|'crew', base, print, trim,
+ *   printStyle: 'wordmark'|'stack'|'mark'|'blank' }
  * @param {number} size canvas size in px (square)
  */
 export function drawGarment(g, size = 1024) {
@@ -396,7 +438,7 @@ export function drawGarment(g, size = 1024) {
   const ctx = canvas.getContext('2d');
   ctx.scale(size / D, size / D);
   g = { trim: '#e9e2d6', ...g };
-  if (g.type === 'tee') drawTee(ctx, g);
+  if (g.type === 'tee' || g.type === 'crop') drawTee(ctx, g);
   else drawLong(ctx, g);
   lightingPass(ctx, g.base);
   fabricGrain(ctx, g.base);

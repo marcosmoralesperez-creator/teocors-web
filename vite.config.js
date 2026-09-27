@@ -12,7 +12,14 @@ export default defineConfig(({ mode }) => ({
   // Relative paths so the build works from any folder (e.g. GitHub Pages).
   base: './',
   resolve: {
-    alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      // The single file leaves out the Spline runtime (several MB); the
+      // scenes fall back to the figure video.
+      ...(mode === 'single'
+        ? { '@splinetool/react-spline': fileURLToPath(new URL('./src/react/spline-stub.tsx', import.meta.url)) }
+        : {}),
+    },
   },
   plugins: [react(), tailwindcss(), ...(mode === 'single' ? [viteSingleFile()] : [])],
   build:

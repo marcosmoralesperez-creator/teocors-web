@@ -1,5 +1,5 @@
 import { animate, stagger } from 'motion';
-import { products, categories, sizes, formatPrice } from '../data/products.js';
+import { products, categories, departments, departmentOf, sizesFor, formatPrice } from '../data/products.js';
 import { productImage } from '../data/images.js';
 import { icon } from './icons.js';
 import { openDialog, closeDialog } from './dialogs.js';
@@ -7,20 +7,56 @@ import { openDialog, closeDialog } from './dialogs.js';
 const byId = (id) => products.find((p) => p.id === id);
 const categoryLabel = (id) => categories.find((c) => c.id === id)?.label ?? '';
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ease = [0.22, 1, 0.36, 1];
+
+const sizeRange = (d) => `${d.sizes[0]}–${d.sizes[d.sizes.length - 1]}${d.id === 'ninos' ? ' años' : ''}`;
+const inDept = (dept) => (dept === 'all' ? products : products.filter((p) => p.department === dept));
+
+const SORTS = {
+  featured: () => 0,
+  'price-asc': (a, b) => a.price - b.price,
+  'price-desc': (a, b) => b.price - a.price,
+};
+
+// Two pieces per section for the tiles, front one first.
+const TILE_PIECES = { hombre: ['eclipse', 'noir'], mujer: ['niebla', 'crop-hueso'], ninos: ['mini-grafito', 'mini-arena'] };
+
+function tileHTML(d) {
+  const n = inDept(d.id).length;
+  const [front, back] = TILE_PIECES[d.id];
+  return `
+    <li>
+      <a class="dept-tile dept-tile--${d.id}" href="#coleccion" data-dept-link="${d.id}">
+        <span class="dept-media" aria-hidden="true">
+          <img class="dept-img dept-img--back" src="${productImage(back)}" alt="" width="960" height="1200" loading="lazy" />
+          <img class="dept-img dept-img--front" src="${productImage(front)}" alt="" width="960" height="1200" loading="lazy" />
+        </span>
+        <span class="dept-copy">
+          <span class="dept-meta">${n} piezas · Tallas ${sizeRange(d)}</span>
+          <span class="dept-name">${d.label}</span>
+          <span class="dept-lead">${d.lead}</span>
+          <span class="dept-cta">Ver ${d.label} ${icon('arrow-up-right')}</span>
+        </span>
+      </a>
+    </li>`;
+}
 
 function cardHTML(p) {
+  const d = departmentOf(p.department);
   return `
-    <li class="product-card" data-category="${p.category}">
+    <li class="product-card">
       <article class="product" aria-labelledby="p-${p.id}">
         <button type="button" class="product-media" data-open="${p.id}" aria-label="Vista rápida: ${p.name}">
           ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
           <img src="${productImage(p.id)}" alt="" width="960" height="1200" loading="lazy" decoding="async" />
+          <img class="product-alt" src="${productImage(`${p.id}-b`)}" alt="" width="960" height="1200" loading="lazy" decoding="async" />
           <span class="product-quick" aria-hidden="true">Vista rápida</span>
         </button>
         <div class="product-info">
           <div>
+            <p class="product-dept">${d.label} · ${categoryLabel(p.category)}</p>
             <h3 class="product-name" id="p-${p.id}">${p.name}</h3>
-            <p class="product-meta">${p.color}</p>
+            <p class="product-meta"><span class="swatch" style="background:${p.swatch}" aria-hidden="true"></span>${p.color} · ${sizeRange(d)}</p>
           </div>
           <p class="product-price">${formatPrice(p.price)}</p>
         </div>
@@ -31,41 +67,131 @@ function cardHTML(p) {
     </li>`;
 }
 
+const SIZE_TABLES = {
+  hombre: {
+    note: 'Corte amplio: si prefieres un fit regular, pide una talla menos.',
+    head: ['Talla', 'Ancho de pecho', 'Largo total', 'Manga'],
+    rows: [
+      ['S', 56, 70, 22],
+      ['M', 59, 72, 23],
+      ['L', 62, 74, 24],
+      ['XL', 65, 76, 25],
+    ],
+  },
+  mujer: {
+    note: 'Corte boxy. Las crop miden 12 cm menos de largo que la tabla.',
+    head: ['Talla', 'Ancho de pecho', 'Largo total', 'Manga'],
+    rows: [
+      ['XS', 50, 60, 19],
+      ['S', 53, 62, 20],
+      ['M', 56, 64, 21],
+      ['L', 59, 66, 22],
+    ],
+  },
+  ninos: {
+    note: 'La talla es la edad. Si está entre dos, elige la mayor.',
+    head: ['Talla', 'Edad', 'Ancho de pecho', 'Largo total'],
+    rows: [
+      ['4', '3–4 años', 36, 44],
+      ['6', '5–6 años', 38, 48],
+      ['8', '7–8 años', 41, 52],
+      ['10', '9–10 años', 44, 56],
+      ['12', '11–12 años', 47, 60],
+    ],
+  },
+};
+
 export function setupCatalog({ cart, cartUI }) {
   const grid = document.querySelector('[data-product-grid]');
+  const tabs = document.querySelector('[data-dept-tabs]');
   const filters = document.querySelector('[data-filters]');
+  const sortSel = document.querySelector('[data-sort]');
   const status = document.querySelector('[data-filter-status]');
+  const title = document.querySelector('[data-shop-title]');
+  const lead = document.querySelector('[data-shop-lead]');
+  const tiles = document.querySelector('[data-dept-tiles]');
 
-  filters.innerHTML = categories
-    .map((c) => {
-      const n = c.id === 'all' ? products.length : products.filter((p) => p.category === c.id).length;
-      return `<button type="button" class="chip" data-filter="${c.id}" aria-pressed="${c.id === 'all'}">${c.label}<span class="chip-count">${n}</span></button>`;
-    })
+  const state = { dept: 'all', cat: 'all', sort: 'featured' };
+
+  tiles.innerHTML = departments.map(tileHTML).join('');
+  tabs.innerHTML = [{ id: 'all', label: 'Todo' }, ...departments]
+    .map(
+      (d) =>
+        `<button type="button" class="dept-tab" data-dept="${d.id}" aria-pressed="${d.id === 'all'}">${d.label}<span class="chip-count">${inDept(d.id).length}</span></button>`,
+    )
     .join('');
-  grid.innerHTML = products.map(cardHTML).join('');
 
-  // ---------------------------------------------------------------- filters
-  function applyFilter(id) {
-    filters.querySelectorAll('[data-filter]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === id)));
-    const cards = [...grid.children];
-    const shown = cards.filter((card) => {
-      const match = id === 'all' || card.dataset.category === id;
-      card.hidden = !match;
-      return match;
-    });
-    shown.forEach((card) => (card.style.opacity = '1'));
-    if (!reduced()) {
-      animate(shown, { opacity: [0, 1], transform: ['translateY(16px)', 'translateY(0px)'] }, { delay: stagger(0.06), duration: 0.5, ease: [0.22, 1, 0.36, 1] });
+  function render({ animateIn = true } = {}) {
+    const pool = inDept(state.dept);
+    const list = pool
+      .filter((p) => state.cat === 'all' || p.category === state.cat)
+      .map((p, i) => [p, i])
+      .sort(([a, ia], [b, ib]) => SORTS[state.sort](a, b) || ia - ib)
+      .map(([p]) => p);
+
+    tabs.querySelectorAll('[data-dept]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.dept === state.dept)));
+    filters.innerHTML = categories
+      .map((c) => {
+        const n = c.id === 'all' ? pool.length : pool.filter((p) => p.category === c.id).length;
+        return `<button type="button" class="chip" data-filter="${c.id}" aria-pressed="${c.id === state.cat}" ${n ? '' : 'disabled'}>${c.label}<span class="chip-count">${n}</span></button>`;
+      })
+      .join('');
+
+    const d = departmentOf(state.dept);
+    title.textContent = d ? d.label : 'Toda la colección';
+    lead.textContent = d ? d.lead : 'Hombre, mujer y niños. Pocas piezas, en tirajes cortos.';
+
+    grid.innerHTML = list.map(cardHTML).join('');
+    const scope = [d?.label, state.cat === 'all' ? '' : categoryLabel(state.cat).toLowerCase()].filter(Boolean).join(' · ');
+    status.textContent = `${list.length} ${list.length === 1 ? 'pieza' : 'piezas'}${scope ? ` · ${scope}` : ''}`;
+
+    if (animateIn && !reduced()) {
+      animate(grid.children, { opacity: [0, 1], transform: ['translateY(16px)', 'translateY(0px)'] }, { delay: stagger(0.05), duration: 0.5, ease });
     }
-    status.textContent = `Mostrando ${shown.length} ${shown.length === 1 ? 'producto' : 'productos'}${id === 'all' ? '' : ` de ${categoryLabel(id)}`}.`;
   }
+
+  function setDept(id, { scroll = false } = {}) {
+    state.dept = id;
+    state.cat = 'all';
+    render();
+    if (scroll) document.querySelector('#coleccion').scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth' });
+  }
+
+  tabs.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-dept]');
+    if (b) setDept(b.dataset.dept);
+  });
   filters.addEventListener('click', (e) => {
     const b = e.target.closest('[data-filter]');
-    if (b) applyFilter(b.dataset.filter);
+    if (!b) return;
+    state.cat = b.dataset.filter;
+    render();
   });
-  document.querySelectorAll('[data-filter-link]').forEach((a) =>
-    a.addEventListener('click', () => applyFilter(a.dataset.filterLink)),
-  );
+  sortSel.addEventListener('change', () => {
+    state.sort = sortSel.value;
+    render();
+  });
+
+  // Section links anywhere on the page (menus, tiles, footer): the anchor
+  // scrolls to the shop and this picks the section.
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('[data-dept-link]');
+    if (a) setDept(a.dataset.deptLink);
+    const f = e.target.closest('[data-filter-link]');
+    if (f) {
+      state.cat = f.dataset.filterLink;
+      render();
+    }
+  });
+
+  // Deep links: /#hombre, /#mujer, /#ninos.
+  const fromHash = () => {
+    const id = location.hash.slice(1);
+    if (departmentOf(id)) setDept(id, { scroll: true });
+  };
+  window.addEventListener('hashchange', fromHash);
+  render({ animateIn: false });
+  if (departmentOf(location.hash.slice(1))) requestAnimationFrame(fromHash);
 
   // -------------------------------------------------------------- quick view
   const qv = document.querySelector('[data-quickview]');
@@ -77,15 +203,16 @@ export function setupCatalog({ cart, cartUI }) {
   function openQuickview(id) {
     const p = byId(id);
     qv.dataset.product = id;
+    qv.dataset.dept = p.department;
     const img = $('[data-qv-img]');
     img.src = productImage(p.id);
-    img.alt = `${p.name} colgada en un gancho dorado`;
-    $('[data-qv-cat]').textContent = categoryLabel(p.category);
+    img.alt = `${p.name} colgada en un gancho`;
+    $('[data-qv-cat]').textContent = `${departmentOf(p.department).label} · ${categoryLabel(p.category)}`;
     $('[data-qv-title]').textContent = p.name;
     $('[data-qv-price]').textContent = formatPrice(p.price);
     $('[data-qv-desc]').textContent = p.description;
     $('[data-qv-color]').textContent = p.color;
-    sizeRow.innerHTML = sizes
+    sizeRow.innerHTML = sizesFor(p)
       .map((s) => {
         const out = p.soldOut.includes(s);
         return `<label class="size"><input type="radio" name="size" value="${s}" ${out ? 'disabled' : ''} aria-describedby="qv-size-error" /><span>${s}${out ? '<span class="sr-only"> (agotada)</span>' : ''}</span></label>`;
@@ -118,5 +245,32 @@ export function setupCatalog({ cart, cartUI }) {
 
   // ------------------------------------------------------------ size guide
   const guide = document.querySelector('[data-size-guide-dialog]');
-  document.querySelectorAll('[data-size-guide]').forEach((b) => b.addEventListener('click', () => openDialog(guide)));
+  const guideTabs = guide.querySelector('[data-sg-tabs]');
+  const guideBody = guide.querySelector('[data-sg-body]');
+  guideTabs.innerHTML = departments
+    .map((d) => `<button type="button" class="dept-tab" data-sg="${d.id}" aria-pressed="false">${d.label}</button>`)
+    .join('');
+
+  function showGuide(id) {
+    const t = SIZE_TABLES[id];
+    guideTabs.querySelectorAll('[data-sg]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sg === id)));
+    guideBody.innerHTML = `
+      <p class="quickview-desc">Medidas de la prenda en centímetros. ${t.note}</p>
+      <table>
+        <thead><tr>${t.head.map((h) => `<th scope="col">${h}</th>`).join('')}</tr></thead>
+        <tbody>${t.rows.map(([s, ...r]) => `<tr><th scope="row">${s}</th>${r.map((v) => `<td>${v}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>`;
+  }
+  guideTabs.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-sg]');
+    if (b) showGuide(b.dataset.sg);
+  });
+  document.querySelectorAll('[data-size-guide]').forEach((b) =>
+    b.addEventListener('click', () => {
+      // From the quick view, open on that product's section.
+      const fromQv = b.closest('[data-quickview]');
+      showGuide(fromQv?.dataset.dept || (state.dept === 'all' ? 'hombre' : state.dept));
+      openDialog(guide);
+    }),
+  );
 }

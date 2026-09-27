@@ -26,10 +26,11 @@
         <a class="logo" href="#inicio" aria-label="TEOCORS, volver al inicio">TEOCORS</a>
         <nav class="main-nav" aria-label="Principal">
           <ul>
-            <li><a href="#coleccion" data-nav>Tienda</a></li>
+            <li><a href="#coleccion" data-dept-link="hombre">Hombre</a></li>
+            <li><a href="#coleccion" data-dept-link="mujer">Mujer</a></li>
+            <li><a href="#coleccion" data-dept-link="ninos">Niños</a></li>
             <li><a href="#personaliza" data-nav>Personaliza</a></li>
             <li><a href="#marca" data-nav>Nosotros</a></li>
-            <li><a href="#contacto" data-nav>Contacto</a></li>
           </ul>
         </nav>
         <button class="cart-btn" type="button" data-cart-open aria-label="Abrir carrito, 0 productos">
@@ -60,17 +61,45 @@
         </div>
       </div>
 
-      <!-- Colección ------------------------------------------------------- -->
-      <section class="section" id="coleccion" aria-labelledby="coleccion-title">
+      <!-- Secciones ------------------------------------------------------ -->
+      <section class="section depts" id="secciones" aria-labelledby="secciones-title">
         <div class="container">
-          <div class="section-head">
-            <div data-reveal>
-              <p class="eyebrow">Colección 01</p>
-              <h2 class="section-title" id="coleccion-title">Piezas que se <em>sienten</em></h2>
+          <div class="section-head" data-reveal>
+            <div>
+              <p class="eyebrow">Tienda</p>
+              <h2 class="section-title" id="secciones-title">Compra por <em>sección</em></h2>
             </div>
-            <div class="filters" role="group" aria-label="Filtrar por categoría" data-filters data-reveal></div>
+            <p class="section-lead">La misma paleta y los mismos acabados, cortados para cada uno.</p>
           </div>
-          <p class="sr-only" aria-live="polite" data-filter-status></p>
+          <ul class="dept-grid" data-dept-tiles></ul>
+        </div>
+      </section>
+
+      <!-- Colección ------------------------------------------------------- -->
+      <section class="section shop" id="coleccion" aria-labelledby="coleccion-title">
+        <div class="container">
+          <div class="shop-head">
+            <div>
+              <p class="eyebrow">Colección 2026</p>
+              <h2 class="section-title" id="coleccion-title" data-shop-title>Toda la colección</h2>
+              <p class="section-lead" data-shop-lead></p>
+            </div>
+          </div>
+          <div class="shop-bar">
+            <div class="dept-tabs" role="group" aria-label="Sección" data-dept-tabs></div>
+            <div class="shop-tools">
+              <div class="filters" role="group" aria-label="Tipo de prenda" data-filters></div>
+              <div class="sort">
+                <label for="shop-sort">Ordenar</label>
+                <select id="shop-sort" data-sort>
+                  <option value="featured">Destacados</option>
+                  <option value="price-asc">Precio: menor a mayor</option>
+                  <option value="price-desc">Precio: mayor a menor</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <p class="shop-count" aria-live="polite" data-filter-status></p>
           <ul class="product-grid" data-product-grid></ul>
         </div>
       </section>
@@ -224,9 +253,10 @@
         <nav aria-label="Tienda">
           <h2>Tienda</h2>
           <ul>
-            <li><a href="#coleccion" data-filter-link="camisetas">Camisetas</a></li>
-            <li><a href="#coleccion" data-filter-link="hoodies">Hoodies</a></li>
-            <li><a href="#coleccion" data-filter-link="buzos">Buzos</a></li>
+            <li><a href="#coleccion" data-dept-link="hombre">Hombre</a></li>
+            <li><a href="#coleccion" data-dept-link="mujer">Mujer</a></li>
+            <li><a href="#coleccion" data-dept-link="ninos">Niños</a></li>
+            <li><a href="#coleccion" data-dept-link="all">Toda la colección</a></li>
           </ul>
         </nav>
         <nav aria-label="Ayuda">
@@ -261,7 +291,9 @@
       <nav aria-label="Menú móvil">
         <ul class="mobile-links">
           <li><a href="#inicio" data-close>Inicio</a></li>
-          <li><a href="#coleccion" data-close>Tienda</a></li>
+          <li><a href="#coleccion" data-close data-dept-link="hombre">Hombre</a></li>
+          <li><a href="#coleccion" data-close data-dept-link="mujer">Mujer</a></li>
+          <li><a href="#coleccion" data-close data-dept-link="ninos">Niños</a></li>
           <li><a href="#personaliza" data-close>Personaliza</a></li>
           <li><a href="#marca" data-close>Nosotros</a></li>
           <li><a href="#contacto" data-close>Contacto</a></li>
@@ -294,18 +326,8 @@
     <dialog data-lenis-prevent class="modal size-guide" aria-labelledby="sg-title" data-size-guide-dialog>
       <button class="icon-btn modal-close" type="button" aria-label="Cerrar" data-close><i data-icon="x"></i></button>
       <h2 class="quickview-title" id="sg-title">Guía de tallas</h2>
-      <p class="quickview-desc">Medidas de la prenda en centímetros. Nuestro corte es amplio: si prefieres un fit regular, pide una talla menos.</p>
-      <table>
-        <thead>
-          <tr><th scope="col">Talla</th><th scope="col">Ancho de pecho</th><th scope="col">Largo total</th><th scope="col">Manga</th></tr>
-        </thead>
-        <tbody>
-          <tr><th scope="row">S</th><td>56</td><td>70</td><td>22</td></tr>
-          <tr><th scope="row">M</th><td>59</td><td>72</td><td>23</td></tr>
-          <tr><th scope="row">L</th><td>62</td><td>74</td><td>24</td></tr>
-          <tr><th scope="row">XL</th><td>65</td><td>76</td><td>25</td></tr>
-        </tbody>
-      </table>
+      <div class="dept-tabs" role="group" aria-label="Sección" data-sg-tabs></div>
+      <div data-sg-body></div>
     </dialog>
 
     <!-- Carrito ------------------------------------------------------------- -->

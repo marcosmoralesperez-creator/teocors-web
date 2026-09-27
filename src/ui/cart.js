@@ -1,5 +1,5 @@
 import { animate } from 'motion';
-import { products, formatPrice } from '../data/products.js';
+import { products, departmentOf, formatPrice } from '../data/products.js';
 import { productImage } from '../data/images.js';
 import { icon } from './icons.js';
 import { openDialog } from './dialogs.js';
@@ -67,7 +67,7 @@ function lineHTML({ id, size, qty }) {
       <img src="${productImage(id)}" alt="" width="80" height="100" loading="lazy" />
       <div class="cart-item-info">
         <p class="cart-item-name">${p.name}</p>
-        <p class="cart-item-meta">${p.color} · Talla ${size}</p>
+        <p class="cart-item-meta">${departmentOf(p.department).label} · ${p.color} · Talla ${size}</p>
         <div class="qty" role="group" aria-label="Cantidad de ${p.name}, talla ${size}">
           <button type="button" data-action="dec" aria-label="Quitar una unidad">${icon('minus')}</button>
           <span>${qty}</span>

@@ -28,13 +28,15 @@ npm run preview   # revisa el build antes de subirlo
 npm run build:single   # genera dist-single/index.html con todo adentro (código, fotos y fuentes)
 ```
 
-Abierto desde el disco, el video de música se abre en YouTube; en un hosting se reproduce dentro de la página.
+Abierto desde el disco, el video de música se abre en YouTube; en un hosting se reproduce dentro de la página. Esta versión no incluye el motor de Spline (pesa varios MB): en su lugar se ve la figura en video.
 
 ## Qué editar
 
 | Quiero cambiar…                          | Archivo                         |
 | ---------------------------------------- | ------------------------------- |
 | Productos, precios, tallas agotadas      | `src/data/products.js`          |
+| Secciones (Hombre, Mujer, Niños) y tallas | `departments` en `src/data/products.js` |
+| Guía de tallas por sección               | `SIZE_TABLES` en `src/ui/catalog.js` |
 | Textos de las secciones                  | `index.html`                    |
 | Colores, tipografías, espacios           | `src/styles.css` (variables en `:root`) |
 | Portada (textos, enlaces, animación 3D)  | `src/react/TeocorsHero.tsx`     |
@@ -66,6 +68,17 @@ La figura sale del video oficial (`src/assets/media/teocors-figura.*`). El compo
 Si algún día tienes la figura como modelo 3D en [Spline](https://spline.design), exporta la escena (Export → Code → React) y pega la URL `…/scene.splinecode` en `SPLINE_HERO` dentro de `src/react/config.ts`: la portada usará la escena interactiva en vez del video.
 
 La sección «Personaliza» usa hoy la escena de ejemplo del componente (`SPLINE_PERSONALIZA`); cámbiala por una tuya. Si la escena no carga (sin internet), se muestra la figura en video.
+
+## Tienda por secciones
+
+La tienda está dividida en **Hombre**, **Mujer** y **Niños**. Cada prenda tiene `department` en `src/data/products.js`, y cada sección define sus tallas (Hombre S–XL, Mujer XS–L, Niños 4–12 años). En la página:
+
+- El bloque «Compra por sección» lleva a la tienda ya filtrada.
+- La tienda tiene pestañas de sección, filtro por tipo de prenda y orden por precio.
+- La vista rápida y la guía de tallas muestran las tallas de la sección de la prenda.
+- Los enlaces `#hombre`, `#mujer` y `#ninos` abren la tienda en esa sección (sirven para Instagram o WhatsApp).
+
+Para agregar una prenda, copia una entrada de `products`, cambia `id`, `department`, textos, precio y colores de `garment`, y vuelve a generar las fotos con `npm run render:products`.
 
 ## Fotos de producto
 

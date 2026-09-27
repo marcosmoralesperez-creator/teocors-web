@@ -92,9 +92,9 @@ function createHook(renderer) {
   }
   const path = new THREE.CatmullRomCurve3(pts.map(([x, y]) => new THREE.Vector3(x, y, -0.03)));
   const material = new THREE.MeshStandardMaterial({
-    color: '#d6b36c',
+    color: '#cfcac2',
     metalness: 1,
-    roughness: 0.26,
+    roughness: 0.22,
     envMap: hookEnvironment(renderer),
     envMapIntensity: 1.1,
   });
@@ -155,7 +155,7 @@ export function addStudioLights(scene) {
   key.position.set(3.2, 3.5, 5);
   const rim = new THREE.DirectionalLight('#b9c8ff', 1.3);
   rim.position.set(-5, 1.2, 1.2);
-  const fill = new THREE.PointLight('#c9a45c', 5, 12, 1.6);
+  const fill = new THREE.PointLight('#d9c9b0', 4, 12, 1.6);
   fill.position.set(0.5, -2.2, 3);
   scene.add(hemi, key, rim, fill);
   return { hemi, key, rim, fill };

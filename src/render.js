@@ -1,6 +1,6 @@
 // Studio renderer for product and detail images (used by scripts/render-products.mjs).
 import '@fontsource-variable/montserrat';
-import '@fontsource/cormorant/latin-600.css';
+import '@fontsource-variable/unbounded';
 import * as THREE from 'three';
 import { createGarment, addStudioLights } from './three/garment.js';
 import { products, detailShots } from './data/products.js';
@@ -44,11 +44,16 @@ function shoot(product, { focus, height, time, turn }) {
 window.renderAll = async () => {
   await Promise.all([
     document.fonts.load('600 60px "Montserrat Variable"'),
-    document.fonts.load('600 94px "Cormorant"'),
+    document.fonts.load('800 88px "Unbounded Variable"'),
+    document.fonts.load('700 54px "Unbounded Variable"'),
   ]);
   const out = {};
   products.forEach((p, i) => {
-    out[p.id] = shoot(p, { height: 3.35, time: 1.4 + i * 0.9, turn: -0.16 });
+    // Kids' pieces sit smaller in the frame, so the size reads at a glance.
+    const height = p.department === 'ninos' ? 3.9 : 3.35;
+    out[p.id] = shoot(p, { height, time: 1.4 + i * 0.9, turn: -0.16 });
+    // Second angle, shown on hover.
+    out[`${p.id}-b`] = shoot(p, { height: height * 0.92, time: 3.1 + i * 0.7, turn: 0.62 });
   });
   detailShots.forEach((d, i) => {
     const p = products.find((x) => x.id === d.product);
