@@ -9,6 +9,7 @@ import { renderIcons } from './ui/icons.js';
 import { setupDialogs } from './ui/dialogs.js';
 import { createCart, setupCartUI } from './ui/cart.js';
 import { setupCatalog } from './ui/catalog.js';
+import { setupSearch } from './ui/search.js';
 import Lenis from 'lenis';
 import { mountReact } from './react/mount.tsx';
 import {
@@ -26,8 +27,9 @@ if (!reducedMotion) document.documentElement.classList.add('motion-ok');
 
 const cart = createCart();
 const cartUI = setupCartUI(cart);
-setupCatalog({ cart, cartUI });
-mountReact({ openCart: cartUI.open });
+const catalog = setupCatalog({ cart, cartUI });
+const search = setupSearch(catalog);
+mountReact({ openCart: cartUI.open, openSearch: search.open });
 renderIcons();
 
 // Scroll suave, como en los micrositios de producto; se apaga con «reducir movimiento».

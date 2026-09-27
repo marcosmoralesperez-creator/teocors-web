@@ -7,7 +7,7 @@ import {
   useSpring,
   useTransform,
 } from 'framer-motion';
-import { ArrowUpRight, Menu, Recycle, ShoppingBag } from 'lucide-react';
+import { ArrowUpRight, Menu, Recycle, Search, ShoppingBag } from 'lucide-react';
 import { KeyedVideo } from '@/components/ui/keyed-video';
 import { SplineScene } from '@/components/ui/splite';
 import { Spotlight } from '@/components/ui/spotlight';
@@ -32,6 +32,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 type HeroProps = {
   onOpenMenu: () => void;
   onOpenCart: () => void;
+  onOpenSearch: () => void;
 };
 
 /** Logo: las cinco estrellas de cuatro puntas junto a TEO / CORS. */
@@ -72,7 +73,7 @@ function Word({ text, delay, className }: { text: string; delay: number; classNa
   );
 }
 
-export function TeocorsHero({ onOpenMenu, onOpenCart }: HeroProps) {
+export function TeocorsHero({ onOpenMenu, onOpenCart, onOpenSearch }: HeroProps) {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -183,6 +184,15 @@ export function TeocorsHero({ onOpenMenu, onOpenCart }: HeroProps) {
             <span className="hidden text-[13px] font-medium tracking-[0.01em] sm:inline sm:text-[15px]">
               id de cuenta · 003.201
             </span>
+            <button
+              type="button"
+              onClick={onOpenSearch}
+              aria-label="Buscar en la tienda"
+              aria-keyshortcuts="/"
+              className="grid size-10 cursor-pointer place-items-center rounded-full border border-white/25 bg-transparent text-bone transition-colors hover:bg-white/10"
+            >
+              <Search className="size-[18px]" strokeWidth={1.6} />
+            </button>
             <button
               type="button"
               onClick={onOpenCart}

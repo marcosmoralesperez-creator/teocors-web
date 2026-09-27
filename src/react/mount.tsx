@@ -7,13 +7,13 @@ import { EmblemChapter } from './EmblemChapter';
 import { openDialog } from '../ui/dialogs.js';
 
 /** Monta las piezas React (portada, capítulos 3D y «Personaliza») dentro del sitio. */
-export function mountReact({ openCart }: { openCart: () => void }) {
+export function mountReact({ openCart, openSearch }: { openCart: () => void; openSearch: () => void }) {
   const hero = document.querySelector<HTMLElement>('[data-react-hero]');
   if (hero) {
     const openMenu = () => openDialog(document.querySelector('#mobile-nav'));
     createRoot(hero).render(
       <StrictMode>
-        <TeocorsHero onOpenMenu={openMenu} onOpenCart={openCart} />
+        <TeocorsHero onOpenMenu={openMenu} onOpenCart={openCart} onOpenSearch={openSearch} />
       </StrictMode>,
     );
   }

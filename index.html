@@ -33,11 +33,18 @@
             <li><a href="#marca" data-nav>Nosotros</a></li>
           </ul>
         </nav>
-        <button class="cart-btn" type="button" data-cart-open aria-label="Abrir carrito, 0 productos">
-          <i data-icon="shopping-bag"></i>
-          <span class="cart-btn-label">Carrito</span>
-          <span class="cart-count" data-cart-count aria-hidden="true">0</span>
-        </button>
+        <div class="header-actions">
+          <button class="search-btn" type="button" data-search-open aria-label="Buscar en la tienda" aria-keyshortcuts="/">
+            <i data-icon="search"></i>
+            <span class="search-btn-label">Buscar</span>
+            <kbd>/</kbd>
+          </button>
+          <button class="cart-btn" type="button" data-cart-open aria-label="Abrir carrito, 0 productos">
+            <i data-icon="shopping-bag"></i>
+            <span class="cart-btn-label">Carrito</span>
+            <span class="cart-count" data-cart-count aria-hidden="true">0</span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -86,7 +93,12 @@
             </div>
           </div>
           <div class="shop-bar">
-            <div class="dept-tabs" role="group" aria-label="Sección" data-dept-tabs></div>
+            <div class="shop-bar-start">
+              <div class="dept-tabs" role="group" aria-label="Sección" data-dept-tabs></div>
+              <button class="shop-search" type="button" data-search-open>
+                <i data-icon="search"></i><span>Buscar prendas…</span>
+              </button>
+            </div>
             <div class="shop-tools">
               <div class="filters" role="group" aria-label="Tipo de prenda" data-filters></div>
               <div class="sort">
@@ -288,6 +300,9 @@
         <span class="logo">TEOCORS</span>
         <button class="icon-btn" type="button" aria-label="Cerrar menú" data-close><i data-icon="x"></i></button>
       </div>
+      <button class="shop-search shop-search--menu" type="button" data-search-open data-close>
+        <i data-icon="search"></i><span>Buscar prendas…</span>
+      </button>
       <nav aria-label="Menú móvil">
         <ul class="mobile-links">
           <li><a href="#inicio" data-close>Inicio</a></li>
@@ -300,6 +315,35 @@
           <li><a href="#musica" data-close>Música</a></li>
         </ul>
       </nav>
+    </dialog>
+
+    <!-- Búsqueda ----------------------------------------------------------- -->
+    <dialog data-lenis-prevent class="modal search" aria-label="Buscar en la tienda" data-search>
+      <form class="search-form" role="search" data-search-form>
+        <i data-icon="search"></i>
+        <label for="search-input" class="sr-only">Buscar prendas</label>
+        <input
+          id="search-input"
+          type="search"
+          placeholder="Busca hoodie, crop, niños, arena…"
+          autocomplete="off"
+          spellcheck="false"
+          role="combobox"
+          aria-expanded="true"
+          aria-controls="search-results"
+          aria-autocomplete="list"
+        />
+        <button class="icon-btn" type="button" aria-label="Cerrar búsqueda" data-close><i data-icon="x"></i></button>
+      </form>
+      <div class="search-suggest" data-search-suggest>
+        <p class="search-label">Búsquedas frecuentes</p>
+        <div class="filters" data-search-chips></div>
+      </div>
+      <p class="search-status" role="status" data-search-status></p>
+      <ul id="search-results" class="search-results" role="listbox" aria-label="Resultados" data-search-results></ul>
+      <button class="btn btn-outline btn-block search-all" type="button" data-search-all hidden>
+        <span>Ver resultados en la tienda</span> <i data-icon="arrow-right"></i>
+      </button>
     </dialog>
 
     <!-- Vista rápida -------------------------------------------------------- -->

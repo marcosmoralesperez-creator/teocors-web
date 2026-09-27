@@ -3,6 +3,7 @@ import { products, categories, departments, departmentOf, sizesFor, formatPrice 
 import { productImage } from '../data/images.js';
 import { icon } from './icons.js';
 import { openDialog, closeDialog } from './dialogs.js';
+import { searchProducts } from './search.js';
 
 const byId = (id) => products.find((p) => p.id === id);
 const categoryLabel = (id) => categories.find((c) => c.id === id)?.label ?? '';
@@ -111,7 +112,7 @@ export function setupCatalog({ cart, cartUI }) {
   const lead = document.querySelector('[data-shop-lead]');
   const tiles = document.querySelector('[data-dept-tiles]');
 
-  const state = { dept: 'all', cat: 'all', sort: 'featured' };
+  const state = { dept: 'all', cat: 'all', sort: 'featured', q: '' };
 
   tiles.innerHTML = departments.map(tileHTML).join('');
   tabs.innerHTML = [{ id: 'all', label: 'Todo' }, ...departments]
@@ -122,14 +123,19 @@ export function setupCatalog({ cart, cartUI }) {
     .join('');
 
   function render({ animateIn = true } = {}) {
-    const pool = inDept(state.dept);
+    const found = state.q ? new Set(searchProducts(state.q)) : null;
+    const pool = inDept(state.dept).filter((p) => !found || found.has(p));
     const list = pool
       .filter((p) => state.cat === 'all' || p.category === state.cat)
       .map((p, i) => [p, i])
       .sort(([a, ia], [b, ib]) => SORTS[state.sort](a, b) || ia - ib)
       .map(([p]) => p);
 
-    tabs.querySelectorAll('[data-dept]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.dept === state.dept)));
+    tabs.querySelectorAll('[data-dept]').forEach((b) => {
+      b.setAttribute('aria-pressed', String(b.dataset.dept === state.dept));
+      // Counts follow the active search.
+      b.querySelector('.chip-count').textContent = inDept(b.dataset.dept).filter((p) => !found || found.has(p)).length;
+    });
     filters.innerHTML = categories
       .map((c) => {
         const n = c.id === 'all' ? pool.length : pool.filter((p) => p.category === c.id).length;
@@ -138,28 +144,35 @@ export function setupCatalog({ cart, cartUI }) {
       .join('');
 
     const d = departmentOf(state.dept);
-    title.textContent = d ? d.label : 'Toda la colección';
+    title.textContent = state.q ? `Resultados para “${state.q}”` : d ? d.label : 'Toda la colección';
     lead.textContent = d ? d.lead : 'Hombre, mujer y niños. Pocas piezas, en tirajes cortos.';
 
     grid.innerHTML = list.map(cardHTML).join('');
     const scope = [d?.label, state.cat === 'all' ? '' : categoryLabel(state.cat).toLowerCase()].filter(Boolean).join(' · ');
-    status.textContent = `${list.length} ${list.length === 1 ? 'pieza' : 'piezas'}${scope ? ` · ${scope}` : ''}`;
+    status.innerHTML = `${list.length} ${list.length === 1 ? 'pieza' : 'piezas'}${scope ? ` · ${scope}` : ''}${
+      state.q ? ` <button type="button" class="clear-search" data-clear-search>Quitar búsqueda ${icon('x')}</button>` : ''
+    }`;
+    if (state.q && !list.length) {
+      grid.innerHTML = `<li class="shop-empty">No hay piezas para “${state.q}”${d ? ` en ${d.label}` : ''}. <button type="button" class="link-btn" data-clear-search>Ver toda la colección</button></li>`;
+    }
 
     if (animateIn && !reduced()) {
       animate(grid.children, { opacity: [0, 1], transform: ['translateY(16px)', 'translateY(0px)'] }, { delay: stagger(0.05), duration: 0.5, ease });
     }
   }
 
-  function setDept(id, { scroll = false } = {}) {
+  // Menu links start a fresh view; the shop tabs keep an active search.
+  function setDept(id, { scroll = false, keepSearch = false } = {}) {
     state.dept = id;
     state.cat = 'all';
+    if (!keepSearch) state.q = '';
     render();
     if (scroll) document.querySelector('#coleccion').scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth' });
   }
 
   tabs.addEventListener('click', (e) => {
     const b = e.target.closest('[data-dept]');
-    if (b) setDept(b.dataset.dept);
+    if (b) setDept(b.dataset.dept, { keepSearch: true });
   });
   filters.addEventListener('click', (e) => {
     const b = e.target.closest('[data-filter]');
@@ -175,6 +188,11 @@ export function setupCatalog({ cart, cartUI }) {
   // Section links anywhere on the page (menus, tiles, footer): the anchor
   // scrolls to the shop and this picks the section.
   document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-clear-search]')) {
+      state.q = '';
+      render();
+      return;
+    }
     const a = e.target.closest('[data-dept-link]');
     if (a) setDept(a.dataset.deptLink);
     const f = e.target.closest('[data-filter-link]');
@@ -273,4 +291,16 @@ export function setupCatalog({ cart, cartUI }) {
       openDialog(guide);
     }),
   );
+
+  return {
+    openQuickview,
+    /** Filters the shop with a search and scrolls to it. */
+    showInShop(q) {
+      state.q = q;
+      state.dept = 'all';
+      state.cat = 'all';
+      render();
+      document.querySelector('#coleccion').scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth' });
+    },
+  };
 }

@@ -77,6 +77,7 @@ La tienda está dividida en **Hombre**, **Mujer** y **Niños**. Cada prenda tien
 - La tienda tiene pestañas de sección, filtro por tipo de prenda y orden por precio.
 - La vista rápida y la guía de tallas muestran las tallas de la sección de la prenda.
 - Los enlaces `#hombre`, `#mujer` y `#ninos` abren la tienda en esa sección (sirven para Instagram o WhatsApp).
+- **Buscador**: lupa en la portada, en la barra superior, en la tienda y en el menú del celular (o las teclas `/` y Ctrl/⌘+K). Muestra resultados mientras se escribe, entiende tildes, plurales y palabras como «saco», «sudadera» o «busos» (`SYNONYMS` en `src/ui/search.js`), y «Ver resultados en la tienda» filtra la colección.
 
 Para agregar una prenda, copia una entrada de `products`, cambia `id`, `department`, textos, precio y colores de `garment`, y vuelve a generar las fotos con `npm run render:products`.
 
