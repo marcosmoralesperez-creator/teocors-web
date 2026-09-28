@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   ShoppingBag,
   Truck,
+  User,
   X,
 } from 'lucide';
 
@@ -31,6 +32,7 @@ const icons = {
   'shield-check': ShieldCheck,
   'shopping-bag': ShoppingBag,
   truck: Truck,
+  user: User,
   x: X,
 };
 

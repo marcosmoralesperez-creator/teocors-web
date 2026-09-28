@@ -10,6 +10,7 @@ import { setupDialogs } from './ui/dialogs.js';
 import { createCart, setupCartUI } from './ui/cart.js';
 import { setupCatalog } from './ui/catalog.js';
 import { setupSearch } from './ui/search.js';
+import { setupAccount } from './ui/account.js';
 import Lenis from 'lenis';
 import { mountReact } from './react/mount.tsx';
 import {
@@ -29,6 +30,7 @@ const cart = createCart();
 const cartUI = setupCartUI(cart);
 const catalog = setupCatalog({ cart, cartUI });
 const search = setupSearch(catalog);
+setupAccount();
 mountReact({ openCart: cartUI.open, openSearch: search.open });
 renderIcons();
 

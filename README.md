@@ -81,6 +81,26 @@ La tienda está dividida en **Hombre**, **Mujer** y **Niños**. Cada prenda tien
 
 Para agregar una prenda, copia una entrada de `products`, cambia `id`, `department`, textos, precio y colores de `garment`, y vuelve a generar las fotos con `npm run render:products`.
 
+## Iniciar sesión (código por correo)
+
+La persona toca «iniciar sesión» (en la portada, el ícono de usuario de la barra o el menú del celular), escribe su correo y le llega un correo con un **código de 6 dígitos** y un **enlace** para entrar. Sin contraseñas; la cuenta se crea sola la primera vez. Al entrar, la portada muestra su «id de cuenta».
+
+El envío de correos lo hace **Supabase** (gratis). Para activarlo:
+
+1. Crea una cuenta y un proyecto en [supabase.com](https://supabase.com).
+2. En **Authentication → Sign In / Providers**, deja activado **Email**.
+3. En **Authentication → Emails → Magic Link**, cambia la plantilla para que incluya el código, por ejemplo:
+   ```html
+   <h2>Tu código para entrar a TEOCORS</h2>
+   <p style="font-size:28px;letter-spacing:6px"><strong>{{ .Token }}</strong></p>
+   <p>O entra con este enlace: <a href="{{ .ConfirmationURL }}">Iniciar sesión</a></p>
+   ```
+4. En **Authentication → URL Configuration**, pon la dirección de tu página en **Site URL** (y en **Redirect URLs**).
+5. Copia `.env.example` como `.env` y pega **Project URL** y la clave **anon public** (Project Settings → API). Vuelve a ejecutar `npm run build`.
+6. Para enviar muchos correos, conecta tu propio servidor de correo en **Authentication → Emails → SMTP Settings** (Resend, Brevo…): el correo incluido de Supabase solo manda unos pocos por hora y es para pruebas.
+
+Sin esas claves, la ventana de inicio de sesión dice «Muy pronto» y la tienda funciona igual. La versión de un solo archivo no puede conectarse a Supabase: el inicio de sesión funciona con la página publicada en un hosting.
+
 ## Fotos reales de producto
 
 Todas las prendas (Hombre, Mujer y Niños) usan fotos reales en lugar del modelo 3D (en `products.js` no llevan `garment`). Para agregar o cambiar una:

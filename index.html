@@ -39,6 +39,9 @@
             <span class="search-btn-label">Buscar</span>
             <kbd>/</kbd>
           </button>
+          <button class="account-btn" type="button" data-account-open aria-label="Iniciar sesión">
+            <i data-icon="user"></i>
+          </button>
           <button class="cart-btn" type="button" data-cart-open aria-label="Abrir carrito, 0 productos">
             <i data-icon="shopping-bag"></i>
             <span class="cart-btn-label">Carrito</span>
@@ -303,6 +306,9 @@
       <button class="shop-search shop-search--menu" type="button" data-search-open data-close>
         <i data-icon="search"></i><span>Buscar prendas…</span>
       </button>
+      <button class="shop-search shop-search--menu" type="button" data-account-open data-close>
+        <i data-icon="user"></i><span data-account-label>Iniciar sesión</span>
+      </button>
       <nav aria-label="Menú móvil">
         <ul class="mobile-links">
           <li><a href="#inicio" data-close>Inicio</a></li>
@@ -315,6 +321,55 @@
           <li><a href="#musica" data-close>Música</a></li>
         </ul>
       </nav>
+    </dialog>
+
+    <!-- Cuenta ------------------------------------------------------------- -->
+    <dialog data-lenis-prevent class="modal account" aria-labelledby="account-title" data-account>
+      <button class="icon-btn modal-close" type="button" aria-label="Cerrar" data-close><i data-icon="x"></i></button>
+      <div class="account-mark" aria-hidden="true"><i data-icon="user"></i></div>
+
+      <div data-step="email">
+        <h2 class="account-title" id="account-title">Inicia sesión</h2>
+        <p class="account-text">Escribe tu correo y te enviamos un código para entrar. Sin contraseñas. Si es tu primera vez, tu cuenta se crea sola.</p>
+        <form class="account-form" novalidate data-email-form>
+          <label for="account-email">Correo electrónico</label>
+          <input id="account-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com" required />
+          <p class="account-msg" role="alert" data-email-msg></p>
+          <button class="btn btn-primary btn-block" type="submit"><span>Enviar código</span></button>
+        </form>
+      </div>
+
+      <div data-step="code" hidden>
+        <h2 class="account-title">Revisa tu correo</h2>
+        <p class="account-text">Enviamos un código de 6 dígitos a <strong data-sent-to></strong>. Escríbelo aquí o abre el enlace del correo. Si no lo ves, busca en spam o promociones.</p>
+        <form class="account-form" novalidate data-code-form>
+          <label for="account-code">Código</label>
+          <input id="account-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="000000" class="code-input" required />
+          <p class="account-msg" role="alert" data-code-msg></p>
+          <button class="btn btn-primary btn-block" type="submit"><span>Entrar</span></button>
+        </form>
+        <div class="account-links">
+          <button class="link-btn" type="button" data-resend>Reenviar código</button>
+          <button class="link-btn" type="button" data-change-email>Cambiar correo</button>
+        </div>
+      </div>
+
+      <div data-step="account" hidden>
+        <p class="account-kicker">Sesión iniciada</p>
+        <h2 class="account-title">Tu cuenta</h2>
+        <dl class="account-data">
+          <div><dt>Correo</dt><dd data-user-email></dd></div>
+          <div><dt>ID de cuenta</dt><dd data-user-id></dd></div>
+        </dl>
+        <a class="btn btn-primary btn-block" href="#coleccion" data-close>Seguir comprando</a>
+        <button class="btn btn-outline btn-block" type="button" data-sign-out>Cerrar sesión</button>
+      </div>
+
+      <div data-step="setup" hidden>
+        <h2 class="account-title">Muy pronto</h2>
+        <p class="account-text">Estamos terminando de activar las cuentas. Mientras tanto puedes comprar sin iniciar sesión.</p>
+        <a class="btn btn-primary btn-block" href="#coleccion" data-close>Ver la colección</a>
+      </div>
     </dialog>
 
     <!-- Búsqueda ----------------------------------------------------------- -->

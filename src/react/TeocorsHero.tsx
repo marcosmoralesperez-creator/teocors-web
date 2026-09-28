@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useSyncExternalStore } from 'react';
 import {
   motion,
   useMotionValue,
@@ -13,6 +13,7 @@ import { SplineScene } from '@/components/ui/splite';
 import { Spotlight } from '@/components/ui/spotlight';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { SPLINE_HERO } from './config';
+import { accountId, getAuthState, subscribeAuth } from '@/lib/auth.js';
 import figuraMp4 from '@/assets/media/teocors-figura.mp4';
 import figuraWebm from '@/assets/media/teocors-figura.webm';
 import figuraPoster from '@/assets/media/teocors-figura-poster.webp';
@@ -76,6 +77,7 @@ function Word({ text, delay, className }: { text: string; delay: number; classNa
 export function TeocorsHero({ onOpenMenu, onOpenCart, onOpenSearch }: HeroProps) {
   const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
+  const { user } = useSyncExternalStore(subscribeAuth, getAuthState);
 
   // Inclinación 3D de la figura hacia el cursor.
   const px = useMotionValue(0);
@@ -181,9 +183,14 @@ export function TeocorsHero({ onOpenMenu, onOpenCart, onOpenSearch }: HeroProps)
           </nav>
 
           <div className="flex items-center gap-3 sm:gap-5">
-            <span className="hidden text-[13px] font-medium tracking-[0.01em] sm:inline sm:text-[15px]">
-              id de cuenta · 003.201
-            </span>
+            {/* Como en la imagen oficial: el ID de cuenta, o la invitación a entrar. */}
+            <button
+              type="button"
+              data-account-open
+              className="hidden cursor-pointer border-0 bg-transparent p-0 text-[13px] font-medium tracking-[0.01em] text-bone underline-offset-4 hover:underline sm:inline sm:text-[15px]"
+            >
+              {user ? `id de cuenta · ${accountId(user)}` : 'iniciar sesión'}
+            </button>
             <button
               type="button"
               onClick={onOpenSearch}
