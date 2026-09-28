@@ -330,26 +330,26 @@
 
       <div data-step="email">
         <h2 class="account-title" id="account-title">Inicia sesión</h2>
-        <p class="account-text">Escribe tu correo y te enviamos un código para entrar. Sin contraseñas. Si es tu primera vez, tu cuenta se crea sola.</p>
+        <p class="account-text">Escribe tu correo y te enviamos un enlace para entrar. Sin contraseñas. Si es tu primera vez, tu cuenta se crea sola.</p>
         <form class="account-form" novalidate data-email-form>
           <label for="account-email">Correo electrónico</label>
           <input id="account-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com" required />
           <p class="account-msg" role="alert" data-email-msg></p>
-          <button class="btn btn-primary btn-block" type="submit"><span>Enviar código</span></button>
+          <button class="btn btn-primary btn-block" type="submit"><span>Enviar enlace</span></button>
         </form>
       </div>
 
       <div data-step="code" hidden>
         <h2 class="account-title">Revisa tu correo</h2>
-        <p class="account-text">Enviamos un código de 6 dígitos a <strong data-sent-to></strong>. Escríbelo aquí o abre el enlace del correo. Si no lo ves, busca en spam o promociones.</p>
+        <p class="account-text">Enviamos un correo a <strong data-sent-to></strong>. <strong>Ábrelo y toca el enlace para entrar</strong>; esta página se abrirá con tu sesión iniciada. Si no lo ves, busca en spam o promociones.</p>
         <form class="account-form" novalidate data-code-form>
-          <label for="account-code">Código</label>
+          <label for="account-code">¿Tu correo trae un código? Escríbelo aquí</label>
           <input id="account-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="000000" class="code-input" required />
           <p class="account-msg" role="alert" data-code-msg></p>
           <button class="btn btn-primary btn-block" type="submit"><span>Entrar</span></button>
         </form>
         <div class="account-links">
-          <button class="link-btn" type="button" data-resend>Reenviar código</button>
+          <button class="link-btn" type="button" data-resend>Reenviar correo</button>
           <button class="link-btn" type="button" data-change-email>Cambiar correo</button>
         </div>
       </div>

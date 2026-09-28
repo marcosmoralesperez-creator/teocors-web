@@ -91,7 +91,7 @@ El envío de correos lo hace **Supabase** (gratis). Para activarlo:
 
 1. Crea una cuenta y un proyecto en [supabase.com](https://supabase.com).
 2. En **Authentication → Sign In / Providers**, deja activado **Email**.
-3. En **Authentication → Emails → Magic Link**, cambia la plantilla para que incluya el código, por ejemplo:
+3. Sin SMTP propio, Supabase usa su correo por defecto, que trae **un enlace** para entrar (la tienda ya lo explica así). Para que además traiga el código, conecta un SMTP (paso 6) y en **Authentication → Emails → Magic link or OTP** cambia la plantilla, por ejemplo:
    ```html
    <h2>Tu código para entrar a TEOCORS</h2>
    <p style="font-size:28px;letter-spacing:6px"><strong>{{ .Token }}</strong></p>

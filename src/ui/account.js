@@ -53,15 +53,15 @@ export function setupAccount() {
     let left = RESEND_SECONDS;
     clearInterval(timer);
     resend.disabled = true;
-    resend.textContent = `Reenviar código (${left} s)`;
+    resend.textContent = `Reenviar correo (${left} s)`;
     timer = setInterval(() => {
       left -= 1;
       if (left <= 0) {
         clearInterval(timer);
         resend.disabled = false;
-        resend.textContent = 'Reenviar código';
+        resend.textContent = 'Reenviar correo';
       } else {
-        resend.textContent = `Reenviar código (${left} s)`;
+        resend.textContent = `Reenviar correo (${left} s)`;
       }
     }, 1000);
   }
@@ -77,7 +77,7 @@ export function setupAccount() {
       if (authPreviewOnly) {
         dialog.querySelector('[data-setup-title]').textContent = 'Inicia sesión en la tienda publicada';
         dialog.querySelector('[data-setup-text]').textContent =
-          'Esta es una vista previa y no puede enviar correos. En la página publicada en internet, aquí escribes tu correo y te llega un código para entrar.';
+          'Esta es una vista previa y no puede enviar correos. En la página publicada en internet, aquí escribes tu correo y te llega un enlace para entrar.';
       }
       show('setup');
     }
@@ -115,7 +115,7 @@ export function setupAccount() {
     say(emailMsg, '');
     busy(emailForm, true, 'Enviando…');
     const { error } = await sendSignInEmail(email);
-    busy(emailForm, false, 'Enviar código');
+    busy(emailForm, false, 'Enviar enlace');
     if (error) {
       say(emailMsg, error);
       return;
@@ -131,7 +131,7 @@ export function setupAccount() {
     e.preventDefault();
     const code = codeInput.value.replace(/\D/g, '');
     if (code.length < 6) {
-      say(codeMsg, 'El código tiene 6 dígitos. Lo encuentras en el correo que te enviamos.');
+      say(codeMsg, 'El código tiene 6 dígitos. Si tu correo solo trae un enlace, tócalo para entrar.');
       codeInput.focus();
       return;
     }
@@ -144,7 +144,7 @@ export function setupAccount() {
 
   resend.addEventListener('click', async () => {
     const { error } = await sendSignInEmail(email);
-    say(codeMsg, error || 'Te enviamos un código nuevo.', !!error);
+    say(codeMsg, error || 'Te enviamos un correo nuevo.', !!error);
     if (!error) startCooldown();
   });
 
@@ -163,11 +163,17 @@ export function setupAccount() {
     if (e.target.closest('[data-account-open]')) open();
   });
 
+  // Read before Supabase consumes the URL: did they arrive from the email link?
+  const back = location.hash + location.search;
+  const cameFromLink = /access_token|type=magiclink|[?&]code=/.test(back);
+  const linkError = /error_code=/.test(back);
+
   initAuth().then(() => {
-    // Came back from the link in the email: greet them with their account.
-    if (getAuthState().user && /access_token|type=magiclink|code=/.test(location.hash + location.search)) {
-      history.replaceState(null, '', location.pathname);
+    if (cameFromLink || linkError) history.replaceState(null, '', location.pathname);
+    if (getAuthState().user && cameFromLink) open();
+    else if (linkError) {
       open();
+      say(emailMsg, 'Ese enlace ya venció o ya se usó. Escribe tu correo y te enviamos uno nuevo.');
     }
   });
 
