@@ -22,6 +22,13 @@ const SYNONYMS = {
   capota: 'hoodie',
   playera: 'camiseta',
   camisa: 'camiseta',
+  blusa: 'top',
+  minifalda: 'falda',
+  pollera: 'falda',
+  corderoy: 'pana',
+  pelo: 'peludo',
+  amarilla: 'mostaza amarillo',
+  marron: 'cafe',
   franela: 'camiseta',
   tshirt: 'camiseta',
   jean: 'denim',
@@ -48,7 +55,7 @@ const SYNONYMS = {
   beige: 'arena crema',
   gris: 'grafito niebla',
   azul: 'medianoche noche denim marino',
-  cafe: 'moca',
+  cafe: 'cafe tabaco',
   vinotinto: 'borgona',
 };
 

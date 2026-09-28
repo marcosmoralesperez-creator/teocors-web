@@ -20,7 +20,7 @@ const SORTS = {
 };
 
 // Two pieces per section for the tiles, front one first.
-const TILE_PIECES = { hombre: ['chaqueta-denim', 'bermuda-camo'], mujer: ['niebla', 'crop-hueso'], ninos: ['ninos-puffer', 'ninos-rugby-amarillo'] };
+const TILE_PIECES = { hombre: ['chaqueta-denim', 'bermuda-camo'], mujer: ['mujer-bomber-cuadros', 'mujer-falda-pana'], ninos: ['ninos-puffer', 'ninos-rugby-amarillo'] };
 
 function tileHTML(d) {
   const n = inDept(d.id).length;
@@ -80,7 +80,7 @@ const SIZE_TABLES = {
     ],
   },
   mujer: {
-    note: 'Corte boxy. Las crop miden 12 cm menos de largo que la tabla.',
+    note: 'Medidas de camisetas, tops y chaquetas. En jean y falda la talla va por cintura: XS 64, S 68, M 72 y L 76 cm.',
     head: ['Talla', 'Ancho de pecho', 'Largo total', 'Manga'],
     rows: [
       ['XS', 50, 60, 19],
@@ -137,7 +137,9 @@ export function setupCatalog({ cart, cartUI }) {
       // Counts follow the active search.
       b.querySelector('.chip-count').textContent = inDept(b.dataset.dept).filter((p) => !found || found.has(p)).length;
     });
+    // Only garment types the catalog actually carries.
     filters.innerHTML = categories
+      .filter((c) => c.id === 'all' || products.some((p) => p.category === c.id))
       .map((c) => {
         const n = c.id === 'all' ? pool.length : pool.filter((p) => p.category === c.id).length;
         return `<button type="button" class="chip" data-filter="${c.id}" aria-pressed="${c.id === state.cat}" ${n ? '' : 'disabled'}>${c.label}<span class="chip-count">${n}</span></button>`;
