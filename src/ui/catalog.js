@@ -10,7 +10,7 @@ const categoryLabel = (id) => categories.find((c) => c.id === id)?.label ?? '';
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const ease = [0.22, 1, 0.36, 1];
 
-const sizeRange = (d) => `${d.sizes[0]}–${d.sizes[d.sizes.length - 1]}${d.id === 'ninos' ? ' años' : ''}`;
+const sizeRange = (d) => d.range ?? `${d.sizes[0]}–${d.sizes[d.sizes.length - 1]}`;
 const inDept = (dept) => (dept === 'all' ? products : products.filter((p) => p.department === dept));
 
 const SORTS = {
@@ -90,7 +90,7 @@ const SIZE_TABLES = {
     ],
   },
   ninos: {
-    note: 'La talla es la edad. Si está entre dos, elige la mayor.',
+    note: 'Hasta la 12, la talla es la edad; la 14 va de 13 a 15 años. Si está entre dos, elige la mayor.',
     head: ['Talla', 'Edad', 'Ancho de pecho', 'Largo total'],
     rows: [
       ['4', '3–4 años', 36, 44],
@@ -98,6 +98,7 @@ const SIZE_TABLES = {
       ['8', '7–8 años', 41, 52],
       ['10', '9–10 años', 44, 56],
       ['12', '11–12 años', 47, 60],
+      ['14', '13–15 años', 51, 65],
     ],
   },
 };

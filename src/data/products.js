@@ -5,7 +5,8 @@
 export const departments = [
   { id: 'hombre', label: 'Hombre', sizes: ['S', 'M', 'L', 'XL'], lead: 'Denim lavado, cargo y siluetas amplias.' },
   { id: 'mujer', label: 'Mujer', sizes: ['XS', 'S', 'M', 'L'], lead: 'Siluetas boxy y crop, en la misma paleta neutra.' },
-  { id: 'ninos', label: 'Niños', sizes: ['4', '6', '8', '10', '12'], lead: 'Colegio, recreo y fin de semana, en tallas de 4 a 12 años.' },
+  // La talla 14 cubre de 13 a 15 años; `range` es lo que se muestra en la tienda.
+  { id: 'ninos', label: 'Niños', sizes: ['4', '6', '8', '10', '12', '14'], range: '4–15 años', lead: 'Colegio, recreo y fin de semana, en tallas de 4 a 15 años.' },
 ];
 
 export const categories = [

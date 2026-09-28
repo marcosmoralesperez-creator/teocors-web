@@ -71,7 +71,7 @@ La sección «Personaliza» usa hoy la escena de ejemplo del componente (`SPLINE
 
 ## Tienda por secciones
 
-La tienda está dividida en **Hombre**, **Mujer** y **Niños**. Cada prenda tiene `department` en `src/data/products.js`, y cada sección define sus tallas (Hombre S–XL, Mujer XS–L, Niños 4–12 años). En la página:
+La tienda está dividida en **Hombre**, **Mujer** y **Niños**. Cada prenda tiene `department` en `src/data/products.js`, y cada sección define sus tallas (Hombre S–XL, Mujer XS–L, Niños 4–14, es decir de 4 a 15 años). En la página:
 
 - El bloque «Compra por sección» lleva a la tienda ya filtrada.
 - La tienda tiene pestañas de sección, filtro por tipo de prenda y orden por precio.
