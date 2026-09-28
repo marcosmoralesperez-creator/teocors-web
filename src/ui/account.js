@@ -1,6 +1,7 @@
 import { openDialog } from './dialogs.js';
 import {
   authConfigured,
+  authPreviewOnly,
   initAuth,
   getAuthState,
   subscribeAuth,
@@ -72,7 +73,14 @@ export function setupAccount() {
 
   function open() {
     const { user } = getAuthState();
-    if (!authConfigured) show('setup');
+    if (!authConfigured) {
+      if (authPreviewOnly) {
+        dialog.querySelector('[data-setup-title]').textContent = 'Inicia sesión en la tienda publicada';
+        dialog.querySelector('[data-setup-text]').textContent =
+          'Esta es una vista previa y no puede enviar correos. En la página publicada en internet, aquí escribes tu correo y te llega un código para entrar.';
+      }
+      show('setup');
+    }
     else if (user) {
       renderSignedIn(user);
       show('account');

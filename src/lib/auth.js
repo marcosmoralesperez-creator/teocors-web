@@ -2,15 +2,20 @@
 // The person types their email, Supabase emails them a 6-digit code and a
 // sign-in link, and either one opens the session.
 //
-// Configure in .env (see .env.example and the README):
-//   VITE_SUPABASE_URL=https://<project>.supabase.co
-//   VITE_SUPABASE_ANON_KEY=<public anon key>
+// TEOCORS project. The publishable key is public by design (it only allows
+// what the project's Auth and RLS rules allow), so it can live in the code.
+// .env can override both (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY).
+const url = import.meta.env.VITE_SUPABASE_URL || 'https://spvuebicjfoslhmnogcb.supabase.co';
+const key = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_FNji7dPeyFp4_b91FXyISg_sKW6X6D7';
 
-const url = import.meta.env.VITE_SUPABASE_URL;
-const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
+/**
+ * The single-file build is opened from disk or inside a preview that blocks
+ * connections to other sites, so sign-in stays off there and says why.
+ */
+export const authPreviewOnly = import.meta.env.MODE === 'single';
 
-/** False until the project keys are set; the UI explains it instead of failing. */
-export const authConfigured = Boolean(url && key);
+/** False when sign-in can't run here; the UI explains it instead of failing. */
+export const authConfigured = Boolean(url && key) && !authPreviewOnly;
 
 let client = null;
 let state = { user: null, ready: !authConfigured };

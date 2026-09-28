@@ -96,10 +96,10 @@ El envío de correos lo hace **Supabase** (gratis). Para activarlo:
    <p>O entra con este enlace: <a href="{{ .ConfirmationURL }}">Iniciar sesión</a></p>
    ```
 4. En **Authentication → URL Configuration**, pon la dirección de tu página en **Site URL** (y en **Redirect URLs**).
-5. Copia `.env.example` como `.env` y pega **Project URL** y la clave **anon public** (Project Settings → API). Vuelve a ejecutar `npm run build`.
+5. La página ya está conectada al proyecto de TEOCORS (`spvuebicjfoslhmnogcb`, clave publicable en `src/lib/auth.js`). Para usar otro proyecto, pon sus datos en `.env` (ver `.env.example`).
 6. Para enviar muchos correos, conecta tu propio servidor de correo en **Authentication → Emails → SMTP Settings** (Resend, Brevo…): el correo incluido de Supabase solo manda unos pocos por hora y es para pruebas.
 
-Sin esas claves, la ventana de inicio de sesión dice «Muy pronto» y la tienda funciona igual. La versión de un solo archivo no puede conectarse a Supabase: el inicio de sesión funciona con la página publicada en un hosting.
+La versión de un solo archivo no puede conectarse a Supabase, así que ahí la ventana explica que es una vista previa: el inicio de sesión funciona con la página publicada en un hosting (por ejemplo, arrastrando la carpeta `dist/` a [app.netlify.com/drop](https://app.netlify.com/drop)).
 
 ## Fotos reales de producto
 
