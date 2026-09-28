@@ -20,7 +20,7 @@ const SORTS = {
 };
 
 // Two pieces per section for the tiles, front one first.
-const TILE_PIECES = { hombre: ['chaqueta-denim', 'bermuda-camo'], mujer: ['niebla', 'crop-hueso'], ninos: ['mini-grafito', 'mini-arena'] };
+const TILE_PIECES = { hombre: ['chaqueta-denim', 'bermuda-camo'], mujer: ['niebla', 'crop-hueso'], ninos: ['ninos-puffer', 'ninos-rugby-amarillo'] };
 
 function tileHTML(d) {
   const n = inDept(d.id).length;
