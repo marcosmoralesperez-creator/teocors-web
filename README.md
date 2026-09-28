@@ -8,6 +8,8 @@ Sitio de la marca de ropa TEOCORS: portada fiel a la imagen oficial 2026 (TEO ·
 - Estructura **shadcn/ui**: componentes en `src/components/ui/`, utilidad `cn()` en `src/lib/utils.ts`, alias `@/` → `src/` (ver `components.json`). Así `npx shadcn@latest add <componente>` los deja en el lugar correcto.
 - Tailwind se carga **sin preflight** (el sitio ya tiene su reset) y solo escanea `src/components` y `src/react`, para no chocar con los estilos existentes (`src/app.css`).
 
+**Tienda publicada:** https://harmonious-hotteok-4241de.netlify.app (Netlify; para actualizarla, `npm run build` y sube la carpeta `dist/` en Deploys).
+
 ## Cómo verlo
 
 ```bash
