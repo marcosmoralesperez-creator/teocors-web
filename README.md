@@ -1,5 +1,7 @@
 # TEOCORS — tienda web
 
+> En este repositorio también está **Casa del Sebas**, una tienda de joyería en oro de 18k hecha con React + Tailwind + shadcn. Vive en [`casa-del-sebas/`](casa-del-sebas/README.md) y tiene su propio `package.json`.
+
 Sitio de la marca de ropa TEOCORS: tema oscuro, una camiseta en 3D (three.js) que se mueve como tela en la portada, colección con vista rápida y carrito, y la sección **Música por amigos del colegio de Marko**.
 
 ## Cómo verlo

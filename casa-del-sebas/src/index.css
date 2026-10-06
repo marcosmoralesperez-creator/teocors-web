@@ -1,0 +1,168 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Bodoni Moda', 'Didot', 'Times New Roman', serif;
+  --font-sans: 'Jost Variable', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Casa del Sebas: the sand of the house photo, warm ink and 18k gold. */
+  --color-sand: #cdc4a7;
+  --color-sand-soft: #ddd6bf;
+  --color-ivory: #f5f1e7;
+  --color-paper: #fbf9f3;
+  --color-ink: #17140f;
+  --color-ink-soft: #4a4337;
+  --color-noir: #0d0c0a;
+  --color-gold: #b8862c;
+  --color-gold-bright: #e2b75c;
+  --color-gold-pale: #f1dcaa;
+
+  /* shadcn/ui tokens used by the copied components. */
+  --color-background: var(--color-ivory);
+  --color-foreground: var(--color-ink);
+  --color-card: var(--color-paper);
+  --color-card-foreground: var(--color-ink);
+  --color-muted-foreground: #6e6555;
+  --color-border: #d9d0b8;
+
+  --animate-marquee: marquee 38s linear infinite;
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-gold-pale);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
+  dialog::backdrop {
+    background: rgb(13 12 10 / 0.55);
+    backdrop-filter: blur(3px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.02;
+  }
+  .gold-text {
+    background: linear-gradient(100deg, #8a5f17 0%, #e2b75c 30%, #f8e3a8 48%, #c99637 66%, #8a5f17 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3rem;
+    padding: 0 1.6rem;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    transition:
+      background-color 0.25s,
+      color 0.25s,
+      border-color 0.25s,
+      transform 0.25s;
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn-dark {
+    background: var(--color-ink);
+    color: var(--color-ivory);
+  }
+  .btn-dark:hover {
+    background: #2b251c;
+  }
+  .btn-gold {
+    background: linear-gradient(100deg, #b07f26, #e2b75c 45%, #b8862c);
+    color: var(--color-ink);
+  }
+  .btn-gold:hover {
+    filter: brightness(1.06);
+  }
+  .btn-line {
+    border: 1px solid currentColor;
+  }
+  .btn-line:hover {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: var(--color-ivory);
+  }
+  .field {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 0.9rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    font-size: 1rem;
+    color: inherit;
+    transition: border-color 0.2s;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--color-gold);
+  }
+
+  /* Fallback shown by <SplineScene> while the 3D runtime loads. */
+  .loader {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgb(226 183 92 / 0.2);
+    border-top-color: var(--color-gold-bright);
+    animation: loader-spin 0.9s linear infinite;
+  }
+  @keyframes loader-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
