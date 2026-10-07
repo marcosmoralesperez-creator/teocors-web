@@ -64,12 +64,12 @@ export function Categories({ onPick }: { onPick: (id: CategoryId) => void }) {
                   loading="lazy"
                   className="size-full object-contain p-3 transition-transform duration-700 ease-out group-hover:scale-[1.06]"
                 />
-                <span className="eyebrow absolute top-3 left-3 bg-gold-bright px-2.5 py-1.5 text-[0.56rem] text-ink">Con tu nombre</span>
+                <span className="eyebrow absolute top-3 left-3 bg-gold-bright px-2.5 py-1.5 text-[0.56rem] text-ink">Personaliza</span>
               </div>
               <div className="mt-4">
-                <span className="display block text-xl leading-tight xl:text-2xl">Personalizadas</span>
+                <span className="display block text-xl leading-tight xl:text-2xl">Crea tu estilo</span>
                 <span className="mt-1 flex items-center gap-1 text-xs text-ink-soft">
-                  Crea tu cadena <ArrowUpRight className="size-3.5" strokeWidth={1.5} />
+                  Arma tu pieza <ArrowUpRight className="size-3.5" strokeWidth={1.5} />
                 </span>
               </div>
             </a>
@@ -97,7 +97,7 @@ export function Catalog({ filter, setFilter, onView }: { filter: CategoryId | 't
         <SectionHeading
           eyebrow="La colección"
           title={<span id="coleccion-titulo">Piezas de la casa</span>}
-          intro="Las piezas listas de la casa, todas en oro macizo de 18k. Los precios incluyen certificado, estuche y envío asegurado a cualquier ciudad de Colombia. ¿Quieres tu nombre en la cadena? Mira las personalizables más abajo."
+          intro="Las piezas listas de la casa, todas en oro macizo de 18k. Los precios incluyen certificado, estuche y envío asegurado a cualquier ciudad de Colombia. ¿Quieres armar la tuya? Más abajo está Crea tu estilo."
         />
 
         <div className="mt-12 flex flex-col gap-4 border-y border-border py-4 sm:flex-row sm:items-center sm:justify-between">

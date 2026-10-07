@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 const links = [
   { href: '#coleccion', label: 'Colección' },
-  { href: '#personaliza', label: 'Personaliza' },
+  { href: '#personaliza', label: 'Crea tu estilo' },
   { href: '#a-medida', label: 'A medida' },
 ];
 

@@ -191,6 +191,17 @@ const shots = {
     });
     return g;
   },
+  // Single earrings for "Crea tu estilo" (one ear only).
+  'topos-solitario--uno': () => {
+    const st = stud(m, 0.13);
+    st.rotation.x = -0.9;
+    return st;
+  },
+  'argollas-cubanas--uno': () => {
+    const hoop = cubanRing(m, { radius: 0.36, width: 0.15, iced: false });
+    hoop.rotation.z = 0.4;
+    return layFlat(hoop);
+  },
   'argollas-cubanas': () => {
     const g = new THREE.Group();
     [[-0.3, 0.15, 0.4], [0.28, -0.2, -0.3]].forEach(([x, y, spin]) => {
@@ -217,8 +228,8 @@ for (const [id, spec] of Object.entries(manillas)) {
 }
 
 // Camera elevation per shot (radians above the table); flat pieces are seen from higher up.
-const elevation = { 'anillo-sello': 0.42, 'anillo-cubano-iced': 0.5, 'topos-solitario': 0.45 };
-const zoom = { 'detalle-iced': 0.62 };
+const elevation = { 'anillo-sello': 0.42, 'anillo-cubano-iced': 0.5, 'topos-solitario': 0.45 , 'topos-solitario--uno': 0.45 };
+const zoom = { 'detalle-iced': 0.62 , 'topos-solitario--uno': 2.3, 'argollas-cubanas--uno': 1.5 };
 
 /** World box that accounts for every instance (Box3.setFromObject does not). */
 function boxOf(object) {

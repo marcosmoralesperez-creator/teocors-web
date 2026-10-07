@@ -1,4 +1,4 @@
-// Configurador de "Crea tu cadena": tipos, grosores, largos, dijes y precios.
+// Cadenas de "Crea tu estilo": tipos, grosores, largos, dijes y precios.
 // Los precios de cada grosor son para 55 cm; otro largo se cobra en proporción.
 
 export type ChainType = 'cubana' | 'franco' | 'soga' | 'tenis';

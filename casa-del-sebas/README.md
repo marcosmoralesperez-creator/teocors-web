@@ -1,6 +1,6 @@
 # Casa del Sebas — tienda web
 
-Joyería en oro de 18k: cubanas, tenis y dijes iced. La portada usa la foto de la mano con cadenas sobre fondo arena; el resto del sitio toma de ahí sus colores. Incluye catálogo con filtros (cadenas normales, pulsos, manillas tejidas, dijes, anillos y aretes), **Crea tu cadena** (cadenas personalizables con nombre, placa grabada o inicial y precio en vivo), ficha de cada pieza (talla, grabado), bolsa de compra, pedido por WhatsApp, sección "A medida" con la escena 3D de Spline, explicación del oro 18k y preguntas frecuentes.
+Joyería en oro de 18k: cubanas, tenis y dijes iced. La portada usa la foto de la mano con cadenas sobre fondo arena; el resto del sitio toma de ahí sus colores. Incluye catálogo con filtros (cadenas normales, pulsos, manillas tejidas, dijes, anillos y aretes), **Crea tu estilo** (el cliente arma su cadena, pulso, manilla tejida, aretes o anillo, con foto y precio en vivo), ficha de cada pieza (talla, grabado), bolsa de compra, pedido por WhatsApp, sección "A medida" con la escena 3D de Spline, explicación del oro 18k y preguntas frecuentes.
 
 Proyecto aparte de la tienda TEOCORS (la carpeta raíz del repositorio): tiene su propio `package.json`.
 
@@ -65,7 +65,8 @@ Es la carpeta donde la CLI de shadcn (`npx shadcn@latest add …`) instala los c
 | --------------------------------------- | ---------------------------------------- |
 | Número de WhatsApp e Instagram          | `src/lib/site.ts`                        |
 | Productos, precios, tallas, descripción | `src/data/products.ts`                   |
-| Cadenas personalizables: tipos, grosores, precios, dijes y combinaciones listas | `src/data/custom-chain.ts` |
+| Crea tu estilo: cadenas (tipos, grosores, dijes) | `src/data/custom-chain.ts` |
+| Crea tu estilo: pulsos, manillas, aretes, anillos y combinaciones listas | `src/data/custom-style.ts` |
 | Foto de la portada                      | `src/assets/photos/hero.webp`            |
 | Puntos "+" sobre la foto                | `hotspots` en `src/components/sections/hero.tsx` |
 | Colores y tipografías                   | `@theme` en `src/index.css`              |
