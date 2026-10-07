@@ -1,7 +1,7 @@
 import { ChevronDown, Clock, MapPin } from 'lucide-react';
 import { Reveal, SectionHeading } from '@/components/reveal';
 import { InstagramIcon, Monogram, WhatsAppIcon } from '@/components/brand-icons';
-import { INSTAGRAM_URL, whatsappLink } from '@/lib/site';
+import { INSTAGRAM_URL, WHATSAPP_DISPLAY, whatsappLink } from '@/lib/site';
 
 export function Gold18k() {
   const tones = [
@@ -122,6 +122,9 @@ export function Visit() {
             <MapPin className="size-4 text-gold-bright" strokeWidth={1.5} /> Showroom con cita · Colombia
           </span>
           <span className="flex items-center gap-2">
+            <WhatsAppIcon className="size-4 text-gold-bright" /> WhatsApp {WHATSAPP_DISPLAY}
+          </span>
+          <span className="flex items-center gap-2">
             <Clock className="size-4 text-gold-bright" strokeWidth={1.5} /> Lunes a sábado, 10:00 a 19:00
           </span>
         </div>
@@ -138,7 +141,7 @@ export function Footer() {
     {
       title: 'Contacto',
       links: [
-        ['WhatsApp', whatsappLink('Hola, Casa del Sebas.')],
+        [`WhatsApp ${WHATSAPP_DISPLAY}`, whatsappLink('Hola, Casa del Sebas.')],
         ['Instagram', INSTAGRAM_URL],
       ],
     },

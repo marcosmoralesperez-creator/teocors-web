@@ -84,7 +84,7 @@ Usa Chromium con `playwright-core`. Si no lo tienes, ejecuta `npx playwright ins
 
 ## Pendiente antes de vender
 
-- Poner el número real de WhatsApp y el enlace de Instagram en `src/lib/site.ts` (hoy hay uno de ejemplo).
+- Poner el enlace real de Instagram en `src/lib/site.ts` (el WhatsApp ya es el 312 343 0942).
 - Revisar precios, pesos, cantidad de diamantes, tiempos de entrega y la política de cambios de 15 días: son de ejemplo.
 - Confirmar el tipo de diamante que se vende (el sitio dice "de laboratorio VS") y la ciudad del showroom.
 - Si quieres cobrar en línea, conecta una pasarela de pago (Wompi, Mercado Pago…). Hoy el pedido se cierra por WhatsApp.
