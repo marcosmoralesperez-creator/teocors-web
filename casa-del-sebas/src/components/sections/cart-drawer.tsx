@@ -1,6 +1,6 @@
 import { Minus, Plus, ShoppingBag, X } from 'lucide-react';
-import { formatPrice, productById, productImage } from '@/data/products';
-import { unitPrice, useCart } from '@/lib/cart';
+import { formatPrice } from '@/data/products';
+import { lineInfo, unitPrice, useCart } from '@/lib/cart';
 import { whatsappLink } from '@/lib/site';
 import { SheetDialog } from '@/components/sheet-dialog';
 import { WhatsAppIcon } from '@/components/brand-icons';
@@ -12,8 +12,8 @@ export function CartDrawer() {
     'Hola, Casa del Sebas. Quiero hacer este pedido:',
     '',
     ...items.map((i) => {
-      const p = productById(i.id)!;
-      return `• ${i.qty} × ${p.name} — ${i.size}${i.engraving ? ` — grabado «${i.engraving}»` : ''} — ${formatPrice(unitPrice(i) * i.qty)}`;
+      const { name, detail } = lineInfo(i);
+      return `• ${i.qty} × ${name} (${detail}) — ${formatPrice(unitPrice(i) * i.qty)}`;
     }),
     '',
     `Total: ${formatPrice(subtotal)}`,
@@ -44,27 +44,24 @@ export function CartDrawer() {
           <>
             <ul className="flex-1 divide-y divide-border overflow-y-auto px-6">
               {items.map((i) => {
-                const p = productById(i.id)!;
+                const { name, detail, image } = lineInfo(i);
                 return (
                   <li key={`${i.id}-${i.size}-${i.engraving}`} className="flex gap-4 py-5">
-                    <img src={productImage(p.id)} alt="" className="h-24 w-20 shrink-0 bg-sand-soft object-contain" />
+                    <img src={image} alt="" className="h-24 w-20 shrink-0 bg-sand-soft object-contain" />
                     <div className="flex flex-1 flex-col">
                       <div className="flex justify-between gap-3">
-                        <p className="display text-lg leading-tight">{p.name}</p>
+                        <p className="display text-lg leading-tight">{name}</p>
                         <p className="text-sm whitespace-nowrap">{formatPrice(unitPrice(i) * i.qty)}</p>
                       </div>
-                      <p className="mt-1 text-xs text-ink-soft">
-                        {i.size}
-                        {i.engraving && ` · Grabado «${i.engraving}»`}
-                      </p>
+                      <p className="mt-1 text-xs leading-relaxed text-ink-soft">{detail}</p>
                       <div className="mt-auto flex items-center gap-1 pt-3">
-                        <button type="button" onClick={() => setQty(i, i.qty - 1)} className="inline-flex size-9 items-center justify-center border border-border" aria-label={`Quitar una ${p.name}`}>
+                        <button type="button" onClick={() => setQty(i, i.qty - 1)} className="inline-flex size-9 items-center justify-center border border-border" aria-label={`Quitar una ${name}`}>
                           <Minus className="size-3.5" strokeWidth={1.5} />
                         </button>
                         <span className="w-8 text-center text-sm" aria-label="Cantidad">
                           {i.qty}
                         </span>
-                        <button type="button" onClick={() => setQty(i, i.qty + 1)} className="inline-flex size-9 items-center justify-center border border-border" aria-label={`Agregar una ${p.name}`}>
+                        <button type="button" onClick={() => setQty(i, i.qty + 1)} className="inline-flex size-9 items-center justify-center border border-border" aria-label={`Agregar una ${name}`}>
                           <Plus className="size-3.5" strokeWidth={1.5} />
                         </button>
                         <button type="button" onClick={() => setQty(i, 0)} className="ml-auto text-xs text-ink-soft underline underline-offset-4 hover:text-ink">

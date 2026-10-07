@@ -7,6 +7,7 @@ import { Hero, TrustMarquee } from '@/components/sections/hero';
 import { Catalog, Categories } from '@/components/sections/catalog';
 import { Bespoke, Closeup } from '@/components/sections/craft';
 import { Care, Footer, Gold18k, Visit, WhatsAppFloat } from '@/components/sections/info';
+import { Configurator } from '@/components/sections/configurator';
 import { ProductDialog } from '@/components/sections/product-dialog';
 import { CartDrawer } from '@/components/sections/cart-drawer';
 
@@ -27,6 +28,7 @@ export default function App() {
           <Categories onPick={setFilter} />
           <Closeup />
           <Catalog filter={filter} setFilter={setFilter} onView={setViewing} />
+          <Configurator />
           <Bespoke />
           <Gold18k />
           <Care />

@@ -24,14 +24,14 @@ export function Categories({ onPick }: { onPick: (id: CategoryId) => void }) {
           <Reveal>
             <p className="eyebrow text-gold">Comprar por pieza</p>
             <h2 id="categorias-titulo" className="display mt-3 text-4xl sm:text-5xl">
-              Cinco maneras de llevar oro
+              Elige cómo llevar el oro
             </h2>
           </Reveal>
           <a href="#coleccion" className="eyebrow inline-flex items-center gap-2 text-ink hover:text-gold">
             Toda la colección <ArrowUpRight className="size-4" strokeWidth={1.5} />
           </a>
         </div>
-        <div className="mt-10 -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-5 sm:overflow-visible sm:px-0">
+        <div className="mt-10 -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 lg:grid-cols-6">
           {categories.map((c, i) => (
             <Reveal key={c.id} delay={i * 0.06} className="w-[58vw] shrink-0 snap-start sm:w-auto">
               <a
@@ -54,6 +54,23 @@ export function Categories({ onPick }: { onPick: (id: CategoryId) => void }) {
               </a>
             </Reveal>
           ))}
+          <Reveal delay={0.3} className="w-[58vw] shrink-0 snap-start sm:w-auto">
+            <a href="#personaliza" className="group block">
+              <div className="relative aspect-[4/5] overflow-hidden bg-ink">
+                <img
+                  src={productImage('inicial-s')}
+                  alt=""
+                  loading="lazy"
+                  className="size-full object-contain p-3 transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+                />
+                <span className="eyebrow absolute top-3 left-3 bg-gold-bright px-2.5 py-1.5 text-[0.56rem] text-ink">Con tu nombre</span>
+              </div>
+              <div className="mt-4 flex items-center justify-between">
+                <span className="display text-2xl">Personalizadas</span>
+                <ArrowUpRight className="size-4 text-ink-soft" strokeWidth={1.5} />
+              </div>
+            </a>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -77,7 +94,7 @@ export function Catalog({ filter, setFilter, onView }: { filter: CategoryId | 't
         <SectionHeading
           eyebrow="La colección"
           title={<span id="coleccion-titulo">Piezas de la casa</span>}
-          intro="Todo en oro macizo de 18k. Los precios incluyen el certificado, el estuche y el envío asegurado a cualquier ciudad de Colombia."
+          intro="Las piezas listas de la casa, todas en oro macizo de 18k. Los precios incluyen certificado, estuche y envío asegurado a cualquier ciudad de Colombia. ¿Quieres tu nombre en la cadena? Mira las personalizables más abajo."
         />
 
         <div className="mt-12 flex flex-col gap-4 border-y border-border py-4 sm:flex-row sm:items-center sm:justify-between">

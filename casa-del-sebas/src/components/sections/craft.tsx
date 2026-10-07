@@ -54,6 +54,7 @@ const budgets = ['Hasta $10.000.000', '$10.000.000 a $25.000.000', '$25.000.000 
 
 export function Bespoke() {
   const [error, setError] = useState('');
+  const [link, setLink] = useState('');
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,7 +73,7 @@ export function Bespoke() {
       `Presupuesto: ${f.get('presupuesto')}`,
       `Idea: ${idea}`,
     ].join('\n');
-    window.open(whatsappLink(message), '_blank', 'noopener');
+    setLink(whatsappLink(message));
   };
 
   return (
@@ -148,9 +149,20 @@ export function Bespoke() {
                   {error}
                 </p>
               )}
-              <button type="submit" className="btn btn-dark sm:col-span-2 sm:justify-self-start">
-                Enviar por WhatsApp
-              </button>
+              {link ? (
+                <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center">
+                  <a href={link} target="_blank" rel="noreferrer" className="btn btn-gold">
+                    Abrir WhatsApp con tu mensaje
+                  </a>
+                  <button type="submit" className="text-sm text-ink-soft underline underline-offset-4 hover:text-ink">
+                    Actualizar mensaje
+                  </button>
+                </div>
+              ) : (
+                <button type="submit" className="btn btn-dark sm:col-span-2 sm:justify-self-start">
+                  Preparar mensaje de WhatsApp
+                </button>
+              )}
             </form>
           </Reveal>
         </div>

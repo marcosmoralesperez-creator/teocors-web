@@ -1,6 +1,6 @@
 # Casa del Sebas — tienda web
 
-Joyería en oro de 18k: cubanas, tenis y dijes iced. La portada usa la foto de la mano con cadenas sobre fondo arena; el resto del sitio toma de ahí sus colores. Incluye catálogo con filtros, ficha de cada pieza (talla, grabado), bolsa de compra, pedido por WhatsApp, sección "A medida" con la escena 3D de Spline, explicación del oro 18k y preguntas frecuentes.
+Joyería en oro de 18k: cubanas, tenis y dijes iced. La portada usa la foto de la mano con cadenas sobre fondo arena; el resto del sitio toma de ahí sus colores. Incluye catálogo con filtros (cadenas normales, pulseras, dijes, anillos y aretes), **Crea tu cadena** (cadenas personalizables con nombre, placa grabada o inicial y precio en vivo), ficha de cada pieza (talla, grabado), bolsa de compra, pedido por WhatsApp, sección "A medida" con la escena 3D de Spline, explicación del oro 18k y preguntas frecuentes.
 
 Proyecto aparte de la tienda TEOCORS (la carpeta raíz del repositorio): tiene su propio `package.json`.
 
@@ -19,6 +19,17 @@ npm run build          # genera dist/, lista para cualquier hosting estático
 npm run preview        # revisa el build antes de subirlo
 npm run build:single   # dist-single/index.html: un solo archivo con todo adentro
 ```
+
+### Versión publicada en claude.ai
+
+La web está publicada como Artifact privado en https://claude.ai/artifact/P8JThhjm48YjgRjENX64Rp (se comparte desde el menú *Share* de la página). Esa versión se genera así:
+
+```bash
+npm run build:artifact            # dist-artifact/: igual que dist/, pero sin el runtime de Spline
+python3 scripts/artifact-page.py  # crea dist-artifact/page.html y lista los archivos a publicar
+```
+
+La plataforma bloquea pedidos a servidores externos, así que ahí la escena de Spline muestra la foto de respaldo. En `npm run dev` o en un hosting normal se ve el robot 3D.
 
 ## Tecnología
 
@@ -54,6 +65,7 @@ Es la carpeta donde la CLI de shadcn (`npx shadcn@latest add …`) instala los c
 | --------------------------------------- | ---------------------------------------- |
 | Número de WhatsApp e Instagram          | `src/lib/site.ts`                        |
 | Productos, precios, tallas, descripción | `src/data/products.ts`                   |
+| Cadenas personalizables: tipos, grosores, precios, dijes y combinaciones listas | `src/data/custom-chain.ts` |
 | Foto de la portada                      | `src/assets/photos/hero.webp`            |
 | Puntos "+" sobre la foto                | `hotspots` en `src/components/sections/hero.tsx` |
 | Colores y tipografías                   | `@theme` en `src/index.css`              |

@@ -8,8 +8,13 @@ import { cn } from '@/lib/utils';
 
 const links = [
   { href: '#coleccion', label: 'Colección' },
+  { href: '#personaliza', label: 'Personaliza' },
   { href: '#a-medida', label: 'A medida' },
-  { href: '#oro-18k', label: 'Oro 18k' },
+];
+
+// Only in the phone menu; the desktop bar keeps three links clear of the logo.
+const moreLinks = [
+  { href: '#oro-18k', label: 'El oro 18k' },
   { href: '#cuidado', label: 'Garantía' },
 ];
 
@@ -35,7 +40,7 @@ export function Header() {
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow,backdrop-filter] duration-500',
+        'fixed inset-x-0 top-0 z-40 pt-[env(safe-area-inset-top,0px)] transition-[background-color,box-shadow,backdrop-filter] duration-500',
         solid ? 'bg-ivory/90 shadow-[0_1px_0_var(--color-border)] backdrop-blur-md' : 'bg-transparent',
       )}
     >
@@ -105,7 +110,7 @@ export function Header() {
               </button>
             </div>
             <nav aria-label="Menú móvil" className="mt-14 flex flex-col gap-6">
-              {[{ href: '#inicio', label: 'Inicio' }, ...links].map((l, i) => (
+              {[{ href: '#inicio', label: 'Inicio' }, ...links, ...moreLinks].map((l, i) => (
                 <motion.a
                   key={l.href}
                   href={l.href}

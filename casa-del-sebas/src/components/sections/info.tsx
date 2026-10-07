@@ -183,7 +183,7 @@ export function WhatsAppFloat() {
       target="_blank"
       rel="noreferrer"
       aria-label="Escríbenos por WhatsApp"
-      className="fixed right-4 bottom-4 z-30 inline-flex size-14 items-center justify-center rounded-full bg-ink text-gold-bright shadow-xl ring-1 ring-gold-bright/40 transition-transform hover:scale-105 sm:right-6 sm:bottom-6"
+      className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom,0px))] z-30 inline-flex size-14 items-center justify-center rounded-full bg-ink text-gold-bright shadow-xl ring-1 ring-gold-bright/40 transition-transform hover:scale-105 sm:right-6 sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom,0px))]"
     >
       <WhatsAppIcon className="size-6" />
     </a>

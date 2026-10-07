@@ -1,27 +1,50 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { productById, sizeSurcharge } from '@/data/products';
+import { productById, productImage, sizeSurcharge } from '@/data/products';
+
+/** Pieza armada en el configurador: no está en el catálogo, trae su propio precio. */
+export interface CustomPiece {
+  title: string;
+  detail: string;
+  price: number;
+  image: string;
+}
 
 export interface CartItem {
   id: string;
   size: string;
   engraving: string;
   qty: number;
+  custom?: CustomPiece;
 }
+
+type Line = Omit<CartItem, 'qty'>;
 
 const KEY = 'casa-del-sebas-bolsa-v1';
 const MAX_QTY = 5;
-const sameLine = (a: CartItem, b: Omit<CartItem, 'qty'>) => a.id === b.id && a.size === b.size && a.engraving === b.engraving;
+const sameLine = (a: Line, b: Line) => a.id === b.id && a.size === b.size && a.engraving === b.engraving;
 
 function read(): CartItem[] {
   try {
     const items = JSON.parse(localStorage.getItem(KEY) || '[]');
-    return Array.isArray(items) ? items.filter((i) => productById(i.id)) : [];
+    return Array.isArray(items) ? items.filter((i) => i.custom || productById(i.id)) : [];
   } catch {
     return [];
   }
 }
 
-export const unitPrice = (item: Pick<CartItem, 'id' | 'size'>) => (productById(item.id)?.price ?? 0) + sizeSurcharge(item.size);
+export const unitPrice = (item: Pick<CartItem, 'id' | 'size' | 'custom'>) =>
+  item.custom ? item.custom.price : (productById(item.id)?.price ?? 0) + sizeSurcharge(item.size);
+
+/** Nombre, detalle e imagen de una línea, sea del catálogo o personalizada. */
+export function lineInfo(item: CartItem) {
+  if (item.custom) return { name: item.custom.title, detail: item.custom.detail, image: productImage(item.custom.image) };
+  const p = productById(item.id)!;
+  return {
+    name: p.name,
+    detail: [item.size, item.engraving && `Grabado «${item.engraving}»`].filter(Boolean).join(' · '),
+    image: productImage(p.id),
+  };
+}
 
 interface CartValue {
   items: CartItem[];
@@ -29,7 +52,7 @@ interface CartValue {
   subtotal: number;
   open: boolean;
   setOpen: (open: boolean) => void;
-  add: (line: Omit<CartItem, 'qty'>) => void;
+  add: (line: Line) => void;
   setQty: (line: CartItem, qty: number) => void;
 }
 
@@ -47,7 +70,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items]);
 
-  const add = useCallback((line: Omit<CartItem, 'qty'>) => {
+  const add = useCallback((line: Line) => {
     setItems((prev) =>
       prev.some((i) => sameLine(i, line))
         ? prev.map((i) => (sameLine(i, line) ? { ...i, qty: Math.min(MAX_QTY, i.qty + 1) } : i))

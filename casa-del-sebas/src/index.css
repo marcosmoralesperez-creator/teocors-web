@@ -37,6 +37,7 @@
     border-color: var(--color-border);
   }
   html {
+    color-scheme: light;
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     -webkit-text-size-adjust: 100%;
