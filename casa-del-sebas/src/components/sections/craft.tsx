@@ -49,7 +49,7 @@ const steps = [
   { icon: PackageCheck, title: 'Entrega', text: 'Estuche de la casa, certificado de pureza y peso, y envío asegurado hasta tu puerta.' },
 ];
 
-const pieces = ['Cadena', 'Pulsera', 'Dije', 'Anillo', 'Aretes', 'Grill', 'Otra pieza'];
+const pieces = ['Cadena', 'Pulso', 'Manilla tejida', 'Dije', 'Anillo', 'Aretes', 'Grill', 'Otra pieza'];
 const budgets = ['Hasta $10.000.000', '$10.000.000 a $25.000.000', '$25.000.000 a $50.000.000', 'Más de $50.000.000'];
 
 export function Bespoke() {

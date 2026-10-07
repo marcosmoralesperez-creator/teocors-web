@@ -1,7 +1,7 @@
 // Catálogo de Casa del Sebas. Todo es oro de 18 quilates (750 milésimas).
 // Precios en pesos colombianos. `sizes`: largos o tallas que se pueden pedir.
 
-export type CategoryId = 'cadenas' | 'pulseras' | 'dijes' | 'anillos' | 'aretes';
+export type CategoryId = 'cadenas' | 'pulseras' | 'manillas' | 'dijes' | 'anillos' | 'aretes';
 
 export interface Product {
   id: string;
@@ -14,15 +14,33 @@ export interface Product {
   description: string;
   sizes: string[];
   engraving?: boolean;
+  /** Nombre del selector de opciones cuando no es talla ni largo (p. ej. "Color del hilo"). */
+  optionLabel?: string;
+  /** Color de muestra para cada opción, cuando las opciones son colores. */
+  swatches?: Record<string, string>;
+  /** Línea extra en la ficha (material, ajuste…). */
+  note?: string;
 }
 
 export const categories: { id: CategoryId; name: string }[] = [
   { id: 'cadenas', name: 'Cadenas' },
-  { id: 'pulseras', name: 'Pulseras' },
+  { id: 'pulseras', name: 'Pulsos' },
+  { id: 'manillas', name: 'Manillas tejidas' },
   { id: 'dijes', name: 'Dijes' },
   { id: 'anillos', name: 'Anillos' },
   { id: 'aretes', name: 'Aretes' },
 ];
+
+const threadColors = {
+  Negro: '#0b0b0b',
+  Café: '#4a2c19',
+  Rojo: '#7a1010',
+  'Azul noche': '#121c33',
+  'Verde oliva': '#3d4426',
+  Beige: '#b39a72',
+};
+const threadOptions = Object.keys(threadColors);
+const threadNote = 'Hilo encerado tejido a mano, resiste el agua. Nudo corredizo: se ajusta de 15 a 22 cm.';
 
 export const products: Product[] = [
   {
@@ -119,18 +137,18 @@ export const products: Product[] = [
   },
   {
     id: 'pulsera-cubana-iced',
-    name: 'Pulsera Cubana Iced',
+    name: 'Pulso Cubano Iced',
     category: 'pulseras',
     price: 28900000,
     badge: 'Más pedida',
     weight: '58 g',
     stones: '298 diamantes de laboratorio VS · 4,2 ct',
-    description: 'La misma cubana iced de la casa, en pulsera de 12 mm. Pesa en la muñeca como debe pesar.',
+    description: 'La misma cubana iced de la casa, en pulso de 12 mm. Pesa en la muñeca como debe pesar.',
     sizes: ['19 cm', '20 cm', '21 cm', '22 cm'],
   },
   {
     id: 'pulsera-cubana',
-    name: 'Pulsera Cubana 12 mm',
+    name: 'Pulso Cubano 12 mm',
     category: 'pulseras',
     price: 15600000,
     weight: '42 g',
@@ -139,13 +157,92 @@ export const products: Product[] = [
   },
   {
     id: 'pulsera-tenis',
-    name: 'Pulsera Tenis 4 mm',
+    name: 'Pulso Tenis 4 mm',
     category: 'pulseras',
     price: 16800000,
     weight: '11 g',
     stones: '48 diamantes de laboratorio VS · 4,8 ct',
     description: 'Clásica, fina y sin fallas. Broche oculto con lengüeta y seguro lateral.',
     sizes: ['17 cm', '18 cm', '19 cm'],
+  },
+  {
+    id: 'pulso-esclava',
+    name: 'Pulso Esclava',
+    category: 'pulseras',
+    price: 9800000,
+    weight: '24 g',
+    description: 'Cubano de 6 mm con placa pulida al centro. Grabamos el nombre, la fecha o las iniciales que quieras.',
+    sizes: ['18 cm', '19 cm', '20 cm', '21 cm'],
+    engraving: true,
+  },
+  {
+    id: 'pulso-rigido',
+    name: 'Pulso Rígido',
+    category: 'pulseras',
+    price: 11200000,
+    weight: '26 g',
+    description: 'Aro macizo de 4 mm, pulido a espejo, con bisagra y cierre de presión invisible.',
+    sizes: ['S · 17 cm', 'M · 18,5 cm', 'L · 20 cm'],
+  },
+  {
+    id: 'pulso-soga',
+    name: 'Pulso Soga 4 mm',
+    category: 'pulseras',
+    price: 5900000,
+    weight: '15 g',
+    description: 'La soga de la casa en pulso: hilos de oro trenzados que brillan en cada giro.',
+    sizes: ['18 cm', '19 cm', '20 cm', '21 cm'],
+  },
+  {
+    id: 'manilla-balines',
+    name: 'Manilla Tejida Balines',
+    category: 'manillas',
+    price: 1450000,
+    badge: 'Nuevo',
+    weight: '2,1 g de oro',
+    description: 'Cordón trenzado con cinco balines de oro de 18k de 4 mm. Para llevar todos los días o junto al pulso cubano.',
+    sizes: threadOptions,
+    optionLabel: 'Color del hilo',
+    swatches: threadColors,
+    note: threadNote,
+  },
+  {
+    id: 'manilla-placa',
+    name: 'Manilla Macramé Placa',
+    category: 'manillas',
+    price: 1950000,
+    weight: '2,6 g de oro',
+    description: 'Tejido macramé a mano con una placa de oro de 18k al centro. La grabamos con tu nombre o una fecha.',
+    sizes: threadOptions,
+    optionLabel: 'Color del hilo',
+    swatches: threadColors,
+    note: threadNote,
+    engraving: true,
+  },
+  {
+    id: 'manilla-cruz',
+    name: 'Manilla Tejida Cruz',
+    category: 'manillas',
+    price: 1380000,
+    weight: '1,8 g de oro',
+    description: 'Cordón trenzado con una cruz de oro de 18k pulida, montada de lado sobre el hilo.',
+    sizes: threadOptions,
+    optionLabel: 'Color del hilo',
+    swatches: threadColors,
+    note: threadNote,
+  },
+  {
+    id: 'manilla-inicial',
+    name: 'Manilla Macramé Inicial',
+    category: 'manillas',
+    price: 1690000,
+    weight: '2 g de oro',
+    description: 'Macramé tejido a mano con tu inicial en oro de 18k. Escribe la letra en el grabado.',
+    sizes: threadOptions,
+    optionLabel: 'Color del hilo',
+    swatches: threadColors,
+    note: threadNote,
+    engraving: true,
   },
   {
     id: 'anillo-sello',
@@ -198,6 +295,12 @@ export function sizeSurcharge(size = ''): number {
 }
 
 export const productById = (id: string) => products.find((p) => p.id === id);
+
+const slug = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, '-');
+
+/** Foto de la pieza en la opción elegida (p. ej. el color del hilo), si existe; si no, la del catálogo. */
+export const optionImage = (id: string, option?: string) =>
+  (option && images[`../assets/products/${id}--${slug(option)}.webp`]) || productImage(id);
 
 // Fotos generadas con `npm run render:products` (ver render/).
 const images = import.meta.glob<string>('../assets/products/*.webp', { eager: true, query: '?url', import: 'default' });

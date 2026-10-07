@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { productById, productImage, sizeSurcharge } from '@/data/products';
+import { optionImage, productById, productImage, sizeSurcharge } from '@/data/products';
 
 /** Pieza armada en el configurador: no está en el catálogo, trae su propio precio. */
 export interface CustomPiece {
@@ -42,7 +42,7 @@ export function lineInfo(item: CartItem) {
   return {
     name: p.name,
     detail: [item.size, item.engraving && `Grabado «${item.engraving}»`].filter(Boolean).join(' · '),
-    image: productImage(p.id),
+    image: optionImage(p.id, item.size),
   };
 }
 

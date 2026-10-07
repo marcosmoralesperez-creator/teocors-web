@@ -64,6 +64,10 @@ const faqs = [
     a: '45 cm queda en la base del cuello; 50 a 55 cm, sobre la clavícula; 60 cm, en el pecho, y 65 cm, más abajo, ideal para llevar un dije grande. Si dudas, en la cita te las probamos.',
   },
   {
+    q: '¿Las manillas tejidas se pueden mojar?',
+    a: 'Sí. El hilo es encerado y aguanta la ducha y el mar; el oro de 18k no se oxida. Si con los años el tejido se gasta, lo volvemos a tejer conservando tus piezas de oro.',
+  },
+  {
     q: '¿Cómo son los envíos?',
     a: 'Sin costo y asegurados por el valor total de la pieza, a cualquier ciudad de Colombia, en 24 a 72 horas para las piezas en existencia. Las piezas a medida se entregan en tres a cinco semanas.',
   },
@@ -136,7 +140,7 @@ export function Visit() {
 export function Footer() {
   const year = new Date().getFullYear();
   const cols = [
-    { title: 'Colección', links: [['Cadenas', '#coleccion'], ['Pulseras', '#coleccion'], ['Dijes', '#coleccion'], ['Anillos y aretes', '#coleccion']] },
+    { title: 'Colección', links: [['Cadenas', '#coleccion'], ['Pulsos', '#coleccion'], ['Manillas tejidas', '#coleccion'], ['Dijes', '#coleccion'], ['Anillos y aretes', '#coleccion']] },
     { title: 'La casa', links: [['A medida', '#a-medida'], ['El oro 18k', '#oro-18k'], ['Cuidado y garantía', '#cuidado']] },
     {
       title: 'Contacto',

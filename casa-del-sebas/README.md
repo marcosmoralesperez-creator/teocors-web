@@ -1,6 +1,6 @@
 # Casa del Sebas — tienda web
 
-Joyería en oro de 18k: cubanas, tenis y dijes iced. La portada usa la foto de la mano con cadenas sobre fondo arena; el resto del sitio toma de ahí sus colores. Incluye catálogo con filtros (cadenas normales, pulseras, dijes, anillos y aretes), **Crea tu cadena** (cadenas personalizables con nombre, placa grabada o inicial y precio en vivo), ficha de cada pieza (talla, grabado), bolsa de compra, pedido por WhatsApp, sección "A medida" con la escena 3D de Spline, explicación del oro 18k y preguntas frecuentes.
+Joyería en oro de 18k: cubanas, tenis y dijes iced. La portada usa la foto de la mano con cadenas sobre fondo arena; el resto del sitio toma de ahí sus colores. Incluye catálogo con filtros (cadenas normales, pulsos, manillas tejidas, dijes, anillos y aretes), **Crea tu cadena** (cadenas personalizables con nombre, placa grabada o inicial y precio en vivo), ficha de cada pieza (talla, grabado), bolsa de compra, pedido por WhatsApp, sección "A medida" con la escena 3D de Spline, explicación del oro 18k y preguntas frecuentes.
 
 Proyecto aparte de la tienda TEOCORS (la carpeta raíz del repositorio): tiene su propio `package.json`.
 
@@ -79,6 +79,8 @@ Las imágenes de `src/assets/products/` se generan con three.js a partir de mode
 npm run render:products             # todas
 npm run render:products -- soga-5   # solo algunas
 ```
+
+Las manillas tejidas tienen además una foto por color de hilo (`manilla-placa--rojo.webp`, etc.); la ficha muestra la del color elegido. Los colores están en `threadColors` de `render/scene.js` y `src/data/products.ts`.
 
 Usa Chromium con `playwright-core`. Si no lo tienes, ejecuta `npx playwright install chromium` o indica la ruta con `CHROMIUM_PATH=/ruta/a/chrome`. Cuando tengas fotos reales de las piezas, reemplaza los `.webp` (mismo nombre, formato vertical 4:5).
 

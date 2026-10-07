@@ -394,7 +394,7 @@ export function icedPlaque(materials, { w = 0.62, h = 0.86 } = {}) {
 }
 
 /** Latin cross set with stones. */
-export function icedCross(materials, { h = 0.95 } = {}) {
+export function icedCross(materials, { h = 0.95, iced = true } = {}) {
   const group = new THREE.Group();
   const arm = h * 0.2;
   const depth = 0.09;
@@ -408,7 +408,7 @@ export function icedCross(materials, { h = 0.95 } = {}) {
   const z = depth / 2 - 0.003;
   const inside = (x, y) => (Math.abs(x) < arm / 2 - 0.02) || (Math.abs(y - h * 0.16) < arm / 2 - 0.02 && Math.abs(x) < h * 0.33 - 0.02);
   const spots = gridSpots(h * 0.66, h, z, step, inside).filter(({ p }) => Math.abs(p.y) < h / 2 - 0.02);
-  group.add(instanced(stoneGeometry(), materials.diamond, stoneMatrices(spots, step * 0.46)));
+  if (iced) group.add(instanced(stoneGeometry(), materials.diamond, stoneMatrices(spots, step * 0.46)));
   const b = bail(materials, 0.055);
   b.position.set(0, h / 2 + 0.06, 0);
   group.add(b);
@@ -529,6 +529,75 @@ export function stud(materials, r = 0.13) {
   stone.scale.setScalar(r * 0.97);
   group.add(stone);
   return group;
+}
+
+/* ---------------------------------------------------------------- woven bracelets */
+
+/** Waxed thread: matte with a soft sheen, like braided nylon or cotton. */
+export function threadMaterial(color) {
+  const c = new THREE.Color(color);
+  return new THREE.MeshPhysicalMaterial({
+    color: c,
+    roughness: 0.88,
+    sheen: 0.6,
+    sheenRoughness: 0.6,
+    sheenColor: c.clone().lerp(new THREE.Color('#ffffff'), 0.12),
+    envMapIntensity: 0.3,
+  });
+}
+
+/** Tight three-ply braid along a curve. */
+export function wovenCord(curve, { width = 0.05, material, up = Z }) {
+  return ropeChain(curve, { width, strands: 3, turns: 0.9, up, material });
+}
+
+/**
+ * Macramé square knots between t0 and t1: pairs of flattened lobes that
+ * alternate sides, over a core cord.
+ */
+export function macrame(curve, t0, t1, { width = 0.14, material }) {
+  const group = new THREE.Group();
+  const length = curve.getLength() * (t1 - t0);
+  const pitch = width * 0.4;
+  const count = Math.max(2, Math.round(length / pitch));
+  const lobe = new THREE.SphereGeometry(1, 18, 12);
+  const matrices = [];
+  for (let i = 0; i < count; i++) {
+    const t = t0 + ((i + 0.5) / count) * (t1 - t0);
+    const f = frameAt(curve, t);
+    const flip = i % 2 ? 1 : -1;
+    for (const side of [-1, 1]) {
+      const m = basisMatrix(f, 0, width * 0.12);
+      m.multiply(new THREE.Matrix4().makeTranslation(0, side * width * 0.2, 0));
+      m.multiply(new THREE.Matrix4().makeRotationZ(side * flip * 0.6));
+      m.multiply(new THREE.Matrix4().makeScale(width * 0.27, width * 0.16, width * 0.11));
+      matrices.push(m);
+    }
+  }
+  group.add(instanced(lobe, material, matrices));
+  return group;
+}
+
+/** Sliding knot: a short sleeve of wraps around the cord at t. */
+export function slidingKnot(curve, t, { width = 0.05, material, wraps = 7 }) {
+  const f = frameAt(curve, t);
+  const ring = new THREE.TorusGeometry(width * 0.95, width * 0.42, 10, 24);
+  ring.rotateY(Math.PI / 2); // ring axis along the cord tangent (local X)
+  const matrices = [];
+  for (let k = 0; k < wraps; k++) {
+    const m = basisMatrix(f, 0, width * 0.5);
+    m.multiply(new THREE.Matrix4().makeTranslation((k - (wraps - 1) / 2) * width * 0.78, 0, 0));
+    matrices.push(m);
+  }
+  const group = new THREE.Group();
+  group.add(instanced(ring, material, matrices));
+  return group;
+}
+
+export function goldBead(materials, r = 0.05) {
+  const bead = new THREE.Mesh(new THREE.SphereGeometry(r, 32, 20), materials.gold);
+  bead.castShadow = true;
+  return bead;
 }
 
 /* ---------------------------------------------------------------- curves */

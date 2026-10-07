@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Award, Check, Gem, Scale, ShieldCheck, Truck, X } from 'lucide-react';
-import { formatPrice, productById, productImage, sizeSurcharge, type Product } from '@/data/products';
+import { Award, Check, Gem, Scale, ShieldCheck, Sparkles, Truck, X } from 'lucide-react';
+import { formatPrice, optionImage, productById, sizeSurcharge, type Product } from '@/data/products';
 import { useCart } from '@/lib/cart';
 import { whatsappLink } from '@/lib/site';
 import { SheetDialog } from '@/components/sheet-dialog';
@@ -28,7 +28,7 @@ export function ProductDialog({ id, onClose }: { id: string | null; onClose: () 
   if (!p) return null;
 
   const price = p.price + sizeSurcharge(size || p.sizes[0]);
-  const sizeLabel = p.category === 'anillos' ? 'Talla' : p.category === 'dijes' || p.category === 'aretes' ? 'Opción' : 'Largo';
+  const sizeLabel = p.optionLabel ?? (p.category === 'anillos' ? 'Talla' : p.category === 'dijes' || p.category === 'aretes' ? 'Opción' : 'Largo');
 
   const addToBag = () => {
     add({ id: p.id, size, engraving: engraving.trim() });
@@ -52,7 +52,7 @@ export function ProductDialog({ id, onClose }: { id: string | null; onClose: () 
             <X className="size-5" strokeWidth={1.5} />
           </button>
           <div className="bg-sand-soft">
-            <img src={productImage(p.id)} alt={p.name} className="mx-auto aspect-[4/5] max-h-[46dvh] w-full object-contain p-4 md:max-h-none" />
+            <img src={optionImage(p.id, size)} alt={size && p.swatches ? `${p.name}, hilo ${size.toLowerCase()}` : p.name} className="mx-auto aspect-[4/5] max-h-[46dvh] w-full object-contain p-4 md:max-h-none" />
           </div>
           <div className="flex flex-col p-6 sm:p-10 md:max-h-[94dvh] md:overflow-y-auto">
             {p.badge && <p className="eyebrow text-gold">{p.badge}</p>}
@@ -64,6 +64,7 @@ export function ProductDialog({ id, onClose }: { id: string | null; onClose: () 
               <li className="flex gap-3"><Award className="size-4 shrink-0 text-gold" strokeWidth={1.5} /> Oro amarillo de 18k, sello 750</li>
               <li className="flex gap-3"><Scale className="size-4 shrink-0 text-gold" strokeWidth={1.5} /> Peso aproximado: {p.weight}</li>
               {p.stones && <li className="flex gap-3"><Gem className="size-4 shrink-0 text-gold" strokeWidth={1.5} /> {p.stones}</li>}
+              {p.note && <li className="flex gap-3"><Sparkles className="size-4 shrink-0 text-gold" strokeWidth={1.5} /> {p.note}</li>}
               <li className="flex gap-3"><ShieldCheck className="size-4 shrink-0 text-gold" strokeWidth={1.5} /> Certificado de pureza y garantía de por vida</li>
               <li className="flex gap-3"><Truck className="size-4 shrink-0 text-gold" strokeWidth={1.5} /> Envío asegurado sin costo, en estuche de la casa</li>
             </ul>
@@ -80,6 +81,13 @@ export function ProductDialog({ id, onClose }: { id: string | null; onClose: () 
                     )}
                   >
                     <input type="radio" name="opcion" value={s} checked={size === s} onChange={() => setSize(s)} className="sr-only" />
+                    {p.swatches?.[s] && (
+                      <span
+                        className="mr-2 inline-block size-3.5 rounded-full align-[-2px] ring-1 ring-ink/20"
+                        style={{ background: p.swatches[s] }}
+                        aria-hidden="true"
+                      />
+                    )}
                     {s}
                   </label>
                 ))}
@@ -94,7 +102,7 @@ export function ProductDialog({ id, onClose }: { id: string | null; onClose: () 
                   maxLength={20}
                   value={engraving}
                   onChange={(e) => setEngraving(e.target.value)}
-                  placeholder="Iniciales, fecha o una letra"
+                  placeholder={p.category === 'manillas' && p.id.includes('inicial') ? 'La letra que quieres' : 'Iniciales, fecha o una letra'}
                 />
               </label>
             )}

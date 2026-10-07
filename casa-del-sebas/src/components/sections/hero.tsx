@@ -118,7 +118,7 @@ export function Hero({ onView }: { onView: (id: string) => void }) {
 }
 
 export function TrustMarquee() {
-  const items = ['Oro 18k certificado', 'Hecho a mano', 'Diamantes VS de laboratorio', 'Envío asegurado', 'Garantía de por vida', 'Sello 750 en cada pieza'];
+  const items = ['Oro 18k certificado', 'Hecho a mano', 'Manillas tejidas a mano', 'Diamantes VS de laboratorio', 'Envío asegurado', 'Garantía de por vida', 'Sello 750 en cada pieza'];
   const row = [...items, ...items];
   return (
     <div className="overflow-hidden border-y border-gold/25 bg-noir py-4 text-gold-pale" aria-label={items.join(', ')}>

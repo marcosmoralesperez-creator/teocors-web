@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 const cover: Record<CategoryId, string> = {
   cadenas: 'cubana-iced-14',
   pulseras: 'pulsera-cubana-iced',
+  manillas: 'manilla-placa',
   dijes: 'placa-iced',
   anillos: 'anillo-sello',
   aretes: 'topos-solitario',
@@ -31,7 +32,7 @@ export function Categories({ onPick }: { onPick: (id: CategoryId) => void }) {
             Toda la colección <ArrowUpRight className="size-4" strokeWidth={1.5} />
           </a>
         </div>
-        <div className="mt-10 -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 lg:grid-cols-6">
+        <div className="mt-10 -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0 xl:grid-cols-7">
           {categories.map((c, i) => (
             <Reveal key={c.id} delay={i * 0.06} className="w-[58vw] shrink-0 snap-start sm:w-auto">
               <a
@@ -47,9 +48,9 @@ export function Categories({ onPick }: { onPick: (id: CategoryId) => void }) {
                     className="size-full object-contain p-3 transition-transform duration-700 ease-out group-hover:scale-[1.06]"
                   />
                 </div>
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="display text-2xl">{c.name}</span>
-                  <span className="text-xs text-ink-soft">{products.filter((p) => p.category === c.id).length} piezas</span>
+                <div className="mt-4">
+                  <span className="display block text-xl leading-tight xl:text-2xl">{c.name}</span>
+                  <span className="mt-1 block text-xs text-ink-soft">{products.filter((p) => p.category === c.id).length} piezas</span>
                 </div>
               </a>
             </Reveal>
@@ -65,9 +66,11 @@ export function Categories({ onPick }: { onPick: (id: CategoryId) => void }) {
                 />
                 <span className="eyebrow absolute top-3 left-3 bg-gold-bright px-2.5 py-1.5 text-[0.56rem] text-ink">Con tu nombre</span>
               </div>
-              <div className="mt-4 flex items-center justify-between">
-                <span className="display text-2xl">Personalizadas</span>
-                <ArrowUpRight className="size-4 text-ink-soft" strokeWidth={1.5} />
+              <div className="mt-4">
+                <span className="display block text-xl leading-tight xl:text-2xl">Personalizadas</span>
+                <span className="mt-1 flex items-center gap-1 text-xs text-ink-soft">
+                  Crea tu cadena <ArrowUpRight className="size-3.5" strokeWidth={1.5} />
+                </span>
               </div>
             </a>
           </Reveal>
@@ -172,6 +175,13 @@ function ProductCard({ product: p, onView }: { product: Product; onView: (id: st
           {p.stones ? ' · Iced' : ''}
         </p>
         <p className="mt-2 text-sm font-medium tracking-wide sm:text-base">{formatPrice(p.price)}</p>
+        {p.swatches && (
+          <span className="mt-2 flex gap-1.5" aria-label={`${p.sizes.length} colores de hilo`}>
+            {p.sizes.map((s) => (
+              <span key={s} className="size-3 rounded-full ring-1 ring-ink/15" style={{ background: p.swatches![s] }} />
+            ))}
+          </span>
+        )}
       </div>
     </button>
   );
