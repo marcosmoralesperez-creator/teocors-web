@@ -5,7 +5,7 @@ import { defaultConfig as defaultChain, type ChainConfig } from '@/data/custom-c
 export type Kind = 'cadena' | 'pulso' | 'manilla' | 'aretes' | 'anillo';
 
 export const kinds: { id: Kind; name: string; image: string }[] = [
-  { id: 'cadena', name: 'Cadena', image: 'cubana-iced-14' },
+  { id: 'cadena', name: 'Cadena', image: 'cubana-14' },
   { id: 'pulso', name: 'Pulso', image: 'pulso-esclava' },
   { id: 'manilla', name: 'Manilla tejida', image: 'manilla-placa' },
   { id: 'aretes', name: 'Aretes', image: 'topos-solitario' },
@@ -16,7 +16,7 @@ const round = (n: number) => Math.round(n / 10000) * 10000;
 
 /* ---------------------------------------------------------------- pulsos */
 
-export type PulsoType = 'cubano' | 'esclava' | 'soga' | 'tenis' | 'rigido';
+export type PulsoType = 'cubano' | 'esclava' | 'soga' | 'rigido';
 
 interface Width {
   mm: number;
@@ -24,13 +24,11 @@ interface Width {
   grams: number;
 }
 
-export const pulsoTypes: Record<PulsoType, { name: string; image: string; icedImage?: string; note: string; canIce: boolean; engraving: boolean; widths: Width[] }> = {
+export const pulsoTypes: Record<PulsoType, { name: string; image: string; note: string; engraving: boolean; widths: Width[] }> = {
   cubano: {
     name: 'Cubano',
     image: 'pulsera-cubana',
-    icedImage: 'pulsera-cubana-iced',
-    note: 'Eslabones planos y pesados. Se puede llevar iced.',
-    canIce: true,
+    note: 'Eslabones planos y pesados, pulidos a espejo.',
     engraving: false,
     widths: [
       { mm: 6, price: 3900000, grams: 14 },
@@ -43,7 +41,6 @@ export const pulsoTypes: Record<PulsoType, { name: string; image: string; icedIm
     name: 'Esclava',
     image: 'pulso-esclava',
     note: 'Cubano con placa al centro. El grabado va incluido.',
-    canIce: false,
     engraving: true,
     widths: [
       { mm: 4, price: 7200000, grams: 18 },
@@ -55,7 +52,6 @@ export const pulsoTypes: Record<PulsoType, { name: string; image: string; icedIm
     name: 'Soga',
     image: 'pulso-soga',
     note: 'Hilos de oro trenzados en espiral.',
-    canIce: false,
     engraving: false,
     widths: [
       { mm: 3, price: 4300000, grams: 11 },
@@ -63,23 +59,10 @@ export const pulsoTypes: Record<PulsoType, { name: string; image: string; icedIm
       { mm: 5, price: 7600000, grams: 19 },
     ],
   },
-  tenis: {
-    name: 'Tenis',
-    image: 'pulsera-tenis',
-    note: 'Una fila de diamantes de laboratorio VS en garras.',
-    canIce: false,
-    engraving: false,
-    widths: [
-      { mm: 3, price: 9800000, grams: 8 },
-      { mm: 4, price: 16800000, grams: 11 },
-      { mm: 5, price: 23500000, grams: 15 },
-    ],
-  },
   rigido: {
     name: 'Rígido',
     image: 'pulso-rigido',
     note: 'Aro macizo con bisagra y cierre invisible.',
-    canIce: false,
     engraving: false,
     widths: [
       { mm: 3, price: 8400000, grams: 19 },
@@ -96,11 +79,8 @@ export interface PulsoConfig {
   type: PulsoType;
   mm: number;
   size: number;
-  iced: boolean;
   text: string;
 }
-
-export const ICED_FACTOR = 0.6;
 
 export function pulsoWidth(c: PulsoConfig) {
   const t = pulsoTypes[c.type];
@@ -108,10 +88,8 @@ export function pulsoWidth(c: PulsoConfig) {
 }
 
 export function pulsoPrice(c: PulsoConfig) {
-  const t = pulsoTypes[c.type];
   const w = pulsoWidth(c);
-  let price = w.price * (c.size / 19);
-  if (c.iced && t.canIce) price *= 1 + ICED_FACTOR;
+  const price = w.price * (c.size / 19);
   return { total: round(price), grams: Math.round(w.grams * (c.size / 19)) };
 }
 
@@ -250,7 +228,7 @@ export interface StyleConfig {
 export const defaultStyle: StyleConfig = {
   kind: 'cadena',
   cadena: defaultChain,
-  pulso: { type: 'esclava', mm: 6, size: 19, iced: false, text: 'Sebas' },
+  pulso: { type: 'esclava', mm: 6, size: 19, text: 'Sebas' },
   manilla: { piece: 'placa', thread: 'Negro', double: false, text: 'Sofía' },
   aretes: { style: 'topos', size: '0,5 ct', single: false },
   anillo: { style: 'sello', size: 9, text: 'CDS' },
@@ -262,19 +240,19 @@ export const stylePresets: { id: string; name: string; text: string; apply: (s: 
     id: 'cadena-nombre',
     name: 'Cadena con nombre',
     text: 'Tu nombre en oro sobre una franco de 3 mm.',
-    apply: (s) => ({ ...s, kind: 'cadena', cadena: { type: 'franco', mm: 3, length: 55, iced: false, pendant: 'nombre', text: 'Sebas', pendantIced: true } }),
+    apply: (s) => ({ ...s, kind: 'cadena', cadena: { type: 'franco', mm: 3, length: 55, pendant: 'nombre', text: 'Sebas', pendantIced: false } }),
   },
   {
-    id: 'cubana-iced',
+    id: 'cubana',
     name: 'Cubana a tu medida',
-    text: 'Cubana iced de 12 mm, al largo que quieras.',
-    apply: (s) => ({ ...s, kind: 'cadena', cadena: { type: 'cubana', mm: 12, length: 60, iced: true, pendant: 'ninguno', text: '', pendantIced: false } }),
+    text: 'Cubana de 12 mm en oro macizo, al largo que quieras.',
+    apply: (s) => ({ ...s, kind: 'cadena', cadena: { type: 'cubana', mm: 12, length: 60, pendant: 'ninguno', text: '', pendantIced: false } }),
   },
   {
     id: 'pulso-esclava',
     name: 'Pulso esclava grabado',
     text: 'Placa con un nombre o una fecha que importa.',
-    apply: (s) => ({ ...s, kind: 'pulso', pulso: { type: 'esclava', mm: 6, size: 19, iced: false, text: '07·10·2026' } }),
+    apply: (s) => ({ ...s, kind: 'pulso', pulso: { type: 'esclava', mm: 6, size: 19, text: '07·10·2026' } }),
   },
   {
     id: 'manilla-inicial',

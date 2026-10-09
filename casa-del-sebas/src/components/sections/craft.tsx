@@ -1,14 +1,14 @@
 import { useState, type FormEvent } from 'react';
 import { CalendarDays, Hammer, PackageCheck, PenTool } from 'lucide-react';
-import closeup from '@/assets/photos/cubana-iced-cerca.webp';
+import closeup from '@/assets/products/detalle-cubana.webp';
 import { Reveal, SectionHeading } from '@/components/reveal';
 import { SplineSceneBasic } from '@/components/spline-scene-basic';
 import { whatsappLink } from '@/lib/site';
 
 export function Closeup() {
   const notes = [
-    ['14 mm', 'de ancho por eslabón, cerrado a mano y soldado uno a uno'],
-    ['612', 'diamantes de laboratorio VS engastados al grano'],
+    ['12 mm', 'de ancho por eslabón, cerrado a mano y soldado uno a uno'],
+    ['68 g', 'de oro macizo de 18k en 55 cm, sin relleno ni baño'],
     ['Doble seguro', 'en el broche de caja, para que no se abra nunca'],
   ];
   return (
@@ -17,19 +17,19 @@ export function Closeup() {
         <Reveal className="relative order-2 lg:order-1">
           <img
             src={closeup}
-            alt="Cadena cubana iced de cerca: eslabones cubiertos de diamantes y broche de caja"
+            alt="Eslabones de la cadena cubana clásica en oro de 18k, de cerca"
             loading="lazy"
-            width={778}
-            height={428}
-            // Fade the photo's edges into the black background.
-            className="aspect-[778/428] w-full object-cover [mask-image:linear-gradient(to_right,transparent,#000_14%,#000_86%,transparent),linear-gradient(to_bottom,transparent,#000_16%,#000_84%,transparent)] [mask-composite:intersect]"
+            width={1000}
+            height={1250}
+            className="aspect-[4/5] w-full object-cover"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-noir/50 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-noir" />
         </Reveal>
         <div className="order-1 max-w-2xl px-4 py-20 sm:px-8 lg:order-2 lg:px-16 lg:py-28">
           <Reveal>
             <p className="eyebrow text-gold-bright">La firma de la casa</p>
             <h2 id="cerca-titulo" className="display mt-4 text-4xl sm:text-5xl lg:text-6xl">
-              La cubana iced, <em className="gold-text">de cerca.</em>
+              La cubana, <em className="gold-text">de cerca.</em>
             </h2>
             <p className="mt-6 max-w-md leading-relaxed text-ivory/70">
               Una cadena cubana de verdad no es hueca ni tiene baño: es oro macizo de 18k que pesa en la mano. Por eso pesamos cada pieza frente a ti y te damos el número en el certificado.

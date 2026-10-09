@@ -44,22 +44,11 @@ const threadNote = 'Hilo encerado tejido a mano, resiste el agua. Nudo corredizo
 
 export const products: Product[] = [
   {
-    id: 'cubana-iced-14',
-    name: 'Cubana Iced 14 mm',
-    category: 'cadenas',
-    price: 46500000,
-    badge: 'Firma de la casa',
-    weight: '96 g',
-    stones: '612 diamantes de laboratorio VS · 7,4 ct',
-    description:
-      'La pieza que define la casa. Eslabones cubanos de 14 mm, pulidos a espejo y engastados uno por uno a mano. Broche de caja con doble seguro.',
-    sizes: ['50 cm', '55 cm', '60 cm', '65 cm'],
-  },
-  {
     id: 'cubana-14',
     name: 'Cubana Clásica 12 mm',
     category: 'cadenas',
     price: 24800000,
+    badge: 'Firma de la casa',
     weight: '68 g',
     description:
       'Oro macizo, sin rellenos. Eslabones apretados que caen planos sobre el pecho y suenan a oro de verdad.',
@@ -82,16 +71,6 @@ export const products: Product[] = [
     weight: '26 g',
     description: 'Tejido franco de cuatro lados, firme y flexible. La cadena ideal para colgar un dije pesado.',
     sizes: ['50 cm', '55 cm', '60 cm', '65 cm'],
-  },
-  {
-    id: 'tenis-5',
-    name: 'Cadena Tenis 5 mm',
-    category: 'cadenas',
-    price: 31000000,
-    weight: '24 g',
-    stones: '118 diamantes de laboratorio VS · 11,8 ct',
-    description: 'Una línea continua de diamantes de 5 mm en garras de cuatro puntas. Brilla con cualquier luz.',
-    sizes: ['45 cm', '50 cm', '55 cm'],
   },
   {
     id: 'soga-5',
@@ -136,34 +115,14 @@ export const products: Product[] = [
     engraving: true,
   },
   {
-    id: 'pulsera-cubana-iced',
-    name: 'Pulso Cubano Iced',
-    category: 'pulseras',
-    price: 28900000,
-    badge: 'Más pedida',
-    weight: '58 g',
-    stones: '298 diamantes de laboratorio VS · 4,2 ct',
-    description: 'La misma cubana iced de la casa, en pulso de 12 mm. Pesa en la muñeca como debe pesar.',
-    sizes: ['19 cm', '20 cm', '21 cm', '22 cm'],
-  },
-  {
     id: 'pulsera-cubana',
     name: 'Pulso Cubano 12 mm',
     category: 'pulseras',
     price: 15600000,
+    badge: 'Más pedido',
     weight: '42 g',
-    description: 'Oro macizo pulido a espejo. Para llevar sola o junto a la cubana iced.',
+    description: 'Oro macizo pulido a espejo. Pesa en la muñeca como debe pesar; se lleva solo o junto a una manilla tejida.',
     sizes: ['19 cm', '20 cm', '21 cm', '22 cm'],
-  },
-  {
-    id: 'pulsera-tenis',
-    name: 'Pulso Tenis 4 mm',
-    category: 'pulseras',
-    price: 16800000,
-    weight: '11 g',
-    stones: '48 diamantes de laboratorio VS · 4,8 ct',
-    description: 'Clásica, fina y sin fallas. Broche oculto con lengüeta y seguro lateral.',
-    sizes: ['17 cm', '18 cm', '19 cm'],
   },
   {
     id: 'pulso-esclava',

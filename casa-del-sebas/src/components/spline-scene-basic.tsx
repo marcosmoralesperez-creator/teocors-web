@@ -5,7 +5,7 @@ import { SplineScene } from '@/components/ui/splite'
 import { Card } from '@/components/ui/card'
 import { Spotlight } from '@/components/ui/spotlight'
 import { ErrorBoundary } from '@/components/error-boundary'
-import detail from '@/assets/products/detalle-iced.webp'
+import detail from '@/assets/products/detalle-cubana.webp'
 
 // The demo from the component, adapted to the house: Spanish copy, a gold
 // spotlight, stacked on phones, and the Spline runtime only loads once the

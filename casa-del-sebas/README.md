@@ -1,6 +1,6 @@
 # Casa del Sebas — tienda web
 
-Joyería en oro de 18k: cubanas, tenis y dijes iced. La portada usa la foto de la mano con cadenas sobre fondo arena; el resto del sitio toma de ahí sus colores. Incluye catálogo con filtros (cadenas normales, pulsos, manillas tejidas, dijes, anillos y aretes), **Crea tu estilo** (el cliente arma su cadena, pulso, manilla tejida, aretes o anillo, con foto y precio en vivo), ficha de cada pieza (talla, grabado), bolsa de compra, pedido por WhatsApp, sección "A medida" con la escena 3D de Spline, explicación del oro 18k y preguntas frecuentes.
+Joyería en oro de 18k: cadenas cubanas, pulsos, manillas tejidas y dijes. Por ahora las cadenas y los pulsos van sin diamantes (las fotos que se quitaron están en `fotos-guardadas/`). La portada usa la foto de la mano con cadenas sobre fondo arena; el resto del sitio toma de ahí sus colores. Incluye catálogo con filtros (cadenas normales, pulsos, manillas tejidas, dijes, anillos y aretes), **Crea tu estilo** (el cliente arma su cadena, pulso, manilla tejida, aretes o anillo, con foto y precio en vivo), ficha de cada pieza (talla, grabado), bolsa de compra, pedido por WhatsApp, sección "A medida" con la escena 3D de Spline, explicación del oro 18k y preguntas frecuentes.
 
 Proyecto aparte de la tienda TEOCORS (la carpeta raíz del repositorio): tiene su propio `package.json`.
 

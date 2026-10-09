@@ -162,7 +162,7 @@ function cadenaSummary(c: ChainConfig): Summary {
   const price = priceOf(c);
   const type = chainTypes[c.type];
   const p = pendants[c.pendant];
-  const lines = [{ label: `Cadena ${type.name.toLowerCase()} ${c.mm} mm · ${c.length} cm${c.iced ? ' · iced' : ''}`, price: price.chain }];
+  const lines = [{ label: `Cadena ${type.name.toLowerCase()} ${c.mm} mm · ${c.length} cm`, price: price.chain }];
   if (c.pendant !== 'ninguno') lines.push({ label: `Dije ${p.name.toLowerCase()}${c.pendantIced ? ' iced' : ''}`, price: price.pendant });
   return {
     title: 'Cadena a tu estilo',
@@ -184,11 +184,11 @@ function pulsoSummary(c: PulsoConfig): Summary {
   const t = pulsoTypes[c.type];
   const price = pulsoPrice(c);
   const text = t.engraving ? c.text.trim() : '';
-  const lines = [{ label: `Pulso ${t.name.toLowerCase()} ${c.mm} mm · ${c.size} cm${c.iced && t.canIce ? ' · iced' : ''}`, price: price.total }];
+  const lines = [{ label: `Pulso ${t.name.toLowerCase()} ${c.mm} mm · ${c.size} cm`, price: price.total }];
   if (text) lines.push({ label: `Grabado «${text}»`, price: 0 });
   return {
     title: 'Pulso a tu estilo',
-    image: c.iced && t.icedImage ? t.icedImage : t.image,
+    image: t.image,
     caption: text ? `Grabado: «${text}»` : undefined,
     lines,
     total: price.total,
@@ -197,7 +197,7 @@ function pulsoSummary(c: PulsoConfig): Summary {
       { label: 'Ancho', value: `${pulsoWidth(c).mm} mm` },
       { label: 'Entrega', value: '2 a 3 semanas' },
     ],
-    detail: `${t.name} ${c.mm} mm · ${c.size} cm${c.iced && t.canIce ? ' · iced' : ''}${text ? ` · grabado «${text}»` : ''}`,
+    detail: `${t.name} ${c.mm} mm · ${c.size} cm${text ? ` · grabado «${text}»` : ''}`,
   };
 }
 
@@ -284,7 +284,7 @@ function CadenaOptions({ c, set }: { c: ChainConfig; set: (p: Partial<ChainConfi
   return (
     <>
       <Step n={2} title="Tipo de cadena">
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className="grid grid-cols-3 gap-2">
           {(Object.keys(chainTypes) as ChainType[]).map((t) => (
             <ImageChoice key={t} name="cadena-tipo" selected={c.type === t} onSelect={() => set({ type: t })} image={chainTypes[t].image} label={chainTypes[t].name} />
           ))}
@@ -309,17 +309,7 @@ function CadenaOptions({ c, set }: { c: ChainConfig; set: (p: Partial<ChainConfi
           ))}
         </div>
       </Step>
-      <Step n={5} title="Acabado" aside={type.canIce ? undefined : `La ${type.name.toLowerCase()} va pulida`}>
-        <div className="flex flex-wrap gap-2">
-          <Chip name="cadena-acabado" value="pulida" selected={!c.iced} onSelect={() => set({ iced: false })}>
-            Pulida a espejo
-          </Chip>
-          <Chip name="cadena-acabado" value="iced" selected={c.iced} onSelect={() => set({ iced: true })} disabled={!type.canIce}>
-            Iced con diamantes (+60 %)
-          </Chip>
-        </div>
-      </Step>
-      <Step n={6} title="Dije">
+      <Step n={5} title="Dije">
         <div className="flex flex-wrap gap-2">
           {(Object.keys(pendants) as PendantType[]).map((k) => (
             <Chip key={k} name="cadena-dije" value={k} selected={c.pendant === k} onSelect={() => set({ pendant: k })}>
@@ -353,7 +343,7 @@ function PulsoOptions({ c, set }: { c: PulsoConfig; set: (p: Partial<PulsoConfig
   return (
     <>
       <Step n={2} title="Tipo de pulso">
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {(Object.keys(pulsoTypes) as PulsoType[]).map((k) => (
             <ImageChoice key={k} name="pulso-tipo" selected={c.type === k} onSelect={() => set({ type: k })} image={pulsoTypes[k].image} label={pulsoTypes[k].name} />
           ))}
@@ -378,18 +368,8 @@ function PulsoOptions({ c, set }: { c: PulsoConfig; set: (p: Partial<PulsoConfig
           ))}
         </div>
       </Step>
-      <Step n={5} title="Acabado" aside={t.canIce ? undefined : `El ${t.name.toLowerCase()} va pulido`}>
-        <div className="flex flex-wrap gap-2">
-          <Chip name="pulso-acabado" value="pulido" selected={!c.iced} onSelect={() => set({ iced: false })}>
-            Pulido a espejo
-          </Chip>
-          <Chip name="pulso-acabado" value="iced" selected={c.iced} onSelect={() => set({ iced: true })} disabled={!t.canIce}>
-            Iced con diamantes (+60 %)
-          </Chip>
-        </div>
-      </Step>
       {t.engraving && (
-        <Step n={6} title="Grabado de la placa" aside="Incluido">
+        <Step n={5} title="Grabado de la placa" aside="Incluido">
           <TextField id="pulso-texto" label="Texto" value={c.text} max={20} hint="Nombre, fecha o iniciales. Hasta 20 caracteres." onChange={(text) => set({ text })} />
         </Step>
       )}
@@ -568,7 +548,6 @@ export function Configurator() {
       const c = { ...prevC, ...patch };
       // Keep the width valid for the type and drop pavé where it does not apply.
       if (!chainTypes[c.type].widths.some((w) => w.mm === c.mm)) c.mm = chainTypes[c.type].widths[1]?.mm ?? chainTypes[c.type].widths[0].mm;
-      if (!chainTypes[c.type].canIce) c.iced = false;
       if (patch.pendant && patch.pendant !== prevC.pendant && patch.text === undefined) c.text = patch.pendant === 'inicial' ? prevC.text.slice(0, 1) : prevC.text.slice(0, pendants[patch.pendant].maxLength);
       return { ...prev, cadena: c };
     });
@@ -577,7 +556,6 @@ export function Configurator() {
       const c = { ...prev.pulso, ...patch };
       const t = pulsoTypes[c.type];
       if (!t.widths.some((w) => w.mm === c.mm)) c.mm = t.widths[1]?.mm ?? t.widths[0].mm;
-      if (!t.canIce) c.iced = false;
       return { ...prev, pulso: c };
     });
   const setManilla = (patch: Partial<ManillaConfig>) =>
@@ -742,7 +720,7 @@ export function Configurator() {
                 </a>
               </div>
               <p className="mt-4 text-xs leading-relaxed text-ink-soft">
-                Todo el oro es de 18k macizo y los diamantes son de laboratorio VS. Antes de fabricar te enviamos el diseño para que lo apruebes.
+                Todo el oro es de 18k macizo; los diamantes de dijes, aretes y anillos son de laboratorio VS. Antes de fabricar te enviamos el diseño para que lo apruebes.
               </p>
             </div>
           </form>

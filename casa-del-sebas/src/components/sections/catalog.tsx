@@ -4,22 +4,19 @@ import { ArrowUpRight } from 'lucide-react';
 import { catalogImage, categories, formatPrice, productImage, productPhoto, products, type CategoryId, type Product } from '@/data/products';
 import { Reveal, SectionHeading } from '@/components/reveal';
 import { cn } from '@/lib/utils';
-import cadenasPhoto from '@/assets/photos/cadenas.webp';
 
 // Foto de portada de cada categoría.
 const cover: Record<CategoryId, string> = {
-  cadenas: 'cubana-iced-14',
-  pulseras: 'pulsera-cubana-iced',
+  cadenas: 'cubana-14',
+  pulseras: 'pulsera-cubana',
   manillas: 'manilla-placa',
   dijes: 'placa-iced',
   anillos: 'anillo-sello',
   aretes: 'topos-solitario',
 };
 
-// Categorías con foto real de portada en lugar de la foto 3D.
-const coverPhoto: Partial<Record<CategoryId, string>> = {
-  cadenas: cadenasPhoto,
-};
+// Categorías con foto real de portada en lugar de la foto 3D (ninguna por ahora).
+const coverPhoto: Partial<Record<CategoryId, string>> = {};
 
 type Sort = 'destacados' | 'menor' | 'mayor';
 
@@ -147,18 +144,20 @@ export function Catalog({ filter, setFilter, onView }: { filter: CategoryId | 't
               className="overflow-hidden"
             >
               <div className="mt-10 grid overflow-hidden bg-noir text-ivory md:grid-cols-[1.1fr_1fr]">
-                <img
-                  src={cadenasPhoto}
-                  alt="Cadena cubana iced con broche de caja, sostenida en un guante negro"
-                  className="aspect-[4/3] w-full object-cover object-[50%_48%] md:aspect-auto md:h-full md:max-h-[460px]"
-                />
+                <div className="bg-sand-soft">
+                  <img
+                    src={productImage('cubana-14')}
+                    alt="Cadena cubana clásica en oro de 18k"
+                    className="mx-auto aspect-[4/3] w-full object-contain p-4 md:aspect-auto md:h-full md:max-h-[460px]"
+                  />
+                </div>
                 <div className="flex flex-col justify-center p-8 sm:p-12">
                   <p className="eyebrow text-gold-bright">Cadenas</p>
                   <h3 className="display mt-4 text-4xl sm:text-5xl">
                     Cubanas que <em className="gold-text">se sienten.</em>
                   </h3>
                   <p className="mt-5 max-w-md leading-relaxed text-ivory/70">
-                    Cubanas pulidas e iced, franco, soga y tenis, todas en oro macizo de 18k. ¿Quieres otro grosor, otro largo o tu nombre colgando? Ármala en Crea tu estilo.
+                    Cubanas, franco y soga, todas en oro macizo de 18k y pulidas a espejo. ¿Quieres otro grosor, otro largo o tu nombre colgando? Ármala en Crea tu estilo.
                   </p>
                   <a href="#personaliza" className="btn btn-gold mt-8 self-start">
                     Crea tu cadena <ArrowUpRight className="size-4" strokeWidth={1.5} />

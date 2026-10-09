@@ -6,9 +6,7 @@ import { whatsappLink } from '@/lib/site';
 
 // Piezas señaladas sobre la foto (posición en % de la imagen).
 const hotspots = [
-  { id: 'cubana-iced-14', x: 73, y: 30 },
   { id: 'placa-iced', x: 51, y: 54 },
-  { id: 'pulsera-cubana-iced', x: 60, y: 87 },
 ];
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -35,7 +33,7 @@ export function Hero({ onView }: { onView: (id: string) => void }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2, ease }}
           >
-            Cubanas, tenis y dijes iced en oro macizo de 18k, engastados a mano con diamantes. Cada pieza sale del taller con su sello 750 y certificado de pureza.
+            Cadenas cubanas, pulsos, dijes y manillas tejidas en oro macizo de 18k, hechos a mano. Cada pieza sale del taller con su sello 750 y certificado de pureza.
           </motion.p>
           <motion.div
             className="mt-10 flex flex-col gap-3 sm:flex-row"

@@ -213,6 +213,12 @@ const shots = {
     return layFlat(g);
   },
   // Close crop of the house chain for the 3D/detail sections.
+  'detalle-cubana': () => {
+    const curve = new THREE.CatmullRomCurve3(
+      [[-0.9, -2.2], [-0.55, -1.0], [0.25, -0.25], [0.55, 0.9], [0.2, 2.2]].map(([x, y]) => new THREE.Vector3(x, y, 0)),
+    );
+    return layFlat(cubanChain(curve, { width: 0.42, materials: m }));
+  },
   'detalle-iced': () => {
     const curve = new THREE.CatmullRomCurve3(
       [[-0.9, -2.2], [-0.55, -1.0], [0.25, -0.25], [0.55, 0.9], [0.2, 2.2]].map(([x, y]) => new THREE.Vector3(x, y, 0)),
@@ -229,7 +235,7 @@ for (const [id, spec] of Object.entries(manillas)) {
 
 // Camera elevation per shot (radians above the table); flat pieces are seen from higher up.
 const elevation = { 'anillo-sello': 0.42, 'anillo-cubano-iced': 0.5, 'topos-solitario': 0.45 , 'topos-solitario--uno': 0.45 };
-const zoom = { 'detalle-iced': 0.62 , 'topos-solitario--uno': 2.3, 'argollas-cubanas--uno': 1.5 };
+const zoom = { 'detalle-iced': 0.62, 'detalle-cubana': 0.62 , 'topos-solitario--uno': 2.3, 'argollas-cubanas--uno': 1.5 };
 
 /** World box that accounts for every instance (Box3.setFromObject does not). */
 function boxOf(object) {

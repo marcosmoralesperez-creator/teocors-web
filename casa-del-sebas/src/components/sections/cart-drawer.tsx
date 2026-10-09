@@ -35,7 +35,7 @@ export function CartDrawer() {
           <div className="flex flex-1 flex-col items-center justify-center gap-5 px-8 text-center">
             <ShoppingBag className="size-10 text-gold" strokeWidth={1} />
             <p className="display text-2xl">Tu bolsa está vacía</p>
-            <p className="text-sm text-ink-soft">Empieza por la cubana iced: es la pieza que define la casa.</p>
+            <p className="text-sm text-ink-soft">Empieza por la cubana clásica: es la pieza que define la casa.</p>
             <a href="#coleccion" onClick={() => setOpen(false)} className="btn btn-dark mt-2">
               Ver la colección
             </a>
