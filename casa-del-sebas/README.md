@@ -68,6 +68,7 @@ Es la carpeta donde la CLI de shadcn (`npx shadcn@latest add …`) instala los c
 | Crea tu estilo: cadenas (tipos, grosores, dijes) | `src/data/custom-chain.ts` |
 | Crea tu estilo: pulsos, manillas, aretes, anillos y combinaciones listas | `src/data/custom-style.ts` |
 | Foto de la portada                      | `src/assets/photos/hero.webp`            |
+| Foto real de una pieza (en vez de la 3D) | `src/assets/photos/<id de la pieza>.webp`, formato 4:5 |
 | Puntos "+" sobre la foto                | `hotspots` en `src/components/sections/hero.tsx` |
 | Colores y tipografías                   | `@theme` en `src/index.css`              |
 | Preguntas frecuentes                    | `faqs` en `src/components/sections/info.tsx` |

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Award, Check, Gem, Scale, ShieldCheck, Sparkles, Truck, X } from 'lucide-react';
-import { formatPrice, optionImage, productById, sizeSurcharge, type Product } from '@/data/products';
+import { formatPrice, optionImage, productById, productPhoto, sizeSurcharge, type Product } from '@/data/products';
 import { useCart } from '@/lib/cart';
 import { whatsappLink } from '@/lib/site';
 import { SheetDialog } from '@/components/sheet-dialog';
@@ -52,7 +52,7 @@ export function ProductDialog({ id, onClose }: { id: string | null; onClose: () 
             <X className="size-5" strokeWidth={1.5} />
           </button>
           <div className="bg-sand-soft">
-            <img src={optionImage(p.id, size)} alt={size && p.swatches ? `${p.name}, hilo ${size.toLowerCase()}` : p.name} className="mx-auto aspect-[4/5] max-h-[46dvh] w-full object-contain p-4 md:max-h-none" />
+            <img src={optionImage(p.id, size)} alt={size && p.swatches ? `${p.name}, hilo ${size.toLowerCase()}` : p.name} className={cn('mx-auto aspect-[4/5] max-h-[46dvh] w-full md:max-h-none', productPhoto(p.id) ? 'object-cover md:aspect-auto md:h-full' : 'object-contain p-4')} />
           </div>
           <div className="flex flex-col p-6 sm:p-10 md:max-h-[94dvh] md:overflow-y-auto">
             {p.badge && <p className="eyebrow text-gold">{p.badge}</p>}

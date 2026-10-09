@@ -300,8 +300,16 @@ const slug = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').t
 
 /** Foto de la pieza en la opción elegida (p. ej. el color del hilo), si existe; si no, la del catálogo. */
 export const optionImage = (id: string, option?: string) =>
-  (option && images[`../assets/products/${id}--${slug(option)}.webp`]) || productImage(id);
+  (option && images[`../assets/products/${id}--${slug(option)}.webp`]) || catalogImage(id);
 
 // Fotos generadas con `npm run render:products` (ver render/).
 const images = import.meta.glob<string>('../assets/products/*.webp', { eager: true, query: '?url', import: 'default' });
 export const productImage = (id: string) => images[`../assets/products/${id}.webp`];
+
+// Fotos reales: reemplazan la foto 3D en el catálogo, la ficha y la bolsa.
+// (Crea tu estilo sigue usando las 3D, que llevan el dije dibujado encima.)
+const photos = import.meta.glob<string>('../assets/photos/*.webp', { eager: true, query: '?url', import: 'default' });
+export const productPhoto = (id: string): string | undefined => photos[`../assets/photos/${id}.webp`];
+
+/** Imagen de una pieza del catálogo: la foto real si existe, si no la 3D. */
+export const catalogImage = (id: string) => productPhoto(id) ?? productImage(id);

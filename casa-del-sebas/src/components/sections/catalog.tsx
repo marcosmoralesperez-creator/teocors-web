@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import { categories, formatPrice, productImage, products, type CategoryId, type Product } from '@/data/products';
+import { catalogImage, categories, formatPrice, productImage, productPhoto, products, type CategoryId, type Product } from '@/data/products';
 import { Reveal, SectionHeading } from '@/components/reveal';
 import { cn } from '@/lib/utils';
 import cadenasPhoto from '@/assets/photos/cadenas.webp';
@@ -198,12 +198,15 @@ function ProductCard({ product: p, onView }: { product: Product; onView: (id: st
     <button type="button" onClick={() => onView(p.id)} className="group block w-full text-left">
       <div className="relative aspect-[4/5] overflow-hidden bg-sand-soft">
         <img
-          src={productImage(p.id)}
+          src={catalogImage(p.id)}
           alt={p.name}
           loading="lazy"
           width={1000}
           height={1250}
-          className="size-full object-contain p-2 transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+          className={cn(
+            'size-full transition-transform duration-700 ease-out group-hover:scale-[1.05]',
+            productPhoto(p.id) ? 'object-cover' : 'object-contain p-2',
+          )}
         />
         {p.badge && <span className="eyebrow absolute top-3 left-3 bg-ivory px-2.5 py-1.5 text-[0.58rem] text-ink">{p.badge}</span>}
         <span className="eyebrow absolute inset-x-3 bottom-3 hidden translate-y-2 bg-ink py-3 text-center text-[0.62rem] text-ivory opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 sm:block">
