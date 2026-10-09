@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { CalendarDays, Hammer, PackageCheck, PenTool } from 'lucide-react';
-import detail from '@/assets/products/detalle-iced.webp';
+import closeup from '@/assets/photos/cubana-iced-cerca.webp';
 import { Reveal, SectionHeading } from '@/components/reveal';
 import { SplineSceneBasic } from '@/components/spline-scene-basic';
 import { whatsappLink } from '@/lib/site';
@@ -15,8 +15,15 @@ export function Closeup() {
     <section aria-labelledby="cerca-titulo" className="relative overflow-hidden bg-noir text-ivory">
       <div className="grid items-center lg:grid-cols-2">
         <Reveal className="relative order-2 lg:order-1">
-          <img src={detail} alt="Detalle de la cadena cubana iced: eslabones de oro de 18k con diamantes" loading="lazy" className="aspect-[4/5] w-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-noir/50 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-noir" />
+          <img
+            src={closeup}
+            alt="Cadena cubana iced de cerca: eslabones cubiertos de diamantes y broche de caja"
+            loading="lazy"
+            width={778}
+            height={428}
+            // Fade the photo's edges into the black background.
+            className="aspect-[778/428] w-full object-cover [mask-image:linear-gradient(to_right,transparent,#000_14%,#000_86%,transparent),linear-gradient(to_bottom,transparent,#000_16%,#000_84%,transparent)] [mask-composite:intersect]"
+          />
         </Reveal>
         <div className="order-1 max-w-2xl px-4 py-20 sm:px-8 lg:order-2 lg:px-16 lg:py-28">
           <Reveal>
