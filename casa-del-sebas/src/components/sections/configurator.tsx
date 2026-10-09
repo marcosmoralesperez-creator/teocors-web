@@ -468,17 +468,26 @@ function AretesOptions({ c, set }: { c: AretesConfig; set: (p: Partial<AretesCon
 
 function AnilloOptions({ c, set }: { c: AnilloConfig; set: (p: Partial<AnilloConfig>) => void }) {
   const s = anilloStyles[c.style];
+  const styles = Object.keys(anilloStyles) as AnilloStyle[];
+  // With a single style there is nothing to choose: skip that step.
+  const n = styles.length > 1 ? 3 : 2;
   return (
     <>
-      <Step n={2} title="Estilo">
-        <div className="grid grid-cols-2 gap-2 sm:max-w-md">
-          {(Object.keys(anilloStyles) as AnilloStyle[]).map((k) => (
-            <ImageChoice key={k} name="anillo-estilo" selected={c.style === k} onSelect={() => set({ style: k })} image={anilloStyles[k].image} label={anilloStyles[k].name} />
-          ))}
-        </div>
-        <p className="mt-3 text-sm text-ink-soft">{s.note}</p>
-      </Step>
-      <Step n={3} title="Talla" aside="¿No la sabes? Te enviamos un medidor gratis">
+      {styles.length > 1 ? (
+        <Step n={2} title="Estilo">
+          <div className="grid grid-cols-2 gap-2 sm:max-w-md">
+            {styles.map((k) => (
+              <ImageChoice key={k} name="anillo-estilo" selected={c.style === k} onSelect={() => set({ style: k })} image={anilloStyles[k].image} label={anilloStyles[k].name} />
+            ))}
+          </div>
+          <p className="mt-3 text-sm text-ink-soft">{s.note}</p>
+        </Step>
+      ) : (
+        <p className="-mt-2 text-sm text-ink-soft">
+          Anillo {s.name.toLowerCase()} de la casa · {s.grams} de oro de 18k. {s.note}
+        </p>
+      )}
+      <Step n={n} title="Talla" aside="¿No la sabes? Te enviamos un medidor gratis">
         <div className="flex flex-wrap gap-2">
           {anilloSizes.map((n) => (
             <Chip key={n} name="anillo-talla" value={String(n)} selected={c.size === n} onSelect={() => set({ size: n })}>
@@ -488,7 +497,7 @@ function AnilloOptions({ c, set }: { c: AnilloConfig; set: (p: Partial<AnilloCon
         </div>
       </Step>
       {s.text && (
-        <Step n={4} title="Grabado" aside="Incluido">
+        <Step n={n + 1} title="Grabado" aside="Incluido">
           <TextField id="anillo-texto" label={s.text.label} value={c.text} max={s.text.max} hint={s.text.hint} onChange={(text) => set({ text: text.toUpperCase() })} />
         </Step>
       )}
@@ -720,7 +729,7 @@ export function Configurator() {
                 </a>
               </div>
               <p className="mt-4 text-xs leading-relaxed text-ink-soft">
-                Todo el oro es de 18k macizo; los diamantes de dijes, aretes y anillos son de laboratorio VS. Antes de fabricar te enviamos el diseño para que lo apruebes.
+                Todo el oro es de 18k macizo; los diamantes de dijes y aretes son de laboratorio VS. Antes de fabricar te enviamos el diseño para que lo apruebes.
               </p>
             </div>
           </form>

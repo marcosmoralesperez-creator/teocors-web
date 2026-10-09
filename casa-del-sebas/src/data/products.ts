@@ -214,16 +214,6 @@ export const products: Product[] = [
     engraving: true,
   },
   {
-    id: 'anillo-cubano-iced',
-    name: 'Anillo Cubano Iced',
-    category: 'anillos',
-    price: 11700000,
-    weight: '12 g',
-    stones: '84 diamantes de laboratorio VS · 1,1 ct',
-    description: 'Eslabones cubanos cerrados en anillo, con pavé en cada uno. Se hace a tu talla exacta.',
-    sizes: ['Talla 7', 'Talla 8', 'Talla 9', 'Talla 10', 'Talla 11', 'Talla 12'],
-  },
-  {
     id: 'topos-solitario',
     name: 'Topos Solitario',
     category: 'aretes',

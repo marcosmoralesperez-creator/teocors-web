@@ -186,7 +186,8 @@ export function aretesPrice(c: AretesConfig) {
 
 /* ---------------------------------------------------------------- anillos */
 
-export type AnilloStyle = 'sello' | 'cubano';
+// Por ahora solo el sello; agrega estilos aquí y aparecen en Crea tu estilo.
+export type AnilloStyle = 'sello';
 
 export const anilloStyles: Record<AnilloStyle, { name: string; image: string; price: number; grams: string; note: string; text?: { label: string; max: number; hint: string } }> = {
   sello: {
@@ -196,13 +197,6 @@ export const anilloStyles: Record<AnilloStyle, { name: string; image: string; pr
     grams: '16 g',
     note: 'Cara ovalada satinada. Grabamos tus iniciales en relieve.',
     text: { label: 'Iniciales', max: 3, hint: 'Hasta 3 letras' },
-  },
-  cubano: {
-    name: 'Cubano iced',
-    image: 'anillo-cubano-iced',
-    price: 11700000,
-    grams: '12 g',
-    note: 'Eslabones cubanos con pavé de diamantes de laboratorio VS.',
   },
 };
 
